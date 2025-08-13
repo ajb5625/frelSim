@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package frelsim.type.proto;
+
+import "frelsim/type/proto/Type.proto";
+
+// message StructValue {
+    // map<string, Value> fields = 1;
+// }
+// 
+// message ArrayValue {
+    // repeated Value values = 1;
+// }
+
+message Value {
+    Type type = 1;
+    oneof data {
+        // int32 int32_value = 2;
+        // int64 int64_value = 3;
+        double double_value = 4;
+        // string string_value = 5;s
+        // bytes bytes_value = 6;
+        // StructValue struct_value = 7;
+        // ArrayValue list_value = 8;
+    }
+}

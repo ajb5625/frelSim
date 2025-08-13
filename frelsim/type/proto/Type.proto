@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package frelsim.type.proto;
+
+message Type {
+    oneof type {
+        // IntegerType integer_type = 1;
+        FloatType float_type = 1;
+        // StringType string_type = 3;
+        // BytesType bytes_type = 4;
+        // StructType struct_type = 5;
+        // ArrayType array_type = 6;
+    }
+}
+
+
+// message IntegerType {
+    // bool signed = 1;
+    // int32 width = 2;
+// }
+
+message FloatType {
+    int32 precision = 1;
+}
+
+// message StringType {
+// 
+// }
+// 
+// message BytesType {
+// 
+// }
+// 
+// message StructFieldType {
+    // string name = 1;
+    // Type base_type = 2;
+// }
+// 
+// message StructType {
+    // repeated StructFieldType fields = 1;
+// 
+// }
+// 
+// message ArrayType {
+    // Type base_type = 1;
+    // repeated uint32 dimensions = 2;
+// }
