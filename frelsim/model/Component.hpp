@@ -1,17 +1,20 @@
+#pragma once
 #include <functional>
 #include <vector>
 #include <map>
+#include <memory>
 
+#include "../util/Aliases.hpp"
 #include "../event/Event.hpp"
 
 namespace frelsim::model {
 
+enum class ComponentType : int {
+    Continuous = 0,
+    Discrete = 1
+};
 
-using State = std::vector<double>;
-
-using Derivative = std::function<State(const State&, double)>;
-
-using Matrix = std::vector<State>;
+using Parameter = double;
 
 class Component {
 
@@ -21,17 +24,24 @@ class Component {
 
         virtual ~Component();
 
-        virtual Derivative derivative() = 0;
+        virtual ComponentType type() = 0;
 
-        virtual Matrix jacobian();
+        virtual double sampleTime() = 0;
 
-        virtual void defineEvents();
+        virtual void parameters();
 
-        std::vector<event::EventIndicator> eventIndicators();
+        virtual void events();
 
+        std::vector<event::EventIndicator> eventIndicators() const;
 
     private:
-        std::vector<event::Event> events_;        
+
+        State states_;
+
+        std::vector<event::Event> events_;    
+
+        std::map<std::string, Parameter> parameters_;
+
 
 
 

@@ -3,13 +3,11 @@
 
 namespace frelsim::model {
 
-Matrix Component::jacobian() {
-    return Matrix();
-}
+void Component::parameters() {}
 
-void Component::defineEvents() {}
+void Component::events() {}
 
-std::vector<event::EventIndicator> Component::eventIndicators() {
+std::vector<event::EventIndicator> Component::eventIndicators() const {
     std::vector<event::EventIndicator> eventIndicators;
     for (auto& event : events_) {
         eventIndicators.push_back(event.getEventIndicator());

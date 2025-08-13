@@ -2,7 +2,7 @@
 
 namespace frelsim::integrate::core {
     
-Solver::Solver() = default;
+Solver::Solver(double stopTime, double stepSize) : stopTime_(stopTime), stepSize_(stepSize) {}
 
 Solver::~Solver() = default;
 

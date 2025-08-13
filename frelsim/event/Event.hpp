@@ -1,3 +1,4 @@
+#pragma once
 #include <functional>
 
 namespace frelsim::event {
@@ -18,7 +19,7 @@ class Event {
 
         virtual ~Event() = default;
 
-        virtual EventIndicator getEventIndicator();
+        virtual EventIndicator getEventIndicator() const;
 
         bool didEventFire(double y0, double y1);
 

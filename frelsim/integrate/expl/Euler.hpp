@@ -1,3 +1,4 @@
+#pragma once
 #include "../core/Solver.hpp"
 
 namespace frelsim::integrate::expl {
@@ -6,14 +7,11 @@ namespace frelsim::integrate::expl {
 class Euler : public core::Solver {
 
     public:
-        Euler(double tFinal);
+        Euler(double stopTime, double stepSize);
 
         ~Euler() override;
 
-        bool step(double stopTime) override;
-
-    private:
-        const double tFinal_;
+        bool step(State& y0, double simulationTime, const Derivative& f) override;
 
 
 };
