@@ -6,11 +6,13 @@ namespace frelsim::integrate::factory{
 
 std::unique_ptr<integrate::core::Solver> createSolver(integrate::SolverType solverType
                                                                     , double stopTime
-                                                                    , double stepSize) {
+                                                                    , double stepSize
+                                                                    , const Derivative f
+                                                                    , const JacobianFunction jf) {
 
     switch(solverType) {
         case integrate::SolverType::Euler:
-            return std::make_unique<integrate::expl::Euler>(stopTime, stepSize);
+            return std::make_unique<integrate::expl::Euler>(stopTime, stepSize, f);
         break;
         case integrate::SolverType::RungeKutta4:
             return nullptr;
@@ -19,7 +21,7 @@ std::unique_ptr<integrate::core::Solver> createSolver(integrate::SolverType solv
             return nullptr;
         break;
         case integrate::SolverType::BackwardEuler:
-            return std::make_unique<integrate::impl::BackwardEuler>(stopTime, stepSize);
+            return std::make_unique<integrate::impl::BackwardEuler>(stopTime, stepSize, f, jf);
         break;
         default:
             return nullptr;

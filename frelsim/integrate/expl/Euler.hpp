@@ -7,11 +7,11 @@ namespace frelsim::integrate::expl {
 class Euler : public core::Solver {
 
     public:
-        Euler(double stopTime, double stepSize);
+        Euler(double stopTime, double stepSize, const Derivative& f);
 
         ~Euler() override;
 
-        bool step(State& y0, double simulationTime, const Derivative& f) override;
+        bool step(State& y0, double simulationTime) override;
 
 
 };

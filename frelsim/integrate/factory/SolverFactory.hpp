@@ -17,7 +17,9 @@ namespace factory {
 
 std::unique_ptr<integrate::core::Solver> createSolver(integrate::SolverType solverType
                                                     , double stopTime
-                                                    , double stepSize);
+                                                    , double stepSize
+                                                    , const Derivative df
+                                                    , const JacobianFunction jf = nullptr);
 
 } // factory
 } // frelsim::integrate

@@ -12,6 +12,7 @@ PROTO_DIR   := frelsim/type/proto
 OBJ_DIR     := build
 BIN_DIR     := build
 LIB_NAME    := frelsim
+EIGEN_INC := /usr/include/eigen3
 
 # Probe protobuf cflags/libs (fallbacks if pkg-config missing)
 PROTOBUF_CFLAGS := $(shell pkg-config --cflags protobuf 2>/dev/null)
@@ -33,7 +34,7 @@ else
 endif
 
 # Include build/ so you can `#include "frelsim/type/proto/X.pb.h"`
-CXXFLAGS := $(STD) $(WARN) $(OPT) -Iinclude -I$(OBJ_DIR) $(PROTOBUF_CFLAGS)
+CXXFLAGS := $(STD) $(WARN) $(OPT) -Iinclude -I$(OBJ_DIR) -I$(EIGEN_INC) $(PROTOBUF_CFLAGS)
 LDFLAGS  :=
 LDLIBS   := $(PROTOBUF_LIBS)
 

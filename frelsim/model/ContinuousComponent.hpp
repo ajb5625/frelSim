@@ -20,7 +20,7 @@ class ContinuousComponent : public Component {
 
         virtual Derivative derivative() = 0;
 
-        virtual std::optional<Matrix> jacobian();
+        virtual JacobianFunction jacobian() = 0;
 
 
 };
