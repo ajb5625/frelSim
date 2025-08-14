@@ -1,5 +1,6 @@
 #include "SolverFactory.hpp"
 #include "../expl/Euler.hpp"
+#include "../expl/RungeKutta4.hpp"
 #include "../impl/BackwardEuler.hpp"
 
 namespace frelsim::integrate::factory{
@@ -15,7 +16,7 @@ std::unique_ptr<integrate::core::Solver> createSolver(integrate::SolverType solv
             return std::make_unique<integrate::expl::Euler>(stopTime, stepSize, f);
         break;
         case integrate::SolverType::RungeKutta4:
-            return nullptr;
+            return std::make_unique<integrate::expl::RungeKutta4>(stopTime, stepSize, f);
         break;
         case integrate::SolverType::DormandPrince:
             return nullptr;

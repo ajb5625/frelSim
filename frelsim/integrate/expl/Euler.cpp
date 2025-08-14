@@ -13,7 +13,7 @@ bool Euler::step(State& y0, double simulationTime) {
     for (Eigen::Index idx = 0; idx < y0.size(); idx++) {
         y0[idx] = y0[idx] + stepSize_ * dydt[idx];
     }
-    return simulationTime == stopTime_;
+    return util::almostEqual(simulationTime, stopTime_);
 }
 
 } // namespace frelsim::integrate::expl

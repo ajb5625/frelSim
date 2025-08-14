@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-
+#include "../../util/almost_equal.hpp"
 #include "../../util/Aliases.hpp"
 
 namespace frelsim::integrate::core {

@@ -13,7 +13,7 @@ bool RungeKutta4::step(State& yn, double simulationTime) {
     State k4 = (*f_)(yn + stepSize_ * k3, simulationTime + stepSize_);
 
     yn += (stepSize_ / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
-    return simulationTime == stopTime_;
+    return util::almostEqual(simulationTime, stopTime_);
 }
 
 

@@ -41,7 +41,7 @@ bool BackwardEuler::step(State& y0, double simulationTime) {
 
     // Write output
     y0 = y1;
-    return simulationTime == stopTime_;
+    return util::almostEqual(simulationTime, stopTime_);
 }
 
 
