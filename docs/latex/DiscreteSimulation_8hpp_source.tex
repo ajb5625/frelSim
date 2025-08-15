@@ -1,0 +1,30 @@
+\doxysection{Discrete\+Simulation.\+hpp}
+\hypertarget{DiscreteSimulation_8hpp_source}{}\label{DiscreteSimulation_8hpp_source}\index{frelsim/simulation/DiscreteSimulation.hpp@{frelsim/simulation/DiscreteSimulation.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Simulation.hpp"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{namespace\ }frelsim::simulation\ \{}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1simulation_1_1DiscreteSimulation}{DiscreteSimulation}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{Simulation}}\ \{}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1DiscreteSimulation}{DiscreteSimulation}}(\textcolor{keywordtype}{double}\ sampleTime);}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1DiscreteSimulation}{\string~DiscreteSimulation}}()\ \textcolor{keyword}{override}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ stepUntil(\textcolor{keywordtype}{double}\ stopTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ SimulationType\ type()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update();}
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sampleTime\_;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \}\ \textcolor{comment}{//\ frelsim::simulation}}
+
+\end{DoxyCode}

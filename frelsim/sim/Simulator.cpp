@@ -6,7 +6,6 @@ namespace frelsim::sim {
 Simulator::Simulator(double tFinal) : tFinal_(tFinal) {}
 
 Simulator::~Simulator() {
-    solver_.reset();
 }
 
 void Simulator::sim() {

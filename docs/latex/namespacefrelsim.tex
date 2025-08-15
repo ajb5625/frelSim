@@ -1,0 +1,73 @@
+\doxysection{frelsim Namespace Reference}
+\hypertarget{namespacefrelsim}{}\label{namespacefrelsim}\index{frelsim@{frelsim}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1event}{event}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1integrate}{integrate}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1schedule}{schedule}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1sim}{sim}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1simulation}{simulation}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1task}{task}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1type}{type}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1util}{util}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}} = Eigen\+::\+Vector\+Xd
+\item 
+using \mbox{\hyperlink{namespacefrelsim_ab2829619267221b372aa0b1cad0d2fad}{Derivative}} = std\+::shared\+\_\+ptr$<$ std\+::function$<$ \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}}(const \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}} \&, double)$>$ $>$
+\item 
+using \mbox{\hyperlink{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}{Matrix}} = Eigen\+::\+Matrix\+Xd
+\item 
+using \mbox{\hyperlink{namespacefrelsim_a5540bcfd21255ad7f754325e56d165c9}{Jacobian\+Function}} = std\+::shared\+\_\+ptr$<$ std\+::function$<$ \mbox{\hyperlink{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}{Matrix}}(const \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}} \&, double)$>$ $>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr double \mbox{\hyperlink{namespacefrelsim_a39935d25569cd13ac629655bc522a033}{Solver\+Tolerance}} = 1e-\/9
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{namespacefrelsim_ab2829619267221b372aa0b1cad0d2fad}\label{namespacefrelsim_ab2829619267221b372aa0b1cad0d2fad} 
+\index{frelsim@{frelsim}!Derivative@{Derivative}}
+\index{Derivative@{Derivative}!frelsim@{frelsim}}
+\doxysubsubsection{\texorpdfstring{Derivative}{Derivative}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacefrelsim_ab2829619267221b372aa0b1cad0d2fad}{frelsim\+::\+Derivative}} = typedef std\+::shared\+\_\+ptr$<$std\+::function$<$\mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}}(const \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}}\&, double)$>$ $>$}
+
+\Hypertarget{namespacefrelsim_a5540bcfd21255ad7f754325e56d165c9}\label{namespacefrelsim_a5540bcfd21255ad7f754325e56d165c9} 
+\index{frelsim@{frelsim}!JacobianFunction@{JacobianFunction}}
+\index{JacobianFunction@{JacobianFunction}!frelsim@{frelsim}}
+\doxysubsubsection{\texorpdfstring{JacobianFunction}{JacobianFunction}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacefrelsim_a5540bcfd21255ad7f754325e56d165c9}{frelsim\+::\+Jacobian\+Function}} = typedef std\+::shared\+\_\+ptr$<$std\+::function$<$\mbox{\hyperlink{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}{Matrix}}(const \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}}\&, double)$>$ $>$}
+
+\Hypertarget{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}\label{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a} 
+\index{frelsim@{frelsim}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!frelsim@{frelsim}}
+\doxysubsubsection{\texorpdfstring{Matrix}{Matrix}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}{frelsim\+::\+Matrix}} = typedef Eigen\+::\+Matrix\+Xd}
+
+\Hypertarget{namespacefrelsim_a670fee7548350265dffdf379b7755463}\label{namespacefrelsim_a670fee7548350265dffdf379b7755463} 
+\index{frelsim@{frelsim}!State@{State}}
+\index{State@{State}!frelsim@{frelsim}}
+\doxysubsubsection{\texorpdfstring{State}{State}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{frelsim\+::\+State}} = typedef Eigen\+::\+Vector\+Xd}
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacefrelsim_a39935d25569cd13ac629655bc522a033}\label{namespacefrelsim_a39935d25569cd13ac629655bc522a033} 
+\index{frelsim@{frelsim}!SolverTolerance@{SolverTolerance}}
+\index{SolverTolerance@{SolverTolerance}!frelsim@{frelsim}}
+\doxysubsubsection{\texorpdfstring{SolverTolerance}{SolverTolerance}}
+{\footnotesize\ttfamily constexpr double frelsim\+::\+Solver\+Tolerance = 1e-\/9\hspace{0.3cm}{\ttfamily [constexpr]}}
+

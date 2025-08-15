@@ -1,0 +1,66 @@
+\doxysection{frelsim\+::integrate\+::expl\+::Euler Class Reference}
+\hypertarget{classfrelsim_1_1integrate_1_1expl_1_1Euler}{}\label{classfrelsim_1_1integrate_1_1expl_1_1Euler}\index{frelsim::integrate::expl::Euler@{frelsim::integrate::expl::Euler}}
+
+
+Inheritance diagram for frelsim\+::integrate\+::expl\+::Euler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classfrelsim_1_1integrate_1_1expl_1_1Euler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for frelsim\+::integrate\+::expl\+::Euler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classfrelsim_1_1integrate_1_1expl_1_1Euler__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1expl_1_1Euler_a37d0af731e1cb1e9794fecab897f2c49}\label{classfrelsim_1_1integrate_1_1expl_1_1Euler_a37d0af731e1cb1e9794fecab897f2c49} 
+{\bfseries Euler} (double stop\+Time, double step\+Size, const Derivative \&f)
+\item 
+bool \mbox{\hyperlink{classfrelsim_1_1integrate_1_1expl_1_1Euler_af7424fa8a3918ea8322fa7e17f7f3b80}{step}} (State \&y0, double simulation\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{frelsim\+::integrate\+::core\+::\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Solver} (double stop\+Time, double step\+Size, const Derivative f, const Jacobian\+Function jf=nullptr)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{frelsim\+::integrate\+::core\+::\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+double {\bfseries stop\+Time\+\_\+}
+\item 
+double {\bfseries step\+Size\+\_\+}
+\item 
+Derivative {\bfseries f\+\_\+}
+\item 
+Jacobian\+Function {\bfseries jacobian\+Function\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classfrelsim_1_1integrate_1_1expl_1_1Euler_af7424fa8a3918ea8322fa7e17f7f3b80}\label{classfrelsim_1_1integrate_1_1expl_1_1Euler_af7424fa8a3918ea8322fa7e17f7f3b80} 
+\index{frelsim::integrate::expl::Euler@{frelsim::integrate::expl::Euler}!step@{step}}
+\index{step@{step}!frelsim::integrate::expl::Euler@{frelsim::integrate::expl::Euler}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily bool frelsim\+::integrate\+::expl\+::\+Euler\+::step (\begin{DoxyParamCaption}\item[{State \&}]{y0,  }\item[{double}]{simulation\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{frelsim\+::integrate\+::core\+::\+Solver}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+frelsim/integrate/expl/Euler.\+hpp\item 
+frelsim/integrate/expl/Euler.\+cpp\end{DoxyCompactItemize}

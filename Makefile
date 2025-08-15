@@ -344,7 +344,7 @@ GEN_FILES := $(PROTO_GEN_CC) $(PROTO_GEN_HDR)
 
 
 # ===== Utilities =====
-.PHONY: clean print
+.PHONY: clean print docs
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
@@ -354,3 +354,6 @@ print:
 	@echo "PROTO_GEN_CC= $(PROTO_GEN_CC)"
 	@echo "OBJ         = $(OBJ)"
 	@echo "TARGET      = $(TARGET)"
+
+docs:
+	doxygen Doxyfile

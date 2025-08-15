@@ -1,0 +1,31 @@
+\doxysection{Solver\+Factory.\+hpp}
+\hypertarget{SolverFactory_8hpp_source}{}\label{SolverFactory_8hpp_source}\index{frelsim/integrate/factory/SolverFactory.hpp@{frelsim/integrate/factory/SolverFactory.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../core/Solver.hpp"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }frelsim::integrate\ \{}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{enum\ class}\ SolverType\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ Euler\ =\ 0,}
+\DoxyCodeLine{00010\ \ \ \ \ RungeKutta4\ =\ 1,}
+\DoxyCodeLine{00011\ \ \ \ \ DormandPrince\ =\ 2,}
+\DoxyCodeLine{00012\ \ \ \ \ BackwardEuler\ =\ 4}
+\DoxyCodeLine{00013\ \};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }factory\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ std::unique\_ptr<integrate::core::Solver>\ createSolver(integrate::SolverType\ solverType}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \textcolor{keywordtype}{double}\ stopTime}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \textcolor{keywordtype}{double}\ stepSize}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \textcolor{keyword}{const}\ Derivative\ df}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \textcolor{keyword}{const}\ JacobianFunction\ jf\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \}\ \textcolor{comment}{//\ factory}}
+\DoxyCodeLine{00025\ \}\ \textcolor{comment}{//\ frelsim::integrate}}
+
+\end{DoxyCode}

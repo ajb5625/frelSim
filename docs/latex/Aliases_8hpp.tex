@@ -1,0 +1,42 @@
+\doxysection{frelsim/util/\+Aliases.hpp File Reference}
+\hypertarget{Aliases_8hpp}{}\label{Aliases_8hpp}\index{frelsim/util/Aliases.hpp@{frelsim/util/Aliases.hpp}}
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
+Include dependency graph for Aliases.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=317pt]{Aliases_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Aliases_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim}{frelsim}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{frelsim\+::\+State}} = Eigen\+::\+Vector\+Xd
+\item 
+using \mbox{\hyperlink{namespacefrelsim_ab2829619267221b372aa0b1cad0d2fad}{frelsim\+::\+Derivative}} = std\+::shared\+\_\+ptr$<$ std\+::function$<$ \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}}(const \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}} \&, double)$>$ $>$
+\item 
+using \mbox{\hyperlink{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}{frelsim\+::\+Matrix}} = Eigen\+::\+Matrix\+Xd
+\item 
+using \mbox{\hyperlink{namespacefrelsim_a5540bcfd21255ad7f754325e56d165c9}{frelsim\+::\+Jacobian\+Function}} = std\+::shared\+\_\+ptr$<$ std\+::function$<$ \mbox{\hyperlink{namespacefrelsim_abfe12cbbfb63edf9e02468ec95e7943a}{Matrix}}(const \mbox{\hyperlink{namespacefrelsim_a670fee7548350265dffdf379b7755463}{State}} \&, double)$>$ $>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr double \mbox{\hyperlink{namespacefrelsim_a39935d25569cd13ac629655bc522a033}{frelsim\+::\+Solver\+Tolerance}} = 1e-\/9
+\end{DoxyCompactItemize}

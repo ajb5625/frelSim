@@ -1,0 +1,65 @@
+\doxysection{frelsim\+::simulation\+::Continuous\+Simulation Class Reference}
+\hypertarget{classfrelsim_1_1simulation_1_1ContinuousSimulation}{}\label{classfrelsim_1_1simulation_1_1ContinuousSimulation}\index{frelsim::simulation::ContinuousSimulation@{frelsim::simulation::ContinuousSimulation}}
+
+
+Inheritance diagram for frelsim\+::simulation\+::Continuous\+Simulation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classfrelsim_1_1simulation_1_1ContinuousSimulation__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for frelsim\+::simulation\+::Continuous\+Simulation\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classfrelsim_1_1simulation_1_1ContinuousSimulation__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Simulation\+Type \mbox{\hyperlink{classfrelsim_1_1simulation_1_1ContinuousSimulation_abd7f36e1e997875a817d3106ac264f75}{type}} () override
+\item 
+\Hypertarget{classfrelsim_1_1simulation_1_1ContinuousSimulation_a431ec4ae2cc399bbd5971fe14106805b}\label{classfrelsim_1_1simulation_1_1ContinuousSimulation_a431ec4ae2cc399bbd5971fe14106805b} 
+virtual Derivative {\bfseries derivative} ()=0
+\item 
+\Hypertarget{classfrelsim_1_1simulation_1_1ContinuousSimulation_a8f725b36c16dce3d04fc03124a68a7b4}\label{classfrelsim_1_1simulation_1_1ContinuousSimulation_a8f725b36c16dce3d04fc03124a68a7b4} 
+virtual Jacobian\+Function {\bfseries jacobian} ()=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{frelsim\+::simulation\+::\+Simulation}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void {\bfseries step\+Until} (double stop\+Time)=0
+\item 
+virtual void {\bfseries parameters} ()
+\item 
+virtual void {\bfseries events} ()
+\item 
+std\+::vector$<$ event\+::\+Event\+Indicator $>$ {\bfseries event\+Indicators} () const
+\item 
+virtual void {\bfseries sample\+Time} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classfrelsim_1_1simulation_1_1ContinuousSimulation_abd7f36e1e997875a817d3106ac264f75}\label{classfrelsim_1_1simulation_1_1ContinuousSimulation_abd7f36e1e997875a817d3106ac264f75} 
+\index{frelsim::simulation::ContinuousSimulation@{frelsim::simulation::ContinuousSimulation}!type@{type}}
+\index{type@{type}!frelsim::simulation::ContinuousSimulation@{frelsim::simulation::ContinuousSimulation}}
+\doxysubsubsection{\texorpdfstring{type()}{type()}}
+{\footnotesize\ttfamily Simulation\+Type frelsim\+::simulation\+::\+Continuous\+Simulation\+::type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{frelsim\+::simulation\+::\+Simulation}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+frelsim/simulation/Continuous\+Simulation.\+hpp\item 
+frelsim/simulation/Continuous\+Simulation.\+cpp\end{DoxyCompactItemize}

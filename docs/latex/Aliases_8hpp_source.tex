@@ -1,0 +1,25 @@
+\doxysection{Aliases.\+hpp}
+\hypertarget{Aliases_8hpp_source}{}\label{Aliases_8hpp_source}\index{frelsim/util/Aliases.hpp@{frelsim/util/Aliases.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <Eigen/Dense>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }frelsim\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{using\ }State\ =\ Eigen::VectorXd;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{using\ }Derivative\ =\ std::shared\_ptr<std::function<State(\textcolor{keyword}{const}\ State\&,\ \textcolor{keywordtype}{double})>>;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{using\ }Matrix\ =\ Eigen::MatrixXd;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{using\ }JacobianFunction\ =\ std::shared\_ptr<std::function<Matrix(\textcolor{keyword}{const}\ State\&,\ \textcolor{keywordtype}{double})>>;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ SolverTolerance\ =\ 1e-\/9;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \}\ \textcolor{comment}{//\ frelsim::util}}
+
+\end{DoxyCode}

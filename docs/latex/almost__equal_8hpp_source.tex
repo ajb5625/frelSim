@@ -1,0 +1,19 @@
+\doxysection{almost\+\_\+equal.\+hpp}
+\hypertarget{almost__equal_8hpp_source}{}\label{almost__equal_8hpp_source}\index{frelsim/util/almost\_equal.hpp@{frelsim/util/almost\_equal.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{keyword}{namespace\ }frelsim::util\ \{}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ equalTolerance\ =\ 1e-\/12;}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keywordtype}{bool}\ almostEqual(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordflow}{return}\ std::abs(a\ -\/\ b)\ <\ equalTolerance;}
+\DoxyCodeLine{00010\ \}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \}\ \textcolor{comment}{//\ frelsim::util}}
+
+\end{DoxyCode}

@@ -1,0 +1,66 @@
+\doxysection{frelsim\+::integrate\+::expl\+::Runge\+Kutta4 Class Reference}
+\hypertarget{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4}{}\label{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4}\index{frelsim::integrate::expl::RungeKutta4@{frelsim::integrate::expl::RungeKutta4}}
+
+
+Inheritance diagram for frelsim\+::integrate\+::expl\+::Runge\+Kutta4\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for frelsim\+::integrate\+::expl\+::Runge\+Kutta4\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4_a702d2917eca19bc31d7301ec9df89214}\label{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4_a702d2917eca19bc31d7301ec9df89214} 
+{\bfseries Runge\+Kutta4} (double stop\+Time, double step\+Size, const Derivative f)
+\item 
+bool \mbox{\hyperlink{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4_a24bd9953e95ca54a5b43ce985e87bb58}{step}} (State \&state, double simulation\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{frelsim\+::integrate\+::core\+::\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Solver} (double stop\+Time, double step\+Size, const Derivative f, const Jacobian\+Function jf=nullptr)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{frelsim\+::integrate\+::core\+::\+Solver}}}
+\begin{DoxyCompactItemize}
+\item 
+double {\bfseries stop\+Time\+\_\+}
+\item 
+double {\bfseries step\+Size\+\_\+}
+\item 
+Derivative {\bfseries f\+\_\+}
+\item 
+Jacobian\+Function {\bfseries jacobian\+Function\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4_a24bd9953e95ca54a5b43ce985e87bb58}\label{classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4_a24bd9953e95ca54a5b43ce985e87bb58} 
+\index{frelsim::integrate::expl::RungeKutta4@{frelsim::integrate::expl::RungeKutta4}!step@{step}}
+\index{step@{step}!frelsim::integrate::expl::RungeKutta4@{frelsim::integrate::expl::RungeKutta4}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily bool frelsim\+::integrate\+::expl\+::\+Runge\+Kutta4\+::step (\begin{DoxyParamCaption}\item[{State \&}]{state,  }\item[{double}]{simulation\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{frelsim\+::integrate\+::core\+::\+Solver}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+frelsim/integrate/expl/Runge\+Kutta4.\+hpp\item 
+frelsim/integrate/expl/Runge\+Kutta4.\+cpp\end{DoxyCompactItemize}

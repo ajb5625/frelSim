@@ -1,0 +1,42 @@
+\doxysection{frelsim\+::integrate\+::core\+::Solver Class Reference}
+\hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver}{}\label{classfrelsim_1_1integrate_1_1core_1_1Solver}\index{frelsim::integrate::core::Solver@{frelsim::integrate::core::Solver}}
+
+
+Inheritance diagram for frelsim\+::integrate\+::core\+::Solver\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classfrelsim_1_1integrate_1_1core_1_1Solver__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver_aeb6aa4bd4c8b06130de1c6d6eab9caab}\label{classfrelsim_1_1integrate_1_1core_1_1Solver_aeb6aa4bd4c8b06130de1c6d6eab9caab} 
+{\bfseries Solver} (double stop\+Time, double step\+Size, const Derivative f, const Jacobian\+Function jf=nullptr)
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver_af7bc9b291692797a5de4a9ac42fbf4d3}\label{classfrelsim_1_1integrate_1_1core_1_1Solver_af7bc9b291692797a5de4a9ac42fbf4d3} 
+virtual bool {\bfseries step} (State \&state, double simulation\+Time)=0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver_a550d974dc65b3dc3a128be208551af88}\label{classfrelsim_1_1integrate_1_1core_1_1Solver_a550d974dc65b3dc3a128be208551af88} 
+double {\bfseries stop\+Time\+\_\+}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver_a726871c16dc062b11c50c684e917459f}\label{classfrelsim_1_1integrate_1_1core_1_1Solver_a726871c16dc062b11c50c684e917459f} 
+double {\bfseries step\+Size\+\_\+}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver_adaab306453b7cd01b6a8b9fc2c6f5e53}\label{classfrelsim_1_1integrate_1_1core_1_1Solver_adaab306453b7cd01b6a8b9fc2c6f5e53} 
+Derivative {\bfseries f\+\_\+}
+\item 
+\Hypertarget{classfrelsim_1_1integrate_1_1core_1_1Solver_ac61b7958cb8963097f2a44fb4cf55c48}\label{classfrelsim_1_1integrate_1_1core_1_1Solver_ac61b7958cb8963097f2a44fb4cf55c48} 
+Jacobian\+Function {\bfseries jacobian\+Function\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+frelsim/integrate/core/Solver.\+hpp\item 
+frelsim/integrate/core/Solver.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,43 @@
+\doxysection{frelsim/integrate/factory/\+Solver\+Factory.hpp File Reference}
+\hypertarget{SolverFactory_8hpp}{}\label{SolverFactory_8hpp}\index{frelsim/integrate/factory/SolverFactory.hpp@{frelsim/integrate/factory/SolverFactory.hpp}}
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include "{}../core/\+Solver.\+hpp"{}}\newline
+Include dependency graph for Solver\+Factory.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{SolverFactory_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{SolverFactory_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim}{frelsim}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1integrate}{frelsim\+::integrate}}
+\item 
+namespace \mbox{\hyperlink{namespacefrelsim_1_1integrate_1_1factory}{frelsim\+::integrate\+::factory}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacefrelsim_1_1integrate_ac9cb39c66c24a0f167ce4f3b7e3ea626}{frelsim\+::integrate\+::\+Solver\+Type}} \+: int \{ \mbox{\hyperlink{namespacefrelsim_1_1integrate_ac9cb39c66c24a0f167ce4f3b7e3ea626a0a7532036415f2491bf5f952220827b8}{frelsim\+::integrate\+::\+Euler}} = 0
+, \mbox{\hyperlink{namespacefrelsim_1_1integrate_ac9cb39c66c24a0f167ce4f3b7e3ea626a2ad1d4b322353ee07200045be21ffb58}{frelsim\+::integrate\+::\+Runge\+Kutta4}} = 1
+, \mbox{\hyperlink{namespacefrelsim_1_1integrate_ac9cb39c66c24a0f167ce4f3b7e3ea626a375dd039810dcecf3db6b2bca3c8d21f}{frelsim\+::integrate\+::\+Dormand\+Prince}} = 2
+, \mbox{\hyperlink{namespacefrelsim_1_1integrate_ac9cb39c66c24a0f167ce4f3b7e3ea626a13994fc2e5f46621905dfaf24069d6a3}{frelsim\+::integrate\+::\+Backward\+Euler}} = 4
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classfrelsim_1_1integrate_1_1core_1_1Solver}{integrate\+::core\+::\+Solver}} $>$ \mbox{\hyperlink{namespacefrelsim_1_1integrate_1_1factory_a185b4809b17e6e3f5a859f00d3541c40}{frelsim\+::integrate\+::factory\+::create\+Solver}} (\mbox{\hyperlink{namespacefrelsim_1_1integrate_ac9cb39c66c24a0f167ce4f3b7e3ea626}{integrate\+::\+Solver\+Type}} solver\+Type, double stop\+Time, double step\+Size, const \mbox{\hyperlink{namespacefrelsim_ab2829619267221b372aa0b1cad0d2fad}{Derivative}} f, const \mbox{\hyperlink{namespacefrelsim_a5540bcfd21255ad7f754325e56d165c9}{Jacobian\+Function}} jf)
+\end{DoxyCompactItemize}
