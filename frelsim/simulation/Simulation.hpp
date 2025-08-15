@@ -7,32 +7,34 @@
 #include "../util/Aliases.hpp"
 #include "../event/Event.hpp"
 
-namespace frelsim::model {
+namespace frelsim::simulation {
 
-enum class ComponentType : int {
+enum class SimulationType : int {
     Continuous = 0,
     Discrete = 1
 };
 
 using Parameter = double;
 
-class Component {
+class Simulation {
 
     public:
 
-        Component() = default;
+        Simulation() = default;
 
-        virtual ~Component();
+        virtual ~Simulation();
 
-        virtual ComponentType type() = 0;
+        virtual void stepUntil(double stopTime) = 0;
 
-        virtual double sampleTime() = 0;
+        virtual SimulationType type() = 0;
 
         virtual void parameters();
 
         virtual void events();
 
         std::vector<event::EventIndicator> eventIndicators() const;
+
+        virtual void sampleTime();
 
     private:
 
@@ -44,8 +46,7 @@ class Component {
 
 
 
-
 };
 
 
-} // frelsim::model 
+} // frelsim::simulation 

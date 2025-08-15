@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
-#include "../integrate/core/Solver.hpp"
+#include "../simulation/Simulation.hpp"
+#include "../task/Task.hpp"
 
 namespace frelsim::sim {
 
@@ -26,7 +27,9 @@ public:
 
 private:
 
-    std::unique_ptr<integrate::core::Solver> solver_;
+    std::map<std::string, std::unique_ptr<simulation::Simulation>> idToSimulation_;
+
+    double simulationTime_;
 
     double tFinal_;
 };

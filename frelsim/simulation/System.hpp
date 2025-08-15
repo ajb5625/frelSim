@@ -1,6 +1,6 @@
 #pragma once
 
-namespace frelsim::model {
+namespace frelsim::simulation {
 
 
 class System {
