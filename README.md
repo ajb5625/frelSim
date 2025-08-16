@@ -1,2 +1,5 @@
-# frelSim
-My simulator for fun
+# frelsim
+Federated
+Runtime for
+Engineering
+Loops
