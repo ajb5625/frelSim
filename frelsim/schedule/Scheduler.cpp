@@ -1,4 +1,5 @@
 #include "Scheduler.hpp"
+#include <algorithm>
 #include "../util/almost_equal.hpp"
 
 namespace frelsim::schedule {
@@ -6,7 +7,6 @@ namespace frelsim::schedule {
 Scheduler::Scheduler(TaskList& taskList) {
     sortTasks(taskList);
 }
-
 
 void Scheduler::sortTasks(TaskList& taskList) {
     for (auto& task : taskList) {
@@ -21,13 +21,17 @@ void Scheduler::sortTasks(TaskList& taskList) {
             case task::TaskType::AperiodicDiscrete:
                 aperiodicDiscreteTasks_.push_back(std::move(task));
             break;
-
         }
     }
+    std::sort(aperiodicDiscreteTasks_.begin()
+            , aperiodicDiscreteTasks_.end()
+            , [](const TaskPtr& a, const TaskPtr& b) {
+                return a->offset() < b->offset();
+            });
 }
 
-std::vector<std::string> Scheduler::taskHits(double simulationTime) {
-    std::vector<std::string> taskHitVector = continuousTaskIds_;
+std::vector<task::TaskId> Scheduler::taskHits(double simulationTime) const {
+    std::vector<task::TaskId> taskHitVector = continuousTaskIds_;
     for (const auto& aperiodicDiscreteTask : aperiodicDiscreteTasks_) {
         if (util::almostEqual(simulationTime - aperiodicDiscreteTask->offset(), 0.0)) {
             taskHitVector.push_back(aperiodicDiscreteTask->taskId());
@@ -40,6 +44,22 @@ std::vector<std::string> Scheduler::taskHits(double simulationTime) {
         }
     }
     return taskHitVector;
+}
+
+std::pair<task::TaskId, double> Scheduler::getNextAperiodicTask() const {
+    auto nextADTask = aperiodicDiscreteTasks_[0].get();
+    return std::pair(nextADTask->taskId(), nextADTask->offset());
+}
+
+bool Scheduler::areAperiodicTasksUpcoming() const {
+    return !aperiodicDiscreteTasks_.empty();
+}
+
+void Scheduler::reconcileScheduler(double simulationTime) {
+    time_ = simulationTime;
+    std::erase_if(aperiodicDiscreteTasks_, [simulationTime](const TaskPtr& task){
+        return task->offset() <= simulationTime;
+    });
 }
 
 

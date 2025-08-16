@@ -5,21 +5,41 @@
 
 namespace frelsim::task {
 
+/**
+ * \file Task.hpp
+ * \brief Task is the metadata associated with a simulation. 
+ * This is mainly centered around sample time and when a task begins.
+ * Additionally, contains which type of task it is.
+ */
+
+/**
+ * \brief TaskType tells if the task is 
+ * Continuous
+ * PeriodicDiscrete (Called at a periodic rate)
+ * AperiodicDiscrete (An event which fires only once)
+ */
 enum class TaskType : int {
     Continuous = 0, 
     PeriodicDiscrete = 1,
     AperiodicDiscrete = 2
 };
 
+using TaskId = std::size_t;
 
 class Task final {
 
     public:
-        Task(const std::string& taskId, double period = 0.0, double offset = 0.0);
+        /**
+         * \brief Task constructor.
+         * \param taskId The numeric Id of the task.
+         * \param period The frequency at which the task is executed.
+         * \param offset The time at which the task begins.
+         */
+        Task(TaskId taskId, double period = 0.0, double offset = 0.0);
 
         ~Task() = default;
 
-        const std::string& taskId() const;
+        TaskId taskId() const;
 
         TaskType taskType() const;
 
@@ -28,13 +48,16 @@ class Task final {
         double offset() const;
 
     private:
+        /// @brief  The string representation of the task.
+        const TaskId taskId_;
 
-        const std::string taskId_;
-
+        /// @brief The frequency at which the task is executed.
         const double period_;
 
+        /// @brief The time at which the task begins.
         const double offset_;
 
+        /// @brief The type of task.
         TaskType taskType_;
 
 

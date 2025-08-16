@@ -3,7 +3,7 @@
 
 namespace frelsim::task {
 
-Task::Task(const std::string& taskId
+Task::Task(TaskId taskId
         , double period
         , double offset) : taskId_(taskId)
                             , period_(period)
@@ -20,7 +20,7 @@ Task::Task(const std::string& taskId
     }
 }
 
-const std::string& Task::taskId() const {
+TaskId Task::taskId() const {
     return taskId_;
 }
 
