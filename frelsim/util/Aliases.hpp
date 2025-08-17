@@ -16,4 +16,6 @@ using JacobianFunction = std::shared_ptr<std::function<Matrix(const State&, doub
 
 constexpr double SolverTolerance = 1e-9;
 
+constexpr double TinyTolerance = 1e-12;
+
 } // frelsim::util

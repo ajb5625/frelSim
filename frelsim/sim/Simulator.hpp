@@ -2,6 +2,8 @@
 #include <memory>
 #include "../simulation/Simulation.hpp"
 #include "../task/Task.hpp"
+#include "../schedule/Scheduler.hpp"
+#include "frelsim/proto/System.pb.h"
 
 /**
  * \file Simulator.hpp
@@ -18,9 +20,9 @@ public:
 
     /**
      * \brief Simulator Constructor
-     * \param tFinal The stop time of the simulation.
+     * \param system The serialization of the system of simulations.
      */
-    Simulator(double tFinal);
+    Simulator(const frelsim::sim::proto::System& system);
 
     /**
      * \brief Simulator Destructor
@@ -60,13 +62,26 @@ public:
 
 
 private:
+
+    /// @brief The serialization of the system we are simulating.
+    proto::System system_;
+
     /// @brief  Map the task Id string to a co-simulation owned by the simulator.
     std::map<std::string, std::unique_ptr<simulation::Simulation>> idToSimulation_;
+
+    /// @brief Scheduler is the engine to compute timing
+    std::unique_ptr<schedule::Scheduler> scheduler_;
 
     /// @brief Current global simulation time.
     double simulationTime_;
 
     /// @brief Simulation stop time.
     double tFinal_;
+
+    /// @brief Max step size of system provided by user.
+    double maxStepSize_;
+
+    /// @brief set to true when the client requested a pause.
+    bool isStopRequested_;
 };
 }

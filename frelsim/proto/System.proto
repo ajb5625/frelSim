@@ -24,12 +24,14 @@ message RoutedSimulation {
 
 /*
     System is the data model representing a composition co-simulation.
-
     It is made of Simulations of different types identified by the Identifier.
-
     A system must route the separate simulations.
 
+    It has a personal identifier, a stop time, and a max step size provided by the user.
 */
 message System {
-    repeated RoutedSimulation composition = 1;
+    Identifier identifier = 1;
+    double stop_time = 2;
+    double max_step_size = 3;
+    repeated RoutedSimulation composition = 4;
 }

@@ -47,6 +47,12 @@ class Scheduler final {
          */
         void reconcileScheduler(double simulationTime);
 
+        /**
+         * \brief The scheduler will obtain the next time of a periodic or aperiodic discrete
+         * task.
+         */
+        double getNextDiscreteTime(double currentTime) const;
+
     private:
 
         /**

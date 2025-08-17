@@ -4,12 +4,26 @@ package frelsim.sim.proto;
 
 import "google/protobuf/empty.proto";
 import "frelsim/proto/System.proto";
+import "frelsim/proto/Identifier.proto";
 
+
+/*
+    Simulator.proto
+
+    This enables a composition co-simulation simulator to run remotely.
+
+    The primary functionality of the simulator is to advance time and is encapsulated in stepUntil.
+
+    The simulator uses extensions to load additional optional services. This could contain the following services -
+        Interactive - pause and resume a long running sim. Inspect and/or set values while paused.
+        Events - simulation can raise events within itself or to the simulator.
+        Conditional execution - simulation can accept a signal which parameterizes its execution in a given time step.
+*/
 service Simulator {
     // Instantiate a simulator remotely
     rpc CreateSimulator(CreateSimulatorRequest) returns (google.protobuf.Empty);
 
-    // Run a simulation of a system start to finish
+    // Run a simulation of a system start to finish.
     rpc Sim(google.protobuf.Empty) returns (google.protobuf.Empty);
 
     // Step the system until stop_time. Return if the system is finished simulating.
@@ -21,12 +35,12 @@ service Simulator {
     // Finish and end the simulator.
     rpc Terminate(google.protobuf.Empty) returns (google.protobuf.Empty);
 
-    rpc LoadExtension(ExtensionRequest) returns (google.protobuf.Empty);
+    // Load optional services.
+    rpc LoadExtensions(ExtensionRequest) returns (google.protobuf.Empty);
 }
 
 message CreateSimulatorRequest {
     System system = 1;
-    double stop_time = 2;
 }
 
 message StepRequest {
@@ -37,6 +51,13 @@ message StepResponse {
     bool is_finished = 1;
 }
 
+// Pair of one simulation and what extensions it have available
+message ExtensionPair {
+    Identifier simulation = 1;
+    repeated string extensions = 2;
+}
+
+// Mappings of all simulations to their extensions
 message ExtensionRequest {
-    repeated string extension_names = 1;
+    repeated ExtensionPair simulations_with_extensions = 1;
 }

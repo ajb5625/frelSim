@@ -1,5 +1,6 @@
 #include "Scheduler.hpp"
 #include <algorithm>
+#include "../util/Aliases.hpp"
 #include "../util/almost_equal.hpp"
 
 namespace frelsim::schedule {
@@ -60,6 +61,36 @@ void Scheduler::reconcileScheduler(double simulationTime) {
     std::erase_if(aperiodicDiscreteTasks_, [simulationTime](const TaskPtr& task){
         return task->offset() <= simulationTime;
     });
+}
+
+double Scheduler::getNextDiscreteTime(double currentTime) const {
+    if (currentTime < 0.0) {
+        return 0.0;
+    }
+    double nextTime = std::numeric_limits<double>::max();
+    if (areAperiodicTasksUpcoming()) {
+        nextTime = getNextAperiodicTask().second;
+    }
+    for (const auto& discreteTask: periodicDiscreteTasks_) {
+        double candidateTime = std::numeric_limits<double>::max();
+        double offset = discreteTask->offset();
+        double period = discreteTask->period();
+        double firesIn = offset - currentTime;
+        if (firesIn >= TinyTolerance) {
+            // Task hasn't fired yet
+            candidateTime = offset;
+        }
+        else {
+            // Task has already fired and will fire periodically
+            // We've passed (or are at) the first offset; compute the next hit
+            const double periodsElapsed = (currentTime - offset) / period;
+            const double nextIndex = std::ceil(periodsElapsed - TinyTolerance);
+            candidateTime = offset + nextIndex * period;
+        }
+
+        nextTime = std::min(nextTime, candidateTime);
+    }
+    return nextTime;
 }
 
 
