@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['eventtype_0',['EventType',['../namespacefrelsim_1_1event.html#a8986979156819e048aca17b78dc18fcf',1,'frelsim::event']]]
+  ['tasktype_0',['TaskType',['../Task_8hpp.html#a35f54029096240bfe5277e1e7273c807',1,'frelsim::task']]]
 ];

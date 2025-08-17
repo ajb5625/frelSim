@@ -1,5 +1,10 @@
 \doxysection{frelsim/task/\+Task.hpp File Reference}
 \hypertarget{Task_8hpp}{}\label{Task_8hpp}\index{frelsim/task/Task.hpp@{frelsim/task/Task.hpp}}
+
+
+Task is the metadata associated with a simulation. This is mainly centered around sample time and when a task begins. Additionally, contains which type of task it is.  
+
+
 {\ttfamily \#include $<$memory$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
 {\ttfamily \#include $<$vector$>$}\newline
@@ -16,7 +21,7 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{Task_8hpp__dep__incl}
+\includegraphics[width=292pt]{Task_8hpp__dep__incl}
 \end{center}
 \end{figure}
 \doxysubsubsection*{Classes}
@@ -24,18 +29,23 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 class \mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{frelsim\+::task\+::\+Task}}
 \end{DoxyCompactItemize}
-\doxysubsubsection*{Namespaces}
+\doxysubsubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-namespace \mbox{\hyperlink{namespacefrelsim}{frelsim}}
-\item 
-namespace \mbox{\hyperlink{namespacefrelsim_1_1task}{frelsim\+::task}}
+\Hypertarget{Task_8hpp_a3a88f91b20e5a218bd5bfb74a0a2285c}\label{Task_8hpp_a3a88f91b20e5a218bd5bfb74a0a2285c} 
+using {\bfseries frelsim\+::task\+::\+Task\+Id} = std\+::size\+\_\+t
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
-enum class \mbox{\hyperlink{namespacefrelsim_1_1task_a35f54029096240bfe5277e1e7273c807}{frelsim\+::task\+::\+Task\+Type}} \+: int \{ \mbox{\hyperlink{namespacefrelsim_1_1task_a35f54029096240bfe5277e1e7273c807a535863a82f163709557e59e2eb8139a7}{frelsim\+::task\+::\+Continuous}} = 0
-, \mbox{\hyperlink{namespacefrelsim_1_1task_a35f54029096240bfe5277e1e7273c807a6e8c196da0b6160047bf1c8ad028e2cb}{frelsim\+::task\+::\+Periodic\+Discrete}} = 1
-, \mbox{\hyperlink{namespacefrelsim_1_1task_a35f54029096240bfe5277e1e7273c807a38d9a6ce5a3321829db7b4424101e2cf}{frelsim\+::task\+::\+Aperiodic\+Discrete}} = 2
+\Hypertarget{Task_8hpp_a35f54029096240bfe5277e1e7273c807}\label{Task_8hpp_a35f54029096240bfe5277e1e7273c807} 
+enum class \mbox{\hyperlink{Task_8hpp_a35f54029096240bfe5277e1e7273c807}{frelsim\+::task\+::\+Task\+Type}} \+: int \{ {\bfseries Continuous} = 0
+, {\bfseries Periodic\+Discrete} = 1
+, {\bfseries Aperiodic\+Discrete} = 2
  \}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Task\+Type tells if the task is Continuous Periodic\+Discrete (Called at a periodic rate) Aperiodic\+Discrete (An event which fires only once) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Task is the metadata associated with a simulation. This is mainly centered around sample time and when a task begins. Additionally, contains which type of task it is. 
+

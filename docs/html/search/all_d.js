@@ -1,32 +1,4 @@
 var searchData=
 [
-  ['sampletime_0',['sampleTime',['../classfrelsim_1_1simulation_1_1Simulation.html#acff0582b43281280e3712dde176b71e3',1,'frelsim::simulation::Simulation']]],
-  ['scheduler_1',['scheduler',['../classfrelsim_1_1schedule_1_1Scheduler.html',1,'frelsim::schedule::Scheduler'],['../classfrelsim_1_1schedule_1_1Scheduler.html#a76388ec299c4a727b784ccc164acf6a4',1,'frelsim::schedule::Scheduler::Scheduler()']]],
-  ['scheduler_2ecpp_2',['Scheduler.cpp',['../Scheduler_8cpp.html',1,'']]],
-  ['scheduler_2ehpp_3',['Scheduler.hpp',['../Scheduler_8hpp.html',1,'']]],
-  ['setdata_4',['setData',['../classfrelsim_1_1type_1_1core_1_1Value.html#af44e196313865024b61f0adb818c627b',1,'frelsim::type::core::Value']]],
-  ['settype_5',['setType',['../classfrelsim_1_1type_1_1core_1_1Value.html#a04894ebe676a2bb58fa2f5abbaaedf40',1,'frelsim::type::core::Value']]],
-  ['sim_6',['sim',['../classfrelsim_1_1sim_1_1Simulator.html#ac42032d6658cfe1bc6a63da14a0ea908',1,'frelsim::sim::Simulator']]],
-  ['simulation_7',['simulation',['../classfrelsim_1_1simulation_1_1Simulation.html',1,'frelsim::simulation::Simulation'],['../classfrelsim_1_1simulation_1_1Simulation.html#a177c04890ae31926940730b407b81f27',1,'frelsim::simulation::Simulation::Simulation()']]],
-  ['simulation_2ecpp_8',['Simulation.cpp',['../Simulation_8cpp.html',1,'']]],
-  ['simulation_2ehpp_9',['Simulation.hpp',['../Simulation_8hpp.html',1,'']]],
-  ['simulationtype_10',['SimulationType',['../namespacefrelsim_1_1simulation.html#a081942f2c41c9ffb4d73c967b346d746',1,'frelsim::simulation']]],
-  ['simulator_11',['simulator',['../classfrelsim_1_1sim_1_1Simulator.html#abf56e790beeffbe4daf94c4d5c95d369',1,'frelsim::sim::Simulator::Simulator()'],['../classfrelsim_1_1sim_1_1Simulator.html',1,'frelsim::sim::Simulator']]],
-  ['simulator_2ecpp_12',['Simulator.cpp',['../Simulator_8cpp.html',1,'']]],
-  ['simulator_2ehpp_13',['Simulator.hpp',['../Simulator_8hpp.html',1,'']]],
-  ['solver_14',['solver',['../classfrelsim_1_1integrate_1_1core_1_1Solver.html#aeb6aa4bd4c8b06130de1c6d6eab9caab',1,'frelsim::integrate::core::Solver::Solver()'],['../classfrelsim_1_1integrate_1_1core_1_1Solver.html',1,'frelsim::integrate::core::Solver']]],
-  ['solver_2ecpp_15',['Solver.cpp',['../Solver_8cpp.html',1,'']]],
-  ['solver_2ehpp_16',['Solver.hpp',['../Solver_8hpp.html',1,'']]],
-  ['solverfactory_2ecpp_17',['SolverFactory.cpp',['../SolverFactory_8cpp.html',1,'']]],
-  ['solverfactory_2ehpp_18',['SolverFactory.hpp',['../SolverFactory_8hpp.html',1,'']]],
-  ['solvertolerance_19',['SolverTolerance',['../namespacefrelsim.html#a39935d25569cd13ac629655bc522a033',1,'frelsim']]],
-  ['solvertype_20',['SolverType',['../namespacefrelsim_1_1integrate.html#ac9cb39c66c24a0f167ce4f3b7e3ea626',1,'frelsim::integrate']]],
-  ['state_21',['State',['../namespacefrelsim.html#a670fee7548350265dffdf379b7755463',1,'frelsim']]],
-  ['step_22',['step',['../classfrelsim_1_1sim_1_1Simulator.html#ab7fb4ee2026794c96a1a6972b5ce9aa6',1,'frelsim::sim::Simulator::step()'],['../classfrelsim_1_1integrate_1_1impl_1_1BackwardEuler.html#af19baf9870d2f99f1f2e3e5d7d47836f',1,'frelsim::integrate::impl::BackwardEuler::step()'],['../classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4.html#a24bd9953e95ca54a5b43ce985e87bb58',1,'frelsim::integrate::expl::RungeKutta4::step()'],['../classfrelsim_1_1integrate_1_1expl_1_1Euler.html#af7424fa8a3918ea8322fa7e17f7f3b80',1,'frelsim::integrate::expl::Euler::step()'],['../classfrelsim_1_1integrate_1_1core_1_1Solver.html#af7bc9b291692797a5de4a9ac42fbf4d3',1,'frelsim::integrate::core::Solver::step(State &amp;state, double simulationTime)=0']]],
-  ['stepsize_5f_23',['stepSize_',['../classfrelsim_1_1integrate_1_1core_1_1Solver.html#a726871c16dc062b11c50c684e917459f',1,'frelsim::integrate::core::Solver']]],
-  ['stepuntil_24',['stepuntil',['../classfrelsim_1_1simulation_1_1DiscreteSimulation.html#a07e2ead13e71527586a4b4db628c5440',1,'frelsim::simulation::DiscreteSimulation::stepUntil()'],['../classfrelsim_1_1simulation_1_1Simulation.html#a9cf88f90daf87dc2c30d721a6de24885',1,'frelsim::simulation::Simulation::stepUntil()']]],
-  ['stoptime_5f_25',['stopTime_',['../classfrelsim_1_1integrate_1_1core_1_1Solver.html#a550d974dc65b3dc3a128be208551af88',1,'frelsim::integrate::core::Solver']]],
-  ['system_26',['system',['../classfrelsim_1_1simulation_1_1System.html#a3a1ab2d23325e8438319373fcb4d9ccd',1,'frelsim::simulation::System::System()'],['../classfrelsim_1_1simulation_1_1System.html',1,'frelsim::simulation::System']]],
-  ['system_2ecpp_27',['System.cpp',['../System_8cpp.html',1,'']]],
-  ['system_2ehpp_28',['System.hpp',['../System_8hpp.html',1,'']]]
+  ['_7esimulator_0',['~Simulator',['../classfrelsim_1_1sim_1_1Simulator.html#aaecb169efb18678e273c11afbdc7b265',1,'frelsim::sim::Simulator']]]
 ];

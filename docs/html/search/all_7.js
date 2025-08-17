@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['task_0',['Task',['../classfrelsim_1_1task_1_1Task.html',1,'frelsim::task']]]
+  ['marshaler_0',['Marshaler',['../classfrelsim_1_1type_1_1marshal_1_1Marshaler.html',1,'frelsim::type::marshal']]]
 ];

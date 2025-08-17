@@ -1,6 +1,6 @@
 \doxysection{Task.\+hpp}
 \hypertarget{Task_8hpp_source}{}\label{Task_8hpp_source}\index{frelsim/task/Task.hpp@{frelsim/task/Task.hpp}}
-
+\mbox{\hyperlink{Task_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <memory>}}
@@ -9,44 +9,44 @@
 \DoxyCodeLine{00005\ }
 \DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }frelsim::task\ \{}
 \DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \textcolor{keyword}{enum\ class}\ TaskType\ :\ \textcolor{keywordtype}{int}\ \{}
-\DoxyCodeLine{00009\ \ \ \ \ Continuous\ =\ 0,\ }
-\DoxyCodeLine{00010\ \ \ \ \ PeriodicDiscrete\ =\ 1,}
-\DoxyCodeLine{00011\ \ \ \ \ AperiodicDiscrete\ =\ 2}
-\DoxyCodeLine{00012\ \};}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ }
-\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{Task}}\ final\ \{}
-\DoxyCodeLine{00016\ }
-\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{Task}}(\textcolor{keyword}{const}\ std::string\&\ taskId,\ \textcolor{keywordtype}{double}\ period\ =\ 0.0,\ \textcolor{keywordtype}{double}\ offset\ =\ 0.0);}
-\DoxyCodeLine{00019\ }
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{\string~Task}}()\ =\ \textcolor{keywordflow}{default};}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ taskId()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ TaskType\ taskType()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ period()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ offset()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ taskId\_;}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ period\_;}
-\DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ offset\_;}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ TaskType\ taskType\_;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{Task_8hpp_a35f54029096240bfe5277e1e7273c807}{TaskType}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ Continuous\ =\ 0,\ }
+\DoxyCodeLine{00023\ \ \ \ \ PeriodicDiscrete\ =\ 1,}
+\DoxyCodeLine{00024\ \ \ \ \ AperiodicDiscrete\ =\ 2}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{using\ }TaskId\ =\ std::size\_t;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{Task}}\ final\ \{}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{Task}}(TaskId\ taskId,\ \textcolor{keywordtype}{double}\ period\ =\ 0.0,\ \textcolor{keywordtype}{double}\ offset\ =\ 0.0);}
 \DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::vector<std::unique\_ptr<Task>>\ subtasks\_;}}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \};}
-\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1task_1_1Task}{\string~Task}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ TaskId\ taskId()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{Task_8hpp_a35f54029096240bfe5277e1e7273c807}{TaskType}}\ taskType()\ \textcolor{keyword}{const};}
 \DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \}\ \textcolor{comment}{//\ frelsim::task}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ period()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ offset()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TaskId\ taskId\_;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ period\_;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ offset\_;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{Task_8hpp_a35f54029096240bfe5277e1e7273c807}{TaskType}}\ taskType\_;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::vector<std::unique\_ptr<Task>>\ subtasks\_;}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \}\ \textcolor{comment}{//\ frelsim::task}}
 
 \end{DoxyCode}

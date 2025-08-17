@@ -1,5 +1,6 @@
 #include "Simulator.hpp"
 #include <algorithm> // for min()
+#include <thread> // for sleep
 
 namespace frelsim::sim {
 
@@ -25,15 +26,19 @@ Simulator::~Simulator() {
 void Simulator::sim() {
     initialize();
     while (simulationTime_ < tFinal_) {
-        double stepTo = std::min(maxStepSize_, scheduler_->getNextDiscreteTime(simulationTime_));
-        step(stepTo);
+        double stepSize = std::min(maxStepSize_, scheduler_->getNextDiscreteTime(simulationTime_));
+        step(simulationTime_ + stepSize);
+        simulationTime_ += stepSize;
+        if (isStopRequested_) {
+            wait();
+        }
     }
     terminate();
 }
 
 bool Simulator::step(double stopTime) {
-
-    return false;
+    
+    return simulationTime_ == stopTime;
 }
 
 void Simulator::initialize() {
@@ -45,10 +50,16 @@ void Simulator::terminate() {
 }
 
 void Simulator::pause() {
-
+    isStopRequested_ = true;
 }
 
 void Simulator::resume() {
+    isStopRequested_ = false;
+}
 
+void Simulator::wait() {
+    while (isStopRequested_) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }
 } // frelsim::sim

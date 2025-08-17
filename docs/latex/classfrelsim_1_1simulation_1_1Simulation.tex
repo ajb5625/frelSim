@@ -1,39 +1,40 @@
 \doxysection{frelsim\+::simulation\+::Simulation Class Reference}
 \hypertarget{classfrelsim_1_1simulation_1_1Simulation}{}\label{classfrelsim_1_1simulation_1_1Simulation}\index{frelsim::simulation::Simulation@{frelsim::simulation::Simulation}}
-
-
-Inheritance diagram for frelsim\+::simulation\+::Simulation\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=344pt]{classfrelsim_1_1simulation_1_1Simulation__inherit__graph}
-\end{center}
-\end{figure}
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a9cf88f90daf87dc2c30d721a6de24885}\label{classfrelsim_1_1simulation_1_1Simulation_a9cf88f90daf87dc2c30d721a6de24885} 
-virtual void {\bfseries step\+Until} (double stop\+Time)=0
+\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a1f1ecfaccc636e3a9919843bb8827fd0}\label{classfrelsim_1_1simulation_1_1Simulation_a1f1ecfaccc636e3a9919843bb8827fd0} 
+{\bfseries Simulation} (const sim\+::proto\+::\+Simulation\+Description \&sim\+Description)
 \item 
-\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a9d3bc2b4ae66bacca607041269e5672a}\label{classfrelsim_1_1simulation_1_1Simulation_a9d3bc2b4ae66bacca607041269e5672a} 
-virtual Simulation\+Type {\bfseries type} ()=0
+bool \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation_a8be0e723d6d675bd26c40b94150f7bd8}{step\+Until}} (double stop\+Time)
+\begin{DoxyCompactList}\small\item\em Advance this simulation\textquotesingle{}s internal time. Update any states this simulation holds. \end{DoxyCompactList}\item 
+\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a40b4ec1badebb1d7c90bd0c18d8b8fb6}\label{classfrelsim_1_1simulation_1_1Simulation_a40b4ec1badebb1d7c90bd0c18d8b8fb6} 
+Values {\bfseries get} (const Identifiers \&identifiers) const
 \item 
-\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_ab54e8704035016347fccfac879fabfec}\label{classfrelsim_1_1simulation_1_1Simulation_ab54e8704035016347fccfac879fabfec} 
-virtual void {\bfseries parameters} ()
-\item 
-\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a116806f41b6608482d96d838e90d922c}\label{classfrelsim_1_1simulation_1_1Simulation_a116806f41b6608482d96d838e90d922c} 
-virtual void {\bfseries events} ()
-\item 
-\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_ab81aa9e89af00403f5cb8bfea29a7b03}\label{classfrelsim_1_1simulation_1_1Simulation_ab81aa9e89af00403f5cb8bfea29a7b03} 
-std\+::vector$<$ event\+::\+Event\+Indicator $>$ {\bfseries event\+Indicators} () const
-\item 
-\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_acff0582b43281280e3712dde176b71e3}\label{classfrelsim_1_1simulation_1_1Simulation_acff0582b43281280e3712dde176b71e3} 
-virtual void {\bfseries sample\+Time} ()
+\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a20100db6af388439ede664570afc75e7}\label{classfrelsim_1_1simulation_1_1Simulation_a20100db6af388439ede664570afc75e7} 
+void {\bfseries set} (Set\+Operations \&set\+Operations)
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classfrelsim_1_1simulation_1_1Simulation_a8be0e723d6d675bd26c40b94150f7bd8}\label{classfrelsim_1_1simulation_1_1Simulation_a8be0e723d6d675bd26c40b94150f7bd8} 
+\index{frelsim::simulation::Simulation@{frelsim::simulation::Simulation}!stepUntil@{stepUntil}}
+\index{stepUntil@{stepUntil}!frelsim::simulation::Simulation@{frelsim::simulation::Simulation}}
+\doxysubsubsection{\texorpdfstring{stepUntil()}{stepUntil()}}
+{\footnotesize\ttfamily bool frelsim\+::simulation\+::\+Simulation\+::step\+Until (\begin{DoxyParamCaption}\item[{double}]{stop\+Time }\end{DoxyParamCaption})}
+
+
+
+Advance this simulation\textquotesingle{}s internal time. Update any states this simulation holds. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stop\+Time} & The time the simulation should advance to. \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-frelsim/simulation/Simulation.\+hpp\item 
+frelsim/simulation/\mbox{\hyperlink{Simulation_8hpp}{Simulation.\+hpp}}\item 
 frelsim/simulation/Simulation.\+cpp\end{DoxyCompactItemize}

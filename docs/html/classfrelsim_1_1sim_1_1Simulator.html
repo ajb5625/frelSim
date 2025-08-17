@@ -84,36 +84,39 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abf56e790beeffbe4daf94c4d5c95d369" id="r_abf56e790beeffbe4daf94c4d5c95d369"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html#abf56e790beeffbe4daf94c4d5c95d369">Simulator</a> (double tFinal)</td></tr>
-<tr class="memdesc:abf56e790beeffbe4daf94c4d5c95d369"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html">Simulator</a> Constructor.  <br /></td></tr>
-<tr class="separator:abf56e790beeffbe4daf94c4d5c95d369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c79050328d2c009b17218c3a0564c47" id="r_a5c79050328d2c009b17218c3a0564c47"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html#a5c79050328d2c009b17218c3a0564c47">Simulator</a> (const frelsim::sim::proto::System &amp;system)</td></tr>
+<tr class="memdesc:a5c79050328d2c009b17218c3a0564c47"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html">Simulator</a> Constructor.  <br /></td></tr>
+<tr class="separator:a5c79050328d2c009b17218c3a0564c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaecb169efb18678e273c11afbdc7b265" id="r_aaecb169efb18678e273c11afbdc7b265"><td class="memItemLeft" align="right" valign="top"><a id="aaecb169efb18678e273c11afbdc7b265" name="aaecb169efb18678e273c11afbdc7b265"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>~Simulator</b> ()</td></tr>
 <tr class="memdesc:aaecb169efb18678e273c11afbdc7b265"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html">Simulator</a> Destructor. <br /></td></tr>
 <tr class="separator:aaecb169efb18678e273c11afbdc7b265"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac42032d6658cfe1bc6a63da14a0ea908" id="r_ac42032d6658cfe1bc6a63da14a0ea908"><td class="memItemLeft" align="right" valign="top"><a id="ac42032d6658cfe1bc6a63da14a0ea908" name="ac42032d6658cfe1bc6a63da14a0ea908"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sim</b> ()</td></tr>
-<tr class="memdesc:ac42032d6658cfe1bc6a63da14a0ea908"><td class="mdescLeft">&#160;</td><td class="mdescRight">sim runs a full simulation and steps until tFinal. <br /></td></tr>
+<tr class="memitem:ac42032d6658cfe1bc6a63da14a0ea908" id="r_ac42032d6658cfe1bc6a63da14a0ea908"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html#ac42032d6658cfe1bc6a63da14a0ea908">sim</a> ()</td></tr>
+<tr class="memdesc:ac42032d6658cfe1bc6a63da14a0ea908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a full simulation and steps until tFinal.  <br /></td></tr>
 <tr class="separator:ac42032d6658cfe1bc6a63da14a0ea908"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7fb4ee2026794c96a1a6972b5ce9aa6" id="r_ab7fb4ee2026794c96a1a6972b5ce9aa6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html#ab7fb4ee2026794c96a1a6972b5ce9aa6">step</a> (double stopTime)</td></tr>
-<tr class="memdesc:ab7fb4ee2026794c96a1a6972b5ce9aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">step advances the global simulation time and dispatches tasks.  <br /></td></tr>
+<tr class="memdesc:ab7fb4ee2026794c96a1a6972b5ce9aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance the global simulation time and dispatch tasks.  <br /></td></tr>
 <tr class="separator:ab7fb4ee2026794c96a1a6972b5ce9aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f4ee3c275a9a3ba6be8d1f7d88c87c6" id="r_a1f4ee3c275a9a3ba6be8d1f7d88c87c6"><td class="memItemLeft" align="right" valign="top"><a id="a1f4ee3c275a9a3ba6be8d1f7d88c87c6" name="a1f4ee3c275a9a3ba6be8d1f7d88c87c6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> ()</td></tr>
+<tr class="memdesc:a1f4ee3c275a9a3ba6be8d1f7d88c87c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create all tasks and put them into their initialized state. <br /></td></tr>
 <tr class="separator:a1f4ee3c275a9a3ba6be8d1f7d88c87c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d0a6ae1a8487d786559b0743afaa541" id="r_a9d0a6ae1a8487d786559b0743afaa541"><td class="memItemLeft" align="right" valign="top"><a id="a9d0a6ae1a8487d786559b0743afaa541" name="a9d0a6ae1a8487d786559b0743afaa541"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>terminate</b> ()</td></tr>
+<tr class="memdesc:a9d0a6ae1a8487d786559b0743afaa541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the simulator that the work has completed. <br /></td></tr>
 <tr class="separator:a9d0a6ae1a8487d786559b0743afaa541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a021c3f63db04e90933d38280be4dd50c" id="r_a021c3f63db04e90933d38280be4dd50c"><td class="memItemLeft" align="right" valign="top"><a id="a021c3f63db04e90933d38280be4dd50c" name="a021c3f63db04e90933d38280be4dd50c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>pause</b> ()</td></tr>
+<tr class="memdesc:a021c3f63db04e90933d38280be4dd50c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put a running simulation into the paused state. <br /></td></tr>
 <tr class="separator:a021c3f63db04e90933d38280be4dd50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77448e0e200f3dd678912b494cfc7e82" id="r_a77448e0e200f3dd678912b494cfc7e82"><td class="memItemLeft" align="right" valign="top"><a id="a77448e0e200f3dd678912b494cfc7e82" name="a77448e0e200f3dd678912b494cfc7e82"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>resume</b> ()</td></tr>
+<tr class="memdesc:a77448e0e200f3dd678912b494cfc7e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Continue execution of a paused simulation. <br /></td></tr>
 <tr class="separator:a77448e0e200f3dd678912b494cfc7e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abf56e790beeffbe4daf94c4d5c95d369" name="abf56e790beeffbe4daf94c4d5c95d369"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf56e790beeffbe4daf94c4d5c95d369">&#9670;&#160;</a></span>Simulator()</h2>
+<a id="a5c79050328d2c009b17218c3a0564c47" name="a5c79050328d2c009b17218c3a0564c47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c79050328d2c009b17218c3a0564c47">&#9670;&#160;</a></span>Simulator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,8 +124,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resume</b> ()</td></t
         <tr>
           <td class="memname">frelsim::sim::Simulator::Simulator </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tFinal</em></td><td>)</td>
+          <td class="paramtype">const frelsim::sim::proto::System &amp;&#160;</td>
+          <td class="paramname"><em>system</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -131,7 +134,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resume</b> ()</td></t
 <p><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html">Simulator</a> Constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tFinal</td><td>The stop time of the simulation. </td></tr>
+    <tr><td class="paramname">system</td><td>The serialization of the system of simulations. </td></tr>
   </table>
   </dd>
 </dl>
@@ -139,6 +142,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resume</b> ()</td></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac42032d6658cfe1bc6a63da14a0ea908" name="ac42032d6658cfe1bc6a63da14a0ea908"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac42032d6658cfe1bc6a63da14a0ea908">&#9670;&#160;</a></span>sim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void frelsim::sim::Simulator::sim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run a full simulation and steps until tFinal. </p>
+<p><a class="el" href="classfrelsim_1_1sim_1_1Simulator.html#ac42032d6658cfe1bc6a63da14a0ea908" title="Run a full simulation and steps until tFinal.">sim()</a> We step to the minimum of the maxStepSize and the next discrete time.</p>
+<p>We do this because some components could contain continuous functions which need to be integrated more frequently. This is the intention of the maxStepSize parameter. A discrete event may occur infrequently, so we rely on the user to know how frequently their system needs an integration update to continuous states. </p>
+
+</div>
+</div>
 <a id="ab7fb4ee2026794c96a1a6972b5ce9aa6" name="ab7fb4ee2026794c96a1a6972b5ce9aa6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7fb4ee2026794c96a1a6972b5ce9aa6">&#9670;&#160;</a></span>step()</h2>
 
@@ -155,7 +179,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resume</b> ()</td></t
       </table>
 </div><div class="memdoc">
 
-<p>step advances the global simulation time and dispatches tasks. </p>
+<p>Advance the global simulation time and dispatch tasks. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stopTime</td><td>The time the simulation should step until. </td></tr>

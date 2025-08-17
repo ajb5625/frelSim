@@ -77,11 +77,14 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">Task.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Task is the metadata associated with a simulation. This is mainly centered around sample time and when a task begins. Additionally, contains which type of task it is.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -90,7 +93,7 @@ Include dependency graph for Task.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="Task_8hpp__incl.png" border="0" usemap="#afrelsim_2task_2Task_8hpp" alt=""/></div>
 <map name="afrelsim_2task_2Task_8hpp" id="afrelsim_2task_2Task_8hpp">
-<area shape="rect" title=" " alt="" coords="55,5,217,31"/>
+<area shape="rect" title="Task is the metadata associated with a simulation. This is mainly centered around sample time and whe..." alt="" coords="55,5,217,31"/>
 <area shape="rect" title=" " alt="" coords="5,79,83,104"/>
 <area shape="poly" title=" " alt="" coords="123,33,71,72,68,68,120,29"/>
 <area shape="rect" title=" " alt="" coords="107,79,165,104"/>
@@ -104,17 +107,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="Task_8hpp__dep__incl.png" border="0" usemap="#afrelsim_2task_2Task_8hppdep" alt=""/></div>
 <map name="afrelsim_2task_2Task_8hppdep" id="afrelsim_2task_2Task_8hppdep">
-<area shape="rect" title=" " alt="" coords="269,5,431,31"/>
-<area shape="rect" href="Scheduler_8hpp.html" title=" " alt="" coords="5,79,231,104"/>
-<area shape="poly" title=" " alt="" coords="301,37,156,81,155,76,299,32"/>
-<area shape="rect" href="Simulator_8hpp.html" title="The Simulator serves as the entry point for simulating a dynamic system. The Simulator&#39;s responsibiti..." alt="" coords="255,79,445,104"/>
-<area shape="poly" title=" " alt="" coords="353,44,353,79,347,79,347,44"/>
-<area shape="rect" href="Task_8cpp.html" title=" " alt="" coords="470,79,630,104"/>
-<area shape="poly" title=" " alt="" coords="396,33,518,76,516,81,394,38"/>
-<area shape="rect" href="Scheduler_8cpp.html" title=" " alt="" coords="6,152,230,177"/>
-<area shape="poly" title=" " alt="" coords="121,118,121,152,115,152,115,118"/>
-<area shape="rect" href="Simulator_8cpp.html" title=" " alt="" coords="255,152,445,177"/>
-<area shape="poly" title=" " alt="" coords="353,118,353,152,347,152,347,118"/>
+<area shape="rect" title="Task is the metadata associated with a simulation. This is mainly centered around sample time and whe..." alt="" coords="112,5,273,31"/>
+<area shape="rect" href="Scheduler_8hpp.html" title="The scheduler maintains and provides utilities for Tasks and their associated sample times." alt="" coords="5,79,231,104"/>
+<area shape="poly" title=" " alt="" coords="173,42,132,80,128,77,169,38"/>
+<area shape="rect" href="Simulator_8hpp.html" title="The Simulator serves as the entry point for simulating a dynamic system. The Simulator&#39;s responsibiti..." alt="" coords="97,152,288,177"/>
+<area shape="poly" title=" " alt="" coords="218,38,233,56,245,78,246,100,237,121,209,154,205,150,233,119,241,99,239,79,229,59,214,42"/>
+<area shape="poly" title=" " alt="" coords="142,111,182,150,179,154,138,115"/>
 </map>
 </div>
 </div>
@@ -125,22 +123,24 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1task_1_1Task.html">frelsim::task::Task</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacefrelsim" id="r_namespacefrelsim"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrelsim.html">frelsim</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacefrelsim_1_1task" id="r_namespacefrelsim_1_1task"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrelsim_1_1task.html">frelsim::task</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a3a88f91b20e5a218bd5bfb74a0a2285c" id="r_a3a88f91b20e5a218bd5bfb74a0a2285c"><td class="memItemLeft" align="right" valign="top"><a id="a3a88f91b20e5a218bd5bfb74a0a2285c" name="a3a88f91b20e5a218bd5bfb74a0a2285c"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>frelsim::task::TaskId</b> = std::size_t</td></tr>
+<tr class="separator:a3a88f91b20e5a218bd5bfb74a0a2285c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a35f54029096240bfe5277e1e7273c807" id="r_a35f54029096240bfe5277e1e7273c807"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefrelsim_1_1task.html#a35f54029096240bfe5277e1e7273c807">frelsim::task::TaskType</a> : int { <a class="el" href="namespacefrelsim_1_1task.html#a35f54029096240bfe5277e1e7273c807a535863a82f163709557e59e2eb8139a7">frelsim::task::Continuous</a> = 0
-, <a class="el" href="namespacefrelsim_1_1task.html#a35f54029096240bfe5277e1e7273c807a6e8c196da0b6160047bf1c8ad028e2cb">frelsim::task::PeriodicDiscrete</a> = 1
-, <a class="el" href="namespacefrelsim_1_1task.html#a35f54029096240bfe5277e1e7273c807a38d9a6ce5a3321829db7b4424101e2cf">frelsim::task::AperiodicDiscrete</a> = 2
+<tr class="memitem:a35f54029096240bfe5277e1e7273c807" id="r_a35f54029096240bfe5277e1e7273c807"><td class="memItemLeft" align="right" valign="top"><a id="a35f54029096240bfe5277e1e7273c807" name="a35f54029096240bfe5277e1e7273c807"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Task_8hpp.html#a35f54029096240bfe5277e1e7273c807">frelsim::task::TaskType</a> : int { <b>Continuous</b> = 0
+, <b>PeriodicDiscrete</b> = 1
+, <b>AperiodicDiscrete</b> = 2
  }</td></tr>
+<tr class="memdesc:a35f54029096240bfe5277e1e7273c807"><td class="mdescLeft">&#160;</td><td class="mdescRight">TaskType tells if the task is Continuous PeriodicDiscrete (Called at a periodic rate) AperiodicDiscrete (An event which fires only once) <br /></td></tr>
 <tr class="separator:a35f54029096240bfe5277e1e7273c807"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Task is the metadata associated with a simulation. This is mainly centered around sample time and when a task begins. Additionally, contains which type of task it is. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8

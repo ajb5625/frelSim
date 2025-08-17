@@ -1,0 +1,31 @@
+\doxysection{Stable\+Id.\+hpp}
+\hypertarget{StableId_8hpp_source}{}\label{StableId_8hpp_source}\index{frelsim/util/StableId.hpp@{frelsim/util/StableId.hpp}}
+\mbox{\hyperlink{StableId_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }frelsim::util\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1util_1_1StableId}{StableId}}\ final\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1util_1_1StableId}{StableId}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1util_1_1StableId}{\string~StableId}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classfrelsim_1_1util_1_1StableId_aa908831ea320a5e884fb59a84514c77a}{getUniqueId}}();}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1util_1_1StableId_afc1781c803dc7aa8636a7acfa6fd02b4}{removeUniqueId}}(std::size\_t\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ std::size\_t\ currentId\_\ =\ 0;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ std::set<std::size\_t>\ reclaimedIds\_;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \}\ \textcolor{comment}{//\ frelsim::util}}
+
+\end{DoxyCode}

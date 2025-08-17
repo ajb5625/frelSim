@@ -84,13 +84,127 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a76388ec299c4a727b784ccc164acf6a4" id="r_a76388ec299c4a727b784ccc164acf6a4"><td class="memItemLeft" align="right" valign="top"><a id="a76388ec299c4a727b784ccc164acf6a4" name="a76388ec299c4a727b784ccc164acf6a4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Scheduler</b> (TaskList &amp;taskList)</td></tr>
+<tr class="memitem:a76388ec299c4a727b784ccc164acf6a4" id="r_a76388ec299c4a727b784ccc164acf6a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1schedule_1_1Scheduler.html#a76388ec299c4a727b784ccc164acf6a4">Scheduler</a> (TaskList &amp;taskList)</td></tr>
+<tr class="memdesc:a76388ec299c4a727b784ccc164acf6a4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classfrelsim_1_1schedule_1_1Scheduler.html">Scheduler</a> constructor.  <br /></td></tr>
 <tr class="separator:a76388ec299c4a727b784ccc164acf6a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade4611f72f06d9089285c908c773fbfb" id="r_ade4611f72f06d9089285c908c773fbfb"><td class="memItemLeft" align="right" valign="top"><a id="ade4611f72f06d9089285c908c773fbfb" name="ade4611f72f06d9089285c908c773fbfb"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>taskHits</b> (double simulationTime)</td></tr>
-<tr class="separator:ade4611f72f06d9089285c908c773fbfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9341b8ed4eb8dab8c1f4b23949c752fc" id="r_a9341b8ed4eb8dab8c1f4b23949c752fc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; task::TaskId &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1schedule_1_1Scheduler.html#a9341b8ed4eb8dab8c1f4b23949c752fc">taskHits</a> (double simulationTime) const</td></tr>
+<tr class="memdesc:a9341b8ed4eb8dab8c1f4b23949c752fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a simulationTime, return the list of tasks that must be executed at the simulationTime.  <br /></td></tr>
+<tr class="separator:a9341b8ed4eb8dab8c1f4b23949c752fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0818b6164f3697b55322ed07f58e6cd" id="r_aa0818b6164f3697b55322ed07f58e6cd"><td class="memItemLeft" align="right" valign="top"><a id="aa0818b6164f3697b55322ed07f58e6cd" name="aa0818b6164f3697b55322ed07f58e6cd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>areAperiodicTasksUpcoming</b> () const</td></tr>
+<tr class="memdesc:aa0818b6164f3697b55322ed07f58e6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if aperiodic tasks are upcoming. <br /></td></tr>
+<tr class="separator:aa0818b6164f3697b55322ed07f58e6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf2adc67c1f1aebaf27eceaf1b9e17d6" id="r_acf2adc67c1f1aebaf27eceaf1b9e17d6"><td class="memItemLeft" align="right" valign="top">std::pair&lt; task::TaskId, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1schedule_1_1Scheduler.html#acf2adc67c1f1aebaf27eceaf1b9e17d6">getNextAperiodicTask</a> () const</td></tr>
+<tr class="memdesc:acf2adc67c1f1aebaf27eceaf1b9e17d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the ID and time of the next aperiodic discrete task.  <br /></td></tr>
+<tr class="separator:acf2adc67c1f1aebaf27eceaf1b9e17d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e32afbfb26f4b4d90affa880c4da728" id="r_a3e32afbfb26f4b4d90affa880c4da728"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1schedule_1_1Scheduler.html#a3e32afbfb26f4b4d90affa880c4da728">reconcileScheduler</a> (double simulationTime)</td></tr>
+<tr class="memdesc:a3e32afbfb26f4b4d90affa880c4da728"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell the scheduler what time it is at the bottom of the simulation step. This will remove aperiodic discrete tasks with offset &gt;= simulationTime.  <br /></td></tr>
+<tr class="separator:a3e32afbfb26f4b4d90affa880c4da728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b7fc4872e4f7945ad6e60b75776852" id="r_a74b7fc4872e4f7945ad6e60b75776852"><td class="memItemLeft" align="right" valign="top"><a id="a74b7fc4872e4f7945ad6e60b75776852" name="a74b7fc4872e4f7945ad6e60b75776852"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>getNextDiscreteTime</b> (double currentTime) const</td></tr>
+<tr class="memdesc:a74b7fc4872e4f7945ad6e60b75776852"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scheduler will obtain the next time of a periodic or aperiodic discrete task. <br /></td></tr>
+<tr class="separator:a74b7fc4872e4f7945ad6e60b75776852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a76388ec299c4a727b784ccc164acf6a4" name="a76388ec299c4a727b784ccc164acf6a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76388ec299c4a727b784ccc164acf6a4">&#9670;&#160;</a></span>Scheduler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">frelsim::schedule::Scheduler::Scheduler </td>
+          <td>(</td>
+          <td class="paramtype">TaskList &amp;&#160;</td>
+          <td class="paramname"><em>taskList</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classfrelsim_1_1schedule_1_1Scheduler.html">Scheduler</a> constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">taskList</td><td>The list of tasks the scheduler maintains. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="acf2adc67c1f1aebaf27eceaf1b9e17d6" name="acf2adc67c1f1aebaf27eceaf1b9e17d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf2adc67c1f1aebaf27eceaf1b9e17d6">&#9670;&#160;</a></span>getNextAperiodicTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; task::TaskId, double &gt; frelsim::schedule::Scheduler::getNextAperiodicTask </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the ID and time of the next aperiodic discrete task. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pair of task id, time of event. </dd></dl>
+
+</div>
+</div>
+<a id="a3e32afbfb26f4b4d90affa880c4da728" name="a3e32afbfb26f4b4d90affa880c4da728"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e32afbfb26f4b4d90affa880c4da728">&#9670;&#160;</a></span>reconcileScheduler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void frelsim::schedule::Scheduler::reconcileScheduler </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>simulationTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tell the scheduler what time it is at the bottom of the simulation step. This will remove aperiodic discrete tasks with offset &gt;= simulationTime. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simulationTime</td><td>The current global simulation time from the simulator. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9341b8ed4eb8dab8c1f4b23949c752fc" name="a9341b8ed4eb8dab8c1f4b23949c752fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9341b8ed4eb8dab8c1f4b23949c752fc">&#9670;&#160;</a></span>taskHits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; task::TaskId &gt; frelsim::schedule::Scheduler::taskHits </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>simulationTime</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Given a simulationTime, return the list of tasks that must be executed at the simulationTime. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simulationTime</td><td>The current global simulation time. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>frelsim/schedule/<a class="el" href="Scheduler_8hpp_source.html">Scheduler.hpp</a></li>
 <li>frelsim/schedule/<b>Scheduler.cpp</b></li>

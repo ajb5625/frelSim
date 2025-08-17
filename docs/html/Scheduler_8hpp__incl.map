@@ -1,6 +1,6 @@
 <map id="frelsim/schedule/Scheduler.hpp" name="frelsim/schedule/Scheduler.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="23,5,249,31"/>
-<area shape="rect" id="Node000002" href="$Task_8hpp.html" title=" " alt="" coords="75,79,197,104"/>
+<area shape="rect" id="Node000001" title="The scheduler maintains and provides utilities for Tasks and their associated sample times." alt="" coords="23,5,249,31"/>
+<area shape="rect" id="Node000002" href="$Task_8hpp.html" title="Task is the metadata associated with a simulation. This is mainly centered around sample time and whe..." alt="" coords="75,79,197,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,31,139,65,133,65,133,31"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,152,83,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,106,71,146,68,141,120,102"/>

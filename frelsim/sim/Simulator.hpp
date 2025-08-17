@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <memory>
 #include "../simulation/Simulation.hpp"
 #include "../task/Task.hpp"
@@ -63,6 +64,11 @@ public:
 
 private:
 
+    /**
+     * \brief Wait while paused.
+     */
+    void wait();
+
     /// @brief The serialization of the system we are simulating.
     proto::System system_;
 
@@ -82,6 +88,6 @@ private:
     double maxStepSize_;
 
     /// @brief set to true when the client requested a pause.
-    bool isStopRequested_;
+    std::atomic<bool> isStopRequested_;
 };
 }

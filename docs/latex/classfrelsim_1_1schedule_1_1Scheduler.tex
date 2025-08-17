@@ -3,15 +3,87 @@
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\hyperlink{classfrelsim_1_1schedule_1_1Scheduler_a76388ec299c4a727b784ccc164acf6a4}{Scheduler}} (Task\+List \&task\+List)
+\begin{DoxyCompactList}\small\item\em \doxylink{classfrelsim_1_1schedule_1_1Scheduler}{Scheduler} constructor. \end{DoxyCompactList}\item 
+std\+::vector$<$ task\+::\+Task\+Id $>$ \mbox{\hyperlink{classfrelsim_1_1schedule_1_1Scheduler_a9341b8ed4eb8dab8c1f4b23949c752fc}{task\+Hits}} (double simulation\+Time) const
+\begin{DoxyCompactList}\small\item\em Given a simulation\+Time, return the list of tasks that must be executed at the simulation\+Time. \end{DoxyCompactList}\item 
+\Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_aa0818b6164f3697b55322ed07f58e6cd}\label{classfrelsim_1_1schedule_1_1Scheduler_aa0818b6164f3697b55322ed07f58e6cd} 
+bool {\bfseries are\+Aperiodic\+Tasks\+Upcoming} () const
+\begin{DoxyCompactList}\small\item\em Tells if aperiodic tasks are upcoming. \end{DoxyCompactList}\item 
+std\+::pair$<$ task\+::\+Task\+Id, double $>$ \mbox{\hyperlink{classfrelsim_1_1schedule_1_1Scheduler_acf2adc67c1f1aebaf27eceaf1b9e17d6}{get\+Next\+Aperiodic\+Task}} () const
+\begin{DoxyCompactList}\small\item\em Get the ID and time of the next aperiodic discrete task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classfrelsim_1_1schedule_1_1Scheduler_a3e32afbfb26f4b4d90affa880c4da728}{reconcile\+Scheduler}} (double simulation\+Time)
+\begin{DoxyCompactList}\small\item\em Tell the scheduler what time it is at the bottom of the simulation step. This will remove aperiodic discrete tasks with offset \texorpdfstring{$>$}{>}= simulation\+Time. \end{DoxyCompactList}\item 
+\Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_a74b7fc4872e4f7945ad6e60b75776852}\label{classfrelsim_1_1schedule_1_1Scheduler_a74b7fc4872e4f7945ad6e60b75776852} 
+double {\bfseries get\+Next\+Discrete\+Time} (double current\+Time) const
+\begin{DoxyCompactList}\small\item\em The scheduler will obtain the next time of a periodic or aperiodic discrete task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
 \Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_a76388ec299c4a727b784ccc164acf6a4}\label{classfrelsim_1_1schedule_1_1Scheduler_a76388ec299c4a727b784ccc164acf6a4} 
-{\bfseries Scheduler} (Task\+List \&task\+List)
-\item 
-\Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_ade4611f72f06d9089285c908c773fbfb}\label{classfrelsim_1_1schedule_1_1Scheduler_ade4611f72f06d9089285c908c773fbfb} 
-std\+::vector$<$ std\+::string $>$ {\bfseries task\+Hits} (double simulation\+Time)
-\end{DoxyCompactItemize}
+\index{frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}!Scheduler@{Scheduler}}
+\index{Scheduler@{Scheduler}!frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}}
+\doxysubsubsection{\texorpdfstring{Scheduler()}{Scheduler()}}
+{\footnotesize\ttfamily frelsim\+::schedule\+::\+Scheduler\+::\+Scheduler (\begin{DoxyParamCaption}\item[{Task\+List \&}]{task\+List }\end{DoxyParamCaption})}
+
+
+
+\doxylink{classfrelsim_1_1schedule_1_1Scheduler}{Scheduler} constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+List} & The list of tasks the scheduler maintains. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_acf2adc67c1f1aebaf27eceaf1b9e17d6}\label{classfrelsim_1_1schedule_1_1Scheduler_acf2adc67c1f1aebaf27eceaf1b9e17d6} 
+\index{frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}!getNextAperiodicTask@{getNextAperiodicTask}}
+\index{getNextAperiodicTask@{getNextAperiodicTask}!frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}}
+\doxysubsubsection{\texorpdfstring{getNextAperiodicTask()}{getNextAperiodicTask()}}
+{\footnotesize\ttfamily std\+::pair$<$ task\+::\+Task\+Id, double $>$ frelsim\+::schedule\+::\+Scheduler\+::get\+Next\+Aperiodic\+Task (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the ID and time of the next aperiodic discrete task. 
+
+\begin{DoxyReturn}{Returns}
+Pair of task id, time of event. 
+\end{DoxyReturn}
+\Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_a3e32afbfb26f4b4d90affa880c4da728}\label{classfrelsim_1_1schedule_1_1Scheduler_a3e32afbfb26f4b4d90affa880c4da728} 
+\index{frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}!reconcileScheduler@{reconcileScheduler}}
+\index{reconcileScheduler@{reconcileScheduler}!frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}}
+\doxysubsubsection{\texorpdfstring{reconcileScheduler()}{reconcileScheduler()}}
+{\footnotesize\ttfamily void frelsim\+::schedule\+::\+Scheduler\+::reconcile\+Scheduler (\begin{DoxyParamCaption}\item[{double}]{simulation\+Time }\end{DoxyParamCaption})}
+
+
+
+Tell the scheduler what time it is at the bottom of the simulation step. This will remove aperiodic discrete tasks with offset \texorpdfstring{$>$}{>}= simulation\+Time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em simulation\+Time} & The current global simulation time from the simulator. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classfrelsim_1_1schedule_1_1Scheduler_a9341b8ed4eb8dab8c1f4b23949c752fc}\label{classfrelsim_1_1schedule_1_1Scheduler_a9341b8ed4eb8dab8c1f4b23949c752fc} 
+\index{frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}!taskHits@{taskHits}}
+\index{taskHits@{taskHits}!frelsim::schedule::Scheduler@{frelsim::schedule::Scheduler}}
+\doxysubsubsection{\texorpdfstring{taskHits()}{taskHits()}}
+{\footnotesize\ttfamily std\+::vector$<$ task\+::\+Task\+Id $>$ frelsim\+::schedule\+::\+Scheduler\+::task\+Hits (\begin{DoxyParamCaption}\item[{double}]{simulation\+Time }\end{DoxyParamCaption}) const}
+
+
+
+Given a simulation\+Time, return the list of tasks that must be executed at the simulation\+Time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em simulation\+Time} & The current global simulation time. \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-frelsim/schedule/Scheduler.\+hpp\item 
+frelsim/schedule/\mbox{\hyperlink{Scheduler_8hpp}{Scheduler.\+hpp}}\item 
 frelsim/schedule/Scheduler.\+cpp\end{DoxyCompactItemize}

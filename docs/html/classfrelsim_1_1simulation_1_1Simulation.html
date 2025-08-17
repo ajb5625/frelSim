@@ -78,43 +78,52 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classfrelsim_1_1simulation_1_1Simulation-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">frelsim::simulation::Simulation Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">frelsim::simulation::Simulation Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for frelsim::simulation::Simulation:</div>
-<div class="dyncontent">
-<div class="center"><img src="classfrelsim_1_1simulation_1_1Simulation__inherit__graph.png" border="0" usemap="#afrelsim_1_1simulation_1_1Simulation_inherit__map" alt="Inheritance graph"/></div>
-<map name="afrelsim_1_1simulation_1_1Simulation_inherit__map" id="afrelsim_1_1simulation_1_1Simulation_inherit__map">
-<area shape="rect" title=" " alt="" coords="113,5,258,45"/>
-<area shape="rect" href="classfrelsim_1_1simulation_1_1ContinuousSimulation.html" title=" " alt="" coords="5,93,179,133"/>
-<area shape="poly" title=" " alt="" coords="156,57,114,95,111,91,153,53"/>
-<area shape="rect" href="classfrelsim_1_1simulation_1_1DiscreteSimulation.html" title=" " alt="" coords="203,93,357,133"/>
-<area shape="poly" title=" " alt="" coords="218,53,261,91,257,95,215,57"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9cf88f90daf87dc2c30d721a6de24885" id="r_a9cf88f90daf87dc2c30d721a6de24885"><td class="memItemLeft" align="right" valign="top"><a id="a9cf88f90daf87dc2c30d721a6de24885" name="a9cf88f90daf87dc2c30d721a6de24885"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>stepUntil</b> (double stopTime)=0</td></tr>
-<tr class="separator:a9cf88f90daf87dc2c30d721a6de24885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d3bc2b4ae66bacca607041269e5672a" id="r_a9d3bc2b4ae66bacca607041269e5672a"><td class="memItemLeft" align="right" valign="top"><a id="a9d3bc2b4ae66bacca607041269e5672a" name="a9d3bc2b4ae66bacca607041269e5672a"></a>
-virtual SimulationType&#160;</td><td class="memItemRight" valign="bottom"><b>type</b> ()=0</td></tr>
-<tr class="separator:a9d3bc2b4ae66bacca607041269e5672a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab54e8704035016347fccfac879fabfec" id="r_ab54e8704035016347fccfac879fabfec"><td class="memItemLeft" align="right" valign="top"><a id="ab54e8704035016347fccfac879fabfec" name="ab54e8704035016347fccfac879fabfec"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b> ()</td></tr>
-<tr class="separator:ab54e8704035016347fccfac879fabfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a116806f41b6608482d96d838e90d922c" id="r_a116806f41b6608482d96d838e90d922c"><td class="memItemLeft" align="right" valign="top"><a id="a116806f41b6608482d96d838e90d922c" name="a116806f41b6608482d96d838e90d922c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>events</b> ()</td></tr>
-<tr class="separator:a116806f41b6608482d96d838e90d922c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab81aa9e89af00403f5cb8bfea29a7b03" id="r_ab81aa9e89af00403f5cb8bfea29a7b03"><td class="memItemLeft" align="right" valign="top"><a id="ab81aa9e89af00403f5cb8bfea29a7b03" name="ab81aa9e89af00403f5cb8bfea29a7b03"></a>
-std::vector&lt; event::EventIndicator &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>eventIndicators</b> () const</td></tr>
-<tr class="separator:ab81aa9e89af00403f5cb8bfea29a7b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acff0582b43281280e3712dde176b71e3" id="r_acff0582b43281280e3712dde176b71e3"><td class="memItemLeft" align="right" valign="top"><a id="acff0582b43281280e3712dde176b71e3" name="acff0582b43281280e3712dde176b71e3"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>sampleTime</b> ()</td></tr>
-<tr class="separator:acff0582b43281280e3712dde176b71e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f1ecfaccc636e3a9919843bb8827fd0" id="r_a1f1ecfaccc636e3a9919843bb8827fd0"><td class="memItemLeft" align="right" valign="top"><a id="a1f1ecfaccc636e3a9919843bb8827fd0" name="a1f1ecfaccc636e3a9919843bb8827fd0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Simulation</b> (const sim::proto::SimulationDescription &amp;simDescription)</td></tr>
+<tr class="separator:a1f1ecfaccc636e3a9919843bb8827fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8be0e723d6d675bd26c40b94150f7bd8" id="r_a8be0e723d6d675bd26c40b94150f7bd8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfrelsim_1_1simulation_1_1Simulation.html#a8be0e723d6d675bd26c40b94150f7bd8">stepUntil</a> (double stopTime)</td></tr>
+<tr class="memdesc:a8be0e723d6d675bd26c40b94150f7bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance this simulation's internal time. Update any states this simulation holds.  <br /></td></tr>
+<tr class="separator:a8be0e723d6d675bd26c40b94150f7bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40b4ec1badebb1d7c90bd0c18d8b8fb6" id="r_a40b4ec1badebb1d7c90bd0c18d8b8fb6"><td class="memItemLeft" align="right" valign="top"><a id="a40b4ec1badebb1d7c90bd0c18d8b8fb6" name="a40b4ec1badebb1d7c90bd0c18d8b8fb6"></a>
+Values&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const Identifiers &amp;identifiers) const</td></tr>
+<tr class="separator:a40b4ec1badebb1d7c90bd0c18d8b8fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20100db6af388439ede664570afc75e7" id="r_a20100db6af388439ede664570afc75e7"><td class="memItemLeft" align="right" valign="top"><a id="a20100db6af388439ede664570afc75e7" name="a20100db6af388439ede664570afc75e7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (SetOperations &amp;setOperations)</td></tr>
+<tr class="separator:a20100db6af388439ede664570afc75e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8be0e723d6d675bd26c40b94150f7bd8" name="a8be0e723d6d675bd26c40b94150f7bd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8be0e723d6d675bd26c40b94150f7bd8">&#9670;&#160;</a></span>stepUntil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool frelsim::simulation::Simulation::stepUntil </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>stopTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Advance this simulation's internal time. Update any states this simulation holds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stopTime</td><td>The time the simulation should advance to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>frelsim/simulation/<a class="el" href="Simulation_8hpp_source.html">Simulation.hpp</a></li>
 <li>frelsim/simulation/<b>Simulation.cpp</b></li>

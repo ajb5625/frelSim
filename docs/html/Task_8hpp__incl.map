@@ -1,5 +1,5 @@
 <map id="frelsim/task/Task.hpp" name="frelsim/task/Task.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="55,5,217,31"/>
+<area shape="rect" id="Node000001" title="Task is the metadata associated with a simulation. This is mainly centered around sample time and whe..." alt="" coords="55,5,217,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,83,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,33,71,72,68,68,120,29"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="107,79,165,104"/>

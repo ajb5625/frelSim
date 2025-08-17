@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jacobian_0',['jacobian',['../classfrelsim_1_1simulation_1_1ContinuousSimulation.html#a8f725b36c16dce3d04fc03124a68a7b4',1,'frelsim::simulation::ContinuousSimulation']]]
+  ['_7esimulator_0',['~Simulator',['../classfrelsim_1_1sim_1_1Simulator.html#aaecb169efb18678e273c11afbdc7b265',1,'frelsim::sim::Simulator']]]
 ];

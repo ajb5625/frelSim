@@ -3,36 +3,35 @@
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_abf56e790beeffbe4daf94c4d5c95d369}{Simulator}} (double t\+Final)
+\mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_a5c79050328d2c009b17218c3a0564c47}{Simulator}} (const frelsim\+::sim\+::proto\+::\+System \&system)
 \begin{DoxyCompactList}\small\item\em \doxylink{classfrelsim_1_1sim_1_1Simulator}{Simulator} Constructor. \end{DoxyCompactList}\item 
 \Hypertarget{classfrelsim_1_1sim_1_1Simulator_aaecb169efb18678e273c11afbdc7b265}\label{classfrelsim_1_1sim_1_1Simulator_aaecb169efb18678e273c11afbdc7b265} 
 {\bfseries \texorpdfstring{$\sim$}{\string~}\+Simulator} ()
 \begin{DoxyCompactList}\small\item\em \doxylink{classfrelsim_1_1sim_1_1Simulator}{Simulator} Destructor. \end{DoxyCompactList}\item 
-\Hypertarget{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908}\label{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908} 
-void {\bfseries sim} ()
-\begin{DoxyCompactList}\small\item\em sim runs a full simulation and steps until t\+Final. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908}{sim}} ()
+\begin{DoxyCompactList}\small\item\em Run a full simulation and steps until t\+Final. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6}{step}} (double stop\+Time)
-\begin{DoxyCompactList}\small\item\em step advances the global simulation time and dispatches tasks. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Advance the global simulation time and dispatch tasks. \end{DoxyCompactList}\item 
 \Hypertarget{classfrelsim_1_1sim_1_1Simulator_a1f4ee3c275a9a3ba6be8d1f7d88c87c6}\label{classfrelsim_1_1sim_1_1Simulator_a1f4ee3c275a9a3ba6be8d1f7d88c87c6} 
 void {\bfseries initialize} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Create all tasks and put them into their initialized state. \end{DoxyCompactList}\item 
 \Hypertarget{classfrelsim_1_1sim_1_1Simulator_a9d0a6ae1a8487d786559b0743afaa541}\label{classfrelsim_1_1sim_1_1Simulator_a9d0a6ae1a8487d786559b0743afaa541} 
 void {\bfseries terminate} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Tell the simulator that the work has completed. \end{DoxyCompactList}\item 
 \Hypertarget{classfrelsim_1_1sim_1_1Simulator_a021c3f63db04e90933d38280be4dd50c}\label{classfrelsim_1_1sim_1_1Simulator_a021c3f63db04e90933d38280be4dd50c} 
 void {\bfseries pause} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Put a running simulation into the paused state. \end{DoxyCompactList}\item 
 \Hypertarget{classfrelsim_1_1sim_1_1Simulator_a77448e0e200f3dd678912b494cfc7e82}\label{classfrelsim_1_1sim_1_1Simulator_a77448e0e200f3dd678912b494cfc7e82} 
 void {\bfseries resume} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Continue execution of a paused simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{classfrelsim_1_1sim_1_1Simulator_abf56e790beeffbe4daf94c4d5c95d369}\label{classfrelsim_1_1sim_1_1Simulator_abf56e790beeffbe4daf94c4d5c95d369} 
+\Hypertarget{classfrelsim_1_1sim_1_1Simulator_a5c79050328d2c009b17218c3a0564c47}\label{classfrelsim_1_1sim_1_1Simulator_a5c79050328d2c009b17218c3a0564c47} 
 \index{frelsim::sim::Simulator@{frelsim::sim::Simulator}!Simulator@{Simulator}}
 \index{Simulator@{Simulator}!frelsim::sim::Simulator@{frelsim::sim::Simulator}}
 \doxysubsubsection{\texorpdfstring{Simulator()}{Simulator()}}
-{\footnotesize\ttfamily frelsim\+::sim\+::\+Simulator\+::\+Simulator (\begin{DoxyParamCaption}\item[{double}]{t\+Final }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily frelsim\+::sim\+::\+Simulator\+::\+Simulator (\begin{DoxyParamCaption}\item[{const frelsim\+::sim\+::proto\+::\+System \&}]{system }\end{DoxyParamCaption})}
 
 
 
@@ -40,13 +39,25 @@ void {\bfseries resume} ()
 
 
 \begin{DoxyParams}{Parameters}
-{\em t\+Final} & The stop time of the simulation. \\
+{\em system} & The serialization of the system of simulations. \\
 \hline
 \end{DoxyParams}
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6}\label{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6} 
+\Hypertarget{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908}\label{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908} 
+\index{frelsim::sim::Simulator@{frelsim::sim::Simulator}!sim@{sim}}
+\index{sim@{sim}!frelsim::sim::Simulator@{frelsim::sim::Simulator}}
+\doxysubsubsection{\texorpdfstring{sim()}{sim()}}
+{\footnotesize\ttfamily void frelsim\+::sim\+::\+Simulator\+::sim (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Run a full simulation and steps until t\+Final. 
+
+\doxylink{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908}{sim()} We step to the minimum of the max\+Step\+Size and the next discrete time.
+
+We do this because some components could contain continuous functions which need to be integrated more frequently. This is the intention of the max\+Step\+Size parameter. A discrete event may occur infrequently, so we rely on the user to know how frequently their system needs an integration update to continuous states. \Hypertarget{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6}\label{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6} 
 \index{frelsim::sim::Simulator@{frelsim::sim::Simulator}!step@{step}}
 \index{step@{step}!frelsim::sim::Simulator@{frelsim::sim::Simulator}}
 \doxysubsubsection{\texorpdfstring{step()}{step()}}
@@ -54,7 +65,7 @@ void {\bfseries resume} ()
 
 
 
-step advances the global simulation time and dispatches tasks. 
+Advance the global simulation time and dispatch tasks. 
 
 
 \begin{DoxyParams}{Parameters}

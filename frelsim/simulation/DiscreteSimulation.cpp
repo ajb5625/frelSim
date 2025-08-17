@@ -1,18 +1,18 @@
-#include "DiscreteSimulation.hpp"
+// #include "DiscreteSimulation.hpp"
 
-namespace frelsim::simulation {
+// namespace frelsim::simulation {
 
-DiscreteSimulation::DiscreteSimulation(double sampleTime) : sampleTime_(sampleTime) {}
+// DiscreteSimulation::DiscreteSimulation(double sampleTime) : sampleTime_(sampleTime) {}
 
-void DiscreteSimulation::stepUntil(double stopTime) {
+// void DiscreteSimulation::stepUntil(double stopTime) {
 
-}
+// }
 
-SimulationType DiscreteSimulation::type() {
-    return SimulationType::Discrete;
-}
+// SimulationType DiscreteSimulation::type() {
+//     return SimulationType::Discrete;
+// }
 
-void DiscreteSimulation::update() {}
+// void DiscreteSimulation::update() {}
 
 
-} // frelsim::simulation 
+// } // frelsim::simulation 

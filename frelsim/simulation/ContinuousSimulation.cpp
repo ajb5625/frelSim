@@ -1,9 +1,9 @@
-#include "ContinuousSimulation.hpp"
+// #include "ContinuousSimulation.hpp"
 
-namespace frelsim::simulation {
+// namespace frelsim::simulation {
 
-SimulationType ContinuousSimulation::type() {
-    return SimulationType::Continuous;
-}
+// SimulationType ContinuousSimulation::type() {
+//     return SimulationType::Continuous;
+// }
 
-} // frelsim::simulation 
+// } // frelsim::simulation 

@@ -1,27 +1,27 @@
-#pragma once
-#include <optional>
+// #pragma once
+// #include <optional>
 
-#include "../util/Aliases.hpp"
-#include "Simulation.hpp"
+// #include "../util/Aliases.hpp"
+// #include "Simulation.hpp"
 
-namespace frelsim::simulation {
+// namespace frelsim::simulation {
 
-class ContinuousSimulation : public Simulation {
+// class ContinuousSimulation : public Simulation {
 
-    public:
+//     public:
 
-        ContinuousSimulation() = default;
+//         ContinuousSimulation() = default;
         
-        virtual ~ContinuousSimulation() override = default;
+//         virtual ~ContinuousSimulation() override = default;
 
-        SimulationType type() override;
+//         SimulationType type() override;
 
-        virtual Derivative derivative() = 0;
+//         virtual Derivative derivative() = 0;
 
-        virtual JacobianFunction jacobian() = 0;
-
-
-};
+//         virtual JacobianFunction jacobian() = 0;
 
 
-}
+// };
+
+
+// }

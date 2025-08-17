@@ -1,0 +1,15 @@
+<map id="frelsim/adapt/SimAdapterFactory.hpp" name="frelsim/adapt/SimAdapterFactory.hpp">
+<area shape="rect" id="Node000001" title="Use this free function to create a simulation adapter of types frelsim component, FMU,..." alt="" coords="152,5,341,45"/>
+<area shape="rect" id="Node000002" href="$SimAdapter_8hpp_source.html" title=" " alt="" coords="88,93,213,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,48,177,87,174,82,222,43"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="238,93,450,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="272,43,321,82,317,87,269,48"/>
+<area shape="rect" id="Node000003" href="$Aliases_8hpp_source.html" title=" " alt="" coords="83,167,218,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="153,119,153,153,148,153,148,119"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,240,83,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="135,194,74,235,71,230,132,190"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="107,240,194,265"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="153,192,153,226,148,226,148,192"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="218,240,321,265"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="171,190,239,230,237,235,168,194"/>
+</map>

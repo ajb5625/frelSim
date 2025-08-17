@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rungekutta4_0',['RungeKutta4',['../classfrelsim_1_1integrate_1_1expl_1_1RungeKutta4.html',1,'frelsim::integrate::expl']]]
+  ['initialize_0',['initialize',['../classfrelsim_1_1sim_1_1Simulator.html#a1f4ee3c275a9a3ba6be8d1f7d88c87c6',1,'frelsim::sim::Simulator']]]
 ];

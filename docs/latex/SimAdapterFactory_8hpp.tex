@@ -1,0 +1,30 @@
+\doxysection{frelsim/adapt/\+Sim\+Adapter\+Factory.hpp File Reference}
+\hypertarget{SimAdapterFactory_8hpp}{}\label{SimAdapterFactory_8hpp}\index{frelsim/adapt/SimAdapterFactory.hpp@{frelsim/adapt/SimAdapterFactory.hpp}}
+
+
+Use this free function to create a simulation adapter of types frelsim component, FMU, or Code.  
+
+
+{\ttfamily \#include "{}Sim\+Adapter.\+hpp"{}}\newline
+{\ttfamily \#include "{}frelsim/proto/\+Simulation.\+pb.\+h"{}}\newline
+Include dependency graph for Sim\+Adapter\+Factory.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{SimAdapterFactory_8hpp__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{SimAdapterFactory_8cpp_a923f878163d65a1c74f155f58aa50e28}\label{SimAdapterFactory_8cpp_a923f878163d65a1c74f155f58aa50e28} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classfrelsim_1_1adapt_1_1SimAdapter}{Sim\+Adapter}} $>$ {\bfseries frelsim\+::adapt\+::create\+Sim\+Adapter} (const sim\+::proto\+::\+Simulation\+Description \&sim\+Description)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Use this free function to create a simulation adapter of types frelsim component, FMU, or Code. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]Make this use cppmicroserivces to load FMI dependencies dynamically. \end{DoxyRefDesc}

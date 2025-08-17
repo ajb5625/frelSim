@@ -3,41 +3,54 @@
 \mbox{\hyperlink{Simulator_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
-\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <memory>}}
-\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../simulation/Simulation.hpp"{}}}
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../task/Task.hpp"{}}}
-\DoxyCodeLine{00005\ }
-\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }frelsim::sim\ \{}
-\DoxyCodeLine{00014\ }
-\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator}{Simulator}}\ final\ \{}
-\DoxyCodeLine{00016\ }
-\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator}{Simulator}}(\textcolor{keywordtype}{double}\ tFinal);}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_aaecb169efb18678e273c11afbdc7b265}{\string~Simulator}}();}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908}{sim}}();}
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6}{step}}(\textcolor{keywordtype}{double}\ stopTime);}
-\DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ initialize();}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ terminate();}
-\DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ pause();}
-\DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ resume();}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../simulation/Simulation.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../task/Task.hpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../schedule/Scheduler.hpp"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}frelsim/proto/System.pb.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }frelsim::sim\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator}{Simulator}}\ final\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator}{Simulator}}(\textcolor{keyword}{const}\ frelsim::sim::proto::System\&\ system);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_aaecb169efb18678e273c11afbdc7b265}{\string~Simulator}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_ac42032d6658cfe1bc6a63da14a0ea908}{sim}}();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_ab7fb4ee2026794c96a1a6972b5ce9aa6}{step}}(\textcolor{keywordtype}{double}\ stopTime);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_a1f4ee3c275a9a3ba6be8d1f7d88c87c6}{initialize}}();}
 \DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \ \ std::map<std::string,\ std::unique\_ptr<simulation::Simulation>>\ idToSimulation\_;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_a9d0a6ae1a8487d786559b0743afaa541}{terminate}}();}
 \DoxyCodeLine{00053\ }
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{double}\ simulationTime\_;}
-\DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{double}\ tFinal\_;}
-\DoxyCodeLine{00057\ \};}
-\DoxyCodeLine{00058\ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_a021c3f63db04e90933d38280be4dd50c}{pause}}();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfrelsim_1_1sim_1_1Simulator_a77448e0e200f3dd678912b494cfc7e82}{resume}}();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ wait();}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \ \ \ \ proto::System\ system\_;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00076\ \ \ \ \ std::map<std::string,\ std::unique\_ptr<simulation::Simulation>>\ idToSimulation\_;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00079\ \ \ \ \ std::unique\_ptr<schedule::Scheduler>\ scheduler\_;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{double}\ simulationTime\_;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{double}\ tFinal\_;}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{double}\ maxStepSize\_;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00091\ \ \ \ \ std::atomic<bool>\ isStopRequested\_;}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ \}}
 
 \end{DoxyCode}

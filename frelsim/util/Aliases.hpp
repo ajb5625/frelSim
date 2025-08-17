@@ -18,4 +18,14 @@ constexpr double SolverTolerance = 1e-9;
 
 constexpr double TinyTolerance = 1e-12;
 
+using SimValue = double;
+
+using Values = std::vector<SimValue>;
+
+using SimIdentifier = std::string;
+
+using Identifiers = std::vector<SimIdentifier>;
+
+using SetOperations = std::vector<std::pair<SimIdentifier, SimValue>>;
+
 } // frelsim::util
