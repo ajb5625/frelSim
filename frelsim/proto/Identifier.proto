@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package frelsim.sim.proto;
+
+/*
+    An Identifier represents any resource on the simulation. 
+    It can be represented in string format by domain.scope.name.
+*/
+message Identifier {
+    string domain = 1;
+    string scope = 2;
+    string name = 3;
+}

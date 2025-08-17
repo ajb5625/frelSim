@@ -1,4 +1,4 @@
-#include "frelsim/type/proto/Value.pb.h"
+#include "frelsim/proto/Value.pb.h"
 #include "../core/Value.hpp"
 
 namespace frelsim::type::marshal {

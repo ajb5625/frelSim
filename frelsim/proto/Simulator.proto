@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package frelsim.sim.proto;
+
+import "google/protobuf/empty.proto";
+import "frelsim/proto/System.proto";
+
+service Simulator {
+    // Instantiate a simulator remotely
+    rpc CreateSimulator(CreateSimulatorRequest) returns (google.protobuf.Empty);
+
+    // Run a simulation of a system start to finish
+    rpc Sim(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    // Step the system until stop_time. Return if the system is finished simulating.
+    rpc StepUntil(StepRequest) returns (StepResponse);
+
+    // Create all tasks and bring them into ready state.
+    rpc Initialize(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    // Finish and end the simulator.
+    rpc Terminate(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    rpc LoadExtension(ExtensionRequest) returns (google.protobuf.Empty);
+}
+
+message CreateSimulatorRequest {
+    System system = 1;
+    double stop_time = 2;
+}
+
+message StepRequest {
+    double stop_time = 1;
+}
+
+message StepResponse {
+    bool is_finished = 1;
+}
+
+message ExtensionRequest {
+    repeated string extension_names = 1;
+}

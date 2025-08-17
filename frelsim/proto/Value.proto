@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package frelsim.type.proto;
 
-import "frelsim/type/proto/Type.proto";
+import "frelsim/proto/Type.proto";
 
 // message StructValue {
     // map<string, Value> fields = 1;

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package frelsim.sim.proto;
+
+import "frelsim/proto/Simulation.proto";
+import "frelsim/proto/Identifier.proto";
+
+
+/*
+    Use the identifier to identify our simulation.
+    
+    Simulation Description tells us what it is so we can load and simulate it.
+
+    Source is the previous simulation in the system; where does our simulations inputs come from?
+
+    Destination is the next simulation in the system; where does our simulations outputs go?
+*/
+message RoutedSimulation {
+    Identifier simulation = 1;
+    SimulationDescription sim_description = 2;
+    Identifier source = 3;
+    Identifier destination = 4;
+}
+
+/*
+    System is the data model representing a composition co-simulation.
+
+    It is made of Simulations of different types identified by the Identifier.
+
+    A system must route the separate simulations.
+
+*/
+message System {
+    repeated RoutedSimulation composition = 1;
+}

@@ -1,5 +1,5 @@
 #include <variant>
-#include "frelsim/type/proto/Type.pb.h"
+#include "frelsim/proto/Type.pb.h"
 
 namespace frelsim::type::core {
 
