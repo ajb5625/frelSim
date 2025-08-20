@@ -15,51 +15,28 @@
 \DoxyCodeLine{00011\ }
 \DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }frelsim::simulation\ \{}
 \DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \textcolor{comment}{//\ enum\ class\ SimulationType\ :\ int\ \{}}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ Continuous\ =\ 0,}}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ Discrete\ =\ 1}}
-\DoxyCodeLine{00024\ \textcolor{comment}{//\ \};}}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \textcolor{comment}{//\ using\ Parameter\ =\ double;}}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{Simulation}}\ final\ \{}
-\DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{Simulation}}(\textcolor{keyword}{const}\ sim::proto::SimulationDescription\&\ simDescription);}
-\DoxyCodeLine{00033\ }
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{\string~Simulation}}();}
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{Simulation}}\ final\ \{}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{Simulation}}(\textcolor{keyword}{const}\ sim::proto::SimulationDescription\&\ simDescription);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation}{\string~Simulation}}();}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation_a8be0e723d6d675bd26c40b94150f7bd8}{stepUntil}}(\textcolor{keywordtype}{double}\ stopTime);}
 \DoxyCodeLine{00035\ }
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1Simulation_a8be0e723d6d675bd26c40b94150f7bd8}{stepUntil}}(\textcolor{keywordtype}{double}\ stopTime);}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ Values\ get(\textcolor{keyword}{const}\ Identifiers\&\ identifiers)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ set(SetOperations\&\ setOperations);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ Values\ get(\textcolor{keyword}{const}\ Identifiers\&\ identifiers)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ set(SetOperations\&\ setOperations);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ std::unique\_ptr<adapt::SimAdapter>\ simAdapter\_;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ sim::proto::SimulationDescription\ simDescription\_;}
 \DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ SimulationType\ type()\ =\ 0;}}
-\DoxyCodeLine{00048\ \textcolor{comment}{//\ }}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::vector<event::EventIndicator>\ eventIndicators()\ const;}}
-\DoxyCodeLine{00050\ \textcolor{comment}{//\ }}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ void\ sampleTime();}}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ update();}
-\DoxyCodeLine{00058\ }
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ integrate();}
-\DoxyCodeLine{00063\ }
-\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ std::unique\_ptr<adapt::SimAdapter>\ simAdapter\_;}
-\DoxyCodeLine{00066\ }
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ sim::proto::SimulationDescription\ simDescription\_;}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ State\ continuousStates\_;}
-\DoxyCodeLine{00072\ }
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ State\ discreteStates\_;}
-\DoxyCodeLine{00075\ }
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::vector<event::Event>\ events\_;\ \ \ \ }}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \};}
-\DoxyCodeLine{00079\ }
-\DoxyCodeLine{00080\ }
-\DoxyCodeLine{00081\ \}\ \textcolor{comment}{//\ frelsim::simulation\ }}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \}\ \textcolor{comment}{//\ frelsim::simulation\ }}
 
 \end{DoxyCode}

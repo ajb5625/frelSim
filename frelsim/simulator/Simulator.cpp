@@ -2,7 +2,7 @@
 #include <algorithm> // for min()
 #include <thread> // for sleep
 
-namespace frelsim::sim {
+namespace frelsim::simulator {
 
 Simulator::Simulator(const frelsim::sim::proto::System& system) : system_(system)
                                                                 , simulationTime_(-1.0) 

@@ -18,13 +18,6 @@
 
 namespace frelsim::simulation {
 
-// enum class SimulationType : int {
-    // Continuous = 0,
-    // Discrete = 1
-// };
-
-// using Parameter = double;
-
 class Simulation final {
 
     public:
@@ -44,36 +37,12 @@ class Simulation final {
 
          void set(SetOperations& setOperations);
 
-        //  SimulationType type() = 0;
-// 
-        // std::vector<event::EventIndicator> eventIndicators() const;
-// 
-        //  void sampleTime();
-
     private:
-        /**
-         * \brief Update discrete states.
-         */
-        void update();
-
-        /**
-         * \brief Integrate continuous states.
-         */
-        void integrate();
-
         /// @brief The adapter implementation to generalize different kinds of Simulations.
         std::unique_ptr<adapt::SimAdapter> simAdapter_;
 
         /// \brief Metadata and setup info for the simulation.
         sim::proto::SimulationDescription simDescription_;
-
-        /// \brief Continuous states vector to be integrated each step.
-        State continuousStates_;
-
-        /// \brief Discrete states vector to be updated each step.
-        State discreteStates_;
-
-        // std::vector<event::Event> events_;    
 
 };
 

@@ -13,7 +13,7 @@
  * \author AJ
  */
 
-namespace frelsim::sim {
+namespace frelsim::simulator {
 
 class Simulator final {
 
@@ -70,7 +70,7 @@ private:
     void wait();
 
     /// @brief The serialization of the system we are simulating.
-    proto::System system_;
+    sim::proto::System system_;
 
     /// @brief  Map the task Id string to a co-simulation owned by the simulator.
     std::map<std::string, std::unique_ptr<simulation::Simulation>> idToSimulation_;

@@ -4,24 +4,44 @@
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
 \DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}../adapt/SimAdapter.hpp"{}}}
-\DoxyCodeLine{00003\ }
-\DoxyCodeLine{00004\ \textcolor{keyword}{namespace\ }frelsim::simulation\ \{}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}frelsim/proto/Simulation.pb.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../integrate/core/Solver.hpp"{}}}
 \DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1simulation_1_1FrelsimAdapter}{FrelsimAdapter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfrelsim_1_1adapt_1_1SimAdapter}{adapt::SimAdapter}}\ \{}
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }frelsim::simulation\ \{}
 \DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1FrelsimAdapter}{FrelsimAdapter}}();}
-\DoxyCodeLine{00010\ }
-\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1FrelsimAdapter}{\string~FrelsimAdapter}}()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfrelsim_1_1simulation_1_1FrelsimAdapter}{FrelsimAdapter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfrelsim_1_1adapt_1_1SimAdapter}{adapt::SimAdapter}}\ \{}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1FrelsimAdapter}{FrelsimAdapter}}(sim::proto::SimulationDescription\ simDescription);}
 \DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ stepUntil(\textcolor{keywordtype}{double}\ stopTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfrelsim_1_1simulation_1_1FrelsimAdapter}{\string~FrelsimAdapter}}()\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00014\ }
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ Values\ get(Identifiers\ ids)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ stepUntil(\textcolor{keywordtype}{double}\ stopTime)\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00016\ }
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ set(SetOperations\ ops)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ Values\ get(Identifiers\ ids)\ \textcolor{keyword}{const\ override};}
 \DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ set(SetOperations\ ops)\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \}\ \textcolor{comment}{//\ frelsim::simulation}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ update();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ integrate();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ std::unique\_ptr<integrate::core::Solver>\ solver\_;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ sim::proto::SimulationDescription\ simDescription\_;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ State\ continuousStates\_;}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ State\ discreteStates\_;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ std::vector<event::Event>\ events\_;\ \ \ \ }}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ \}\ \textcolor{comment}{//\ frelsim::simulation}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ }
 
 \end{DoxyCode}

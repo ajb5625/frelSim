@@ -5,23 +5,23 @@
 
 namespace frelsim::integrate::factory{
 
-std::unique_ptr<integrate::core::Solver> createSolver(integrate::SolverType solverType
+std::unique_ptr<integrate::core::Solver> createSolver(frelsim::sim::proto::SolverType solverType
                                                                     , double stopTime
                                                                     , double stepSize
                                                                     , const Derivative f
                                                                     , const JacobianFunction jf) {
 
     switch(solverType) {
-        case integrate::SolverType::Euler:
+        case sim::proto::SolverType::Euler:
             return std::make_unique<integrate::expl::Euler>(stopTime, stepSize, f);
         break;
-        case integrate::SolverType::RungeKutta4:
+        case sim::proto::SolverType::RungeKutta4:
             return std::make_unique<integrate::expl::RungeKutta4>(stopTime, stepSize, f);
         break;
-        case integrate::SolverType::DormandPrince:
+        case sim::proto::SolverType::DormandPrince:
             return nullptr;
         break;
-        case integrate::SolverType::BackwardEuler:
+        case sim::proto::SolverType::BackwardEuler:
             return std::make_unique<integrate::impl::BackwardEuler>(stopTime, stepSize, f, jf);
         break;
         default:

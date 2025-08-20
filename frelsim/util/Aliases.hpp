@@ -2,6 +2,7 @@
 #include <memory>
 #include <functional>
 #include <Eigen/Dense>
+#include "Identifier.hpp"
 
 
 namespace frelsim {
@@ -22,10 +23,8 @@ using SimValue = double;
 
 using Values = std::vector<SimValue>;
 
-using SimIdentifier = std::string;
+using Identifiers = std::vector<util::Identifier>;
 
-using Identifiers = std::vector<SimIdentifier>;
-
-using SetOperations = std::vector<std::pair<SimIdentifier, SimValue>>;
+using SetOperations = std::vector<std::pair<util::Identifier, SimValue>>;
 
 } // frelsim::util
