@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "../../integrate/factory/SolverFactory.hpp"
+#include "../../schedule/Scheduler.hpp"
 #include "frelsim/proto/Simulation.pb.h"
 
 namespace frelsim::model::core {
@@ -53,11 +54,6 @@ class Model {
         virtual const JacobianFunction& jacobian() const;
 
     private:
-        /**
-         * \brief Integrate continuous states.
-         */
-        void integrate();
-
         /// \brief The solver for integrating continuous states.
         std::unique_ptr<integrate::core::Solver> solver_;
 
@@ -76,11 +72,13 @@ class Model {
 
         std::map<std::string, SimValue> parameters_;
 
+        std::unique_ptr<schedule::Scheduler> scheduler_;
+
         double stepSize_;
 
         double stopTime_;
 
-
+        double maxStepSize_;
 
 };
 } // frelsim::model::core

@@ -14,6 +14,8 @@ service Simulation {
 
     rpc CreateSimulation(CreateRequest) returns (google.protobuf.Empty);
 
+    rpc GuaranteeUntil(GuaranteeUntilRequest) returns (GuaranteeUntilResponse);
+
     rpc StepUntil(StepUntilRequest) returns (google.protobuf.Empty);
 
     rpc Get(GetRequest) returns (GetResponse);
@@ -59,6 +61,28 @@ message CodeSpec {
 
 }
 
+enum TaskType {
+    Continuous = 0;
+    PeriodicDiscrete = 1;
+    AperiodicDiscrete = 2;
+}
+
+message Task {
+    TaskType task_type = 1;
+
+    int64 task_id = 2;
+
+    double period = 3;
+
+    double offset = 4;
+
+    /*
+        Use max_step_size when you want some assurance 
+        on continuous states being integrated frequently enough
+    */
+    optional double max_step_size = 5;
+}
+
 /*
     For one unit of SimulationDescription, it identifies 
     what to load.
@@ -79,13 +103,24 @@ message SimulationDescription {
         CodeSpec code_spec = 4;
     }
 
-    double communication_step_size = 5;
+    Task task = 5;
 
-    double stop_time = 6;
+    // TODO do cosims even need to know their commrate?
+    double communication_step_size = 6;
+
+    double stop_time = 7;
 }
 
 message CreateRequest {
     SimulationDescription sim_description = 1;
+}
+
+message GuaranteeUntilRequest {
+    optional Identifier simulation = 1;
+}
+
+message GuaranteeUntilResponse {
+    double time = 1;
 }
 
 message StepUntilRequest {

@@ -19,7 +19,7 @@ message RoutedSimulation {
     Identifier simulation = 1;
     SimulationDescription sim_description = 2;
     Identifier source = 3;
-    Identifier destination = 4;
+    repeated Identifier destinations = 4;
 }
 
 /*

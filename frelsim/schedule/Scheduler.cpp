@@ -63,6 +63,7 @@ void Scheduler::reconcileScheduler(double simulationTime) {
     });
 }
 
+// TODO review this.
 double Scheduler::getNextDiscreteTime(double currentTime) const {
     if (currentTime < 0.0) {
         return 0.0;

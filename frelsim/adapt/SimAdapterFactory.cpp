@@ -16,6 +16,7 @@ std::unique_ptr<SimAdapter> createSimAdapter(const sim::proto::SimulationDescrip
             return nullptr;
         break;
     }
+    return nullptr;
 }
 
 } // frelsim::adapt

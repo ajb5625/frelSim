@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "frelsim/proto/Simulation.pb.h"
+
 namespace frelsim::task {
 
 /**
@@ -26,6 +28,8 @@ enum class TaskType : int {
 
 using TaskId = std::size_t;
 
+
+
 class Task final {
 
     public:
@@ -35,7 +39,7 @@ class Task final {
          * \param period The frequency at which the task is executed.
          * \param offset The time at which the task begins.
          */
-        Task(TaskId taskId, double period = 0.0, double offset = 0.0);
+        Task(TaskId taskId, double period = 0.0, double offset = 0.0, double maxStepSize = -1.0);
 
         ~Task() = default;
 
@@ -47,6 +51,8 @@ class Task final {
 
         double offset() const;
 
+        double maxStepSize() const;
+
     private:
         /// @brief  The string representation of the task.
         const TaskId taskId_;
@@ -57,6 +63,9 @@ class Task final {
         /// @brief The time at which the task begins.
         const double offset_;
 
+        /// @brief Longest time to go without an integration step.
+        double maxStepSize_ = -1.0;
+
         /// @brief The type of task.
         TaskType taskType_;
 
@@ -65,5 +74,10 @@ class Task final {
 
 };
 
+frelsim::sim::proto::TaskType serializeTaskTypeEnum(const TaskType cppType);
+
+frelsim::sim::proto::Task serialize(Task cppTask);
+
+std::unique_ptr<Task> deserialize(frelsim::sim::proto::Task protoTask);
 
 } // frelsim::task
