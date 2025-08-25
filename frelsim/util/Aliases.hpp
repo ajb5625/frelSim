@@ -23,6 +23,8 @@ using SimValue = double;
 
 using Values = std::vector<SimValue>;
 
+using Parameters = std::vector<SimValue>;
+
 using Identifiers = std::vector<util::Identifier>;
 
 using SetOperations = std::vector<std::pair<util::Identifier, SimValue>>;

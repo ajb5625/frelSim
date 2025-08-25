@@ -2,6 +2,8 @@
 #include <memory>
 #include "../../integrate/factory/SolverFactory.hpp"
 #include "../../schedule/Scheduler.hpp"
+#include "../../event/Event.hpp"
+#include "../../event/EventEngine.hpp"
 #include "frelsim/proto/Simulation.pb.h"
 
 namespace frelsim::model::core {
@@ -15,8 +17,8 @@ namespace frelsim::model::core {
  */
 
 
-using Parameter = std::pair<std::string, SimValue>;
-using Parameters = std::vector<Parameter>;
+// using Parameter = std::pair<std::string, SimValue>;
+// using Parameters = std::vector<Parameter>;
 
 class Model {
     public:
@@ -25,6 +27,13 @@ class Model {
         virtual ~Model();
 
         void initialize();
+
+        /**
+         * \brief Give the latest possible time before
+         * an event occurs. Guarantee until is non const because
+         * it will preload events in the event engine which fire next.
+         */
+        virtual double guaranteeUntil(double maxTime);
 
         /**
          * \brief stepUntil is not virtual. This is on purpose.
@@ -43,15 +52,29 @@ class Model {
 
         virtual void setParameters(SetOperations ops);
 
+
     protected:
         /**
          * \brief Update discrete states.
          */
         virtual void update();
 
-        virtual const Derivative& derivative() const;
+        /**
+         * \brief Provide derivative of continuous states with respect to time.
+         */
+        virtual Derivative const& derivative() const;
 
-        virtual const JacobianFunction& jacobian() const;
+        /**
+         * \brief Provide jacobian matrix-valued function of continuous states.
+         * The jacobian can help the model determine which solver to use and 
+         * allows for more types of solvers to be used.
+         */
+        virtual JacobianFunction const& jacobian() const;
+
+        /**
+         * \brief Define the zero crossing events in your model.
+         */
+        virtual std::vector<event::Event> const& events() const;
 
     private:
         /// \brief The solver for integrating continuous states.
@@ -70,9 +93,14 @@ class Model {
 
         Values outputs_;
 
-        std::map<std::string, SimValue> parameters_;
+        Parameters parameters_;
+        // std::map<std::string, SimValue> parameters_;
 
         std::unique_ptr<schedule::Scheduler> scheduler_;
+
+        std::unique_ptr<event::EventEngine> eventEngine_;
+
+        double internalTime_ = -1.0;
 
         double stepSize_;
 
