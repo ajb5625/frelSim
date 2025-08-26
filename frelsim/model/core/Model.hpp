@@ -44,25 +44,16 @@ class Model {
          */
         bool stepUntil(double stopTime);
 
-        virtual Values getOutputs(Identifiers ids) const;
-
-        virtual void setInputs(SetOperations ops);
-
-        virtual Values getParameters(Identifiers ids) const;
-
-        virtual void setParameters(SetOperations ops);
-
-
     protected:
         /**
          * \brief Update discrete states.
          */
-        virtual void update();
+        virtual void update() = 0;
 
         /**
          * \brief Provide derivative of continuous states with respect to time.
          */
-        virtual Derivative const& derivative() const;
+        virtual Derivative const& derivative() const = 0;
 
         /**
          * \brief Provide jacobian matrix-valued function of continuous states.
@@ -75,6 +66,21 @@ class Model {
          * \brief Define the zero crossing events in your model.
          */
         virtual std::vector<event::Event> const& events() const;
+
+        /**
+         * \brief Given a list of identifiers, get the outputs associated with them.
+         */
+        virtual Values getOutputs(Identifiers ids) const = 0;
+
+        /**
+         * \brief Given a list of SetOperation (identifier and value), set the 
+         * values on the model.
+         */
+        virtual void setInputs(SetOperations ops) = 0;
+
+        virtual Values getParameters(Identifiers ids) const;
+
+        virtual void setParameters(SetOperations ops);
 
     private:
         /// \brief The solver for integrating continuous states.

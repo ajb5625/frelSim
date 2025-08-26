@@ -2,7 +2,7 @@
 
 namespace frelsim::model::adapt {
 
-ModelAdapter::ModelAdapter(sim::proto::SimulationDescription simDescription) : simDescription_(simDescription) {
+ModelAdapter::ModelAdapter(sim::proto::SimulationDescription const& simDescription) : simDescription_(simDescription) {
     instance_ = std::make_unique<core::Model>(simDescription_);
 }
 

@@ -21,12 +21,12 @@ double EventEngine::nextEventTime(double t0
     }
 
     double tL = t0;
-    std::vector<double> yL = evalAll(tL, continuousStates, discreteStates, inputs);
+    std::vector<double> yL = evaluateIndicators(tL, continuousStates, discreteStates, inputs);
 
     while (tL < maxTime) {
         const double h  = std::min(maxSearchStepSize_, maxTime - tL);
         double tR = tL + h;
-        std::vector<double> yR = evalAll(tR, continuousStates, discreteStates, inputs);
+        std::vector<double> yR = evaluateIndicators(tR, continuousStates, discreteStates, inputs);
 
         struct Candidate { size_t idx; double time; };
         std::vector<Candidate> cands;
@@ -99,7 +99,7 @@ void EventEngine::clearPending() {
     pendingEventIndices_.clear();
 }
 
-std::vector<double> EventEngine::evalAll(double time
+std::vector<double> EventEngine::evaluateIndicators(double time
                                         , State const& continuousStates
                                         , State const& discreteStates
                                         , Values const& inputs) const
@@ -112,7 +112,7 @@ std::vector<double> EventEngine::evalAll(double time
     return vals;
 }
 
-double EventEngine::evalOne(size_t idx, double time,
+double EventEngine::evaluateOneIndicator(size_t idx, double time,
                 State const& continuousStates,
                 State const& discreteStates,
                 Values const& inputs) const {
@@ -123,8 +123,8 @@ double EventEngine::bisectRoot(size_t idx, double a, double b,
                     State const& continuousStates,
                     State const& discreteStates,
                     Values const& inputs) const {
-    double ya = evalOne(idx, a, continuousStates, discreteStates, inputs);
-    double yb = evalOne(idx, b, continuousStates, discreteStates, inputs);
+    double ya = evaluateOneIndicator(idx, a, continuousStates, discreteStates, inputs);
+    double yb = evaluateOneIndicator(idx, b, continuousStates, discreteStates, inputs);
     if (!std::isfinite(ya) || !std::isfinite(yb)) {
         return a; 
     }
@@ -137,7 +137,7 @@ double EventEngine::bisectRoot(size_t idx, double a, double b,
     const int maxIters = 64;
     for (int it = 0; it < maxIters; ++it) {
         const double m  = 0.5 * (a + b);
-        const double ym = evalOne(idx, m, continuousStates, discreteStates, inputs);
+        const double ym = evaluateOneIndicator(idx, m, continuousStates, discreteStates, inputs);
         
         if (!std::isfinite(ym)) {
             return a;
@@ -167,7 +167,7 @@ std::vector<size_t> EventEngine::zerosAt(double time,
     if (events_.empty()) {
         return idxs;
     } 
-    std::vector<double> g = evalAll(time, continuousStates, discreteStates, inputs);
+    std::vector<double> g = evaluateIndicators(time, continuousStates, discreteStates, inputs);
     for (size_t i = 0; i < g.size(); ++i) {
         if (std::abs(g[i]) <= tolerance_) {
             idxs.push_back(i); 

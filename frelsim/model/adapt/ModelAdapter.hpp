@@ -9,7 +9,7 @@ namespace frelsim::model::adapt {
 class ModelAdapter : public frelsim::adapt::SimAdapter {
 
     public:
-        ModelAdapter(sim::proto::SimulationDescription simDescription);
+        ModelAdapter(sim::proto::SimulationDescription const& simDescription);
 
         ~ModelAdapter() override;
 
