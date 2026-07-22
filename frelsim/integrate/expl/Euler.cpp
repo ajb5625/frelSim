@@ -3,7 +3,7 @@
 
 namespace frelsim::integrate::expl {
 
-Euler::Euler(double stopTime, double stepSize, const Derivative& f) : Solver(stopTime, stepSize, f) {}
+Euler::Euler(double stopTime, double stepSize, const Derivative& f) : FixedStepSolver(stopTime, stepSize, f) {}
 
 
 Euler::~Euler() {}

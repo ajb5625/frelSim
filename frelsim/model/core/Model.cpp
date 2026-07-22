@@ -42,10 +42,26 @@ void Model::initialize() {
     if (task.has_max_step_size()) {
         solverStepSize = task.max_step_size();
     }
+
+    integrate::factory::SolverConfig solverConfig;
+    solverConfig.stepSize = solverStepSize;
+    // A variable-step solver still needs a real upper bound on its own step
+    // size; fall back to stop_time (or 1.0 as a last resort) if nothing
+    // more specific was configured, rather than handing it 0.
+    solverConfig.maxStepSize = solverStepSize > 0.0
+        ? solverStepSize
+        : (simDescription_.stop_time() > 0.0 ? simDescription_.stop_time() : 1.0);
+    if (simDescription_.model_spec().has_relative_tolerance()) {
+        solverConfig.relativeTolerance = simDescription_.model_spec().relative_tolerance();
+    }
+    if (simDescription_.model_spec().has_absolute_tolerance()) {
+        solverConfig.absoluteTolerance = simDescription_.model_spec().absolute_tolerance();
+    }
+
     // Create the solver and event engine.
     solver_ = integrate::factory::createSolver(simDescription_.model_spec().solver_type()
                                               , simDescription_.stop_time()
-                                              , solverStepSize
+                                              , solverConfig
                                               , derivative()
                                               , jacobian());
     eventEngine_ = std::make_unique<event::EventEngine>(events()

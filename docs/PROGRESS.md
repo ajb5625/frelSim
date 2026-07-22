@@ -336,6 +336,59 @@ track: still terminates correctly at `stop_time`, and the trajectory is
 measurably different from (more accurate than) the pre-fix run, confirming
 the fix changes real numerical behavior rather than just internal plumbing.
 
+## Track: solver hierarchy split + variable-step (RK45) solver
+
+The fixed-step contract from the track above (owns a `stepSize_`, sub-steps
+internally) is genuinely only one of two fundamentally different solver
+shapes - a variable-step solver adapts its own step size call to call based
+on local error control, and forcing both shapes through one `Solver`
+interface would mean either bolting adaptive-step fields onto a fixed-step
+solver or vice versa. Split `Solver` (now genuinely bare - just
+`f_`/`jacobianFunction_`/`stopTime_` and the `step()` contract) into:
+
+- `FixedStepSolver` - exactly what `Solver` held before this split (the
+  sub-stepping loop, `stepSize_`). `Euler`/`RungeKutta4`/`BackwardEuler` now
+  derive from this instead of `Solver` directly; nothing else about them
+  changed.
+- `VariableStepSolver` - new. Owns the generic accept/reject/step-size-
+  adaptation loop (mixed relative+absolute scaled-RMS error norm, standard
+  practice for embedded Runge-Kutta pairs - the same shape MATLAB's `ode45`
+  or SciPy's `RK45` use), computed via Eigen array expressions rather than a
+  manual index loop. Concrete solvers implement only `trialStep()` - one
+  attempt at a step of a given size, returning a candidate new state plus a
+  local error estimate; the base decides accept/reject and how to resize
+  the next attempt. Same "base owns the loop, subclass owns the one
+  numerical operation" shape as `FixedStepSolver`/`Model::stepUntil`.
+
+**`DormandPrince45`**: the embedded RK5(4) method (`DormandPrince` had sat
+as a `SolverType` enum value returning `nullptr` from `SolverFactory` since
+the very first version of this file was read) - `trialStep()` runs all 7
+stages of the standard Dormand-Prince Butcher tableau and returns the
+5th-order solution, with the error estimate computed directly as the
+(5th-order weights - 4th-order weights) combination rather than assembling
+both solutions separately. Tests specifically include a time-varying
+derivative (`dy/dt = t`) rather than only the exponential-decay benchmark
+used elsewhere - decay's derivative ignores its time argument entirely, so
+it can't catch a transcription error in the tableau's time-node
+coefficients (c2..c6) the way a genuinely time-dependent case can. Also a
+call-counting test confirming a looser tolerance actually takes fewer
+derivative evaluations than a tighter one, to demonstrate the step-size
+adaptation is really engaging and not just accepting every step at some
+fixed size.
+
+`SolverFactory::createSolver` now takes a `SolverConfig` aggregate instead
+of a single `stepSize` parameter, since fixed-step and variable-step
+solvers need different tuning knobs (the config carries both; each solver
+family uses only the subset it needs). `ModelSpec` gained optional
+`relative_tolerance`/`absolute_tolerance` fields so a config can tune
+`DormandPrince45`'s accuracy per-component; unset means sensible built-in
+defaults (matching typical ODE solver practice, tighter than most: 1e-6
+relative, 1e-9 absolute).
+
+Jacobian-driven stiffness detection and automatic solver selection (using
+this new variable-step capability to compare against, and decide when to
+prefer, an implicit method) is the next thing on this track - not done yet.
+
 ## Track: testing
 
 Previously: an ad-hoc, uncommitted driver program in the scratch directory,
@@ -344,16 +397,17 @@ repeatable via any single command.
 
 Now: a real `test/` package using GoogleTest (GMock not yet installed on the
 dev machine - see below), wired into the Makefile as `make test`. Mirrors
-`frelsim/`'s directory layout. 70 tests across Task, Scheduler, the type
+`frelsim/`'s directory layout. 74 tests across Task, Scheduler, the type
 system (`Layout`'s C-struct-packing math, `TypeRegistry`, `Value`'s
 byte encoding/decoding and struct/array field access including nested
 array-of-struct, `Marshaler`), `BouncingBall`'s and `PIDController`'s typed
 I/O contracts (including the scheduling regression above), Identifier, and
-all three solvers (Euler/RK4/BackwardEuler checked against the closed-form
-solution of `dy/dt = -y`, including two regression tests for the fixed
-step-size bug: covering an interval that doesn't evenly divide the solver's
-own step size, and reaching the same target across several smaller calls
-instead of one big one) - all passing.
+all four solvers (Euler/RK4/BackwardEuler/DormandPrince45 checked against
+the closed-form solution of `dy/dt = -y`, including regression tests for
+the fixed step-size bug, a time-varying-derivative case that specifically
+catches Butcher-tableau transcription errors, and a check that a looser
+tolerance actually takes fewer derivative evaluations than a tighter one)
+- all passing.
 
 Several of these are deliberate regression tests for bugs found this session,
 not just coverage for coverage's sake:

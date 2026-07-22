@@ -1,9 +1,9 @@
 #pragma once
-#include "../core/Solver.hpp"
+#include "../core/FixedStepSolver.hpp"
 
 namespace frelsim::integrate::expl {
 
-class RungeKutta4 final : public core::Solver {
+class RungeKutta4 final : public core::FixedStepSolver {
     public:
         RungeKutta4(double stopTime
                     , double stepSize
