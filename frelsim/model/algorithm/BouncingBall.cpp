@@ -63,13 +63,13 @@ Values BouncingBall::getOutputs(Identifiers ids) const {
     values.reserve(ids.size());
     for (auto const& id : ids) {
         if (id.getName() == "height") {
-            values.push_back(continuousStates_[0]);
+            values.push_back(type::core::Value::makeDouble(continuousStates_[0]));
         }
         else if (id.getName() == "velocity") {
-            values.push_back(continuousStates_[1]);
+            values.push_back(type::core::Value::makeDouble(continuousStates_[1]));
         }
         else {
-            values.push_back(0.0);
+            values.push_back(type::core::Value::makeDouble(0.0));
         }
     }
     return values;
@@ -84,13 +84,13 @@ Values BouncingBall::getParameters(Identifiers ids) const {
     values.reserve(ids.size());
     for (auto const& id : ids) {
         if (id.getName() == "gravity") {
-            values.push_back(gravity_);
+            values.push_back(type::core::Value::makeDouble(gravity_));
         }
         else if (id.getName() == "restitution") {
-            values.push_back(restitution_);
+            values.push_back(type::core::Value::makeDouble(restitution_));
         }
         else {
-            values.push_back(0.0);
+            values.push_back(type::core::Value::makeDouble(0.0));
         }
     }
     return values;
@@ -99,10 +99,10 @@ Values BouncingBall::getParameters(Identifiers ids) const {
 void BouncingBall::setParameters(SetOperations ops) {
     for (auto const& [id, value] : ops) {
         if (id.getName() == "gravity") {
-            gravity_ = value;
+            gravity_ = value.asDouble();
         }
         else if (id.getName() == "restitution") {
-            restitution_ = value;
+            restitution_ = value.asDouble();
         }
     }
 }
