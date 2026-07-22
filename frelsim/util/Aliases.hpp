@@ -3,6 +3,7 @@
 #include <functional>
 #include <Eigen/Dense>
 #include "Identifier.hpp"
+#include "../type/core/Value.hpp"
 
 
 namespace frelsim {
@@ -19,7 +20,10 @@ constexpr double SolverTolerance = 1e-9;
 
 constexpr double TinyTolerance = 1e-12;
 
-using SimValue = double;
+// Named, typed I/O values (getOutputs/setInputs/getParameters/setParameters,
+// SimAdapter::get/set) - not to be confused with State above, which is the
+// plain double vector a Solver integrates and stays untyped on purpose.
+using SimValue = type::core::Value;
 
 using Values = std::vector<SimValue>;
 

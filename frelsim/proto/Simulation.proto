@@ -3,6 +3,7 @@ syntax = "proto3";
 package frelsim.sim.proto;
 
 import "frelsim/proto/Identifier.proto";
+import "frelsim/proto/Value.proto";
 import "google/protobuf/empty.proto";
 
 /*
@@ -127,19 +128,18 @@ message StepUntilRequest {
     double stop_time = 1;
 }
 
-// TODO use custom typesystem later.
 message GetRequest {
     repeated Identifier identifiers = 1;
 }
 
 message GetResponse {
-    repeated double values = 1;
+    repeated frelsim.type.proto.Value values = 1;
 }
 
 message SetOperation {
     // The identifier identifies the resource on the Simulation
     Identifier id = 1;
-    double value = 2;
+    frelsim.type.proto.Value value = 2;
 }
 
 message SetRequest  {

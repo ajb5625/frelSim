@@ -159,9 +159,27 @@ redesign, but the fix carried forward): `cppToProto` was declared as a
 implemented, so calling it would have been a link error the first time
 anything tried.
 
-**Stage 2 (not started):** swap `Values`/`SetOperations` throughout `Model`,
-`SimAdapter`, `BouncingBall`, and the proto `Get`/`Set` messages from raw
-`double` to typed `Value`.
+**Stage 2: wiring typed values into the framework.** `Values`/`Parameters`/
+`SimValue`/`SetOperations` (`Aliases.hpp`) now alias `type::core::Value`
+instead of raw `double`. This turned out to touch very little actual logic -
+`SimAdapter`, `Model`, `ModelAdapter`, `Simulation`, `Event`/`EventEngine` all
+already treated these as opaque pass-through types (signatures and container
+operations, no arithmetic on the values themselves), so they just needed to
+recompile against the new alias. The only real code changes were:
+
+- `BouncingBall::getOutputs`/`getParameters` now wrap results in
+  `type::core::Value::makeDouble(...)`; `setParameters` now reads via
+  `value.asDouble()` instead of assigning a raw double directly.
+- `Simulation.proto`'s `GetResponse.values` and `SetOperation.value` changed
+  from `double` to `frelsim.type.proto.Value` (this is exactly what the
+  pre-existing `// TODO use custom typesystem later.` comment on `GetRequest`
+  was pointing at).
+
+Verified two ways: the full test suite still passes unchanged, and re-running
+the same manual BouncingBall driver program from the MVP track (updated to
+read `.asDouble()` off the typed `Values` now returned by `SimAdapter::get`)
+produces bit-for-bit the same trajectory as before the swap - confirming this
+was a pure representation change, not a behavior change.
 
 ## Track: testing
 
@@ -171,11 +189,12 @@ repeatable via any single command.
 
 Now: a real `test/` package using GoogleTest (GMock not yet installed on the
 dev machine - see below), wired into the Makefile as `make test`. Mirrors
-`frelsim/`'s directory layout. 62 tests across Task, Scheduler, the type
+`frelsim/`'s directory layout. 67 tests across Task, Scheduler, the type
 system (`Layout`'s C-struct-packing math, `TypeRegistry`, `Value`'s
 byte encoding/decoding and struct/array field access including nested
-array-of-struct, `Marshaler`), Identifier, and all three solvers
-(Euler/RK4/BackwardEuler checked against the closed-form solution of
+array-of-struct, `Marshaler`), `BouncingBall`'s typed
+getOutputs/getParameters/setParameters contract, Identifier, and all three
+solvers (Euler/RK4/BackwardEuler checked against the closed-form solution of
 `dy/dt = -y`) - all passing.
 
 Several of these are deliberate regression tests for bugs found this session,

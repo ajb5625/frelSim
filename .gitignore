@@ -1,8 +1,9 @@
 # Build output
 /build/
 
-# Editor
+# Editor / local tooling
 .vscode/
+.claude/
 
 # Prerequisites
 *.d
