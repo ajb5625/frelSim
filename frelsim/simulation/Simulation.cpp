@@ -1,10 +1,16 @@
 #include "Simulation.hpp"
-
+#include "../adapt/SimAdapterFactory.hpp"
 
 namespace frelsim::simulation {
 
 Simulation::Simulation(const sim::proto::SimulationDescription& simDescription) : simDescription_(simDescription) {
-    
+    simAdapter_ = adapt::createSimAdapter(simDescription_);
+}
+
+Simulation::~Simulation() = default;
+
+double Simulation::guaranteeUntil(double maxTime) {
+    return simAdapter_->guaranteeUntil(maxTime);
 }
 
 bool Simulation::stepUntil(double stopTime) {
@@ -19,11 +25,4 @@ void Simulation::set(SetOperations& setOperations) {
     simAdapter_->set(setOperations);
 }
 
-// std::vector<event::EventIndicator> Simulation::eventIndicators() const {
-//     std::vector<event::EventIndicator> eventIndicators;
-//     for (auto& event : events_) {
-//         eventIndicators.push_back(event.getEventIndicator());
-//     }
-//     return eventIndicators;
-// }
 } // frelsim::simulation

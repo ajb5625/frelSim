@@ -181,6 +181,120 @@ read `.asDouble()` off the typed `Values` now returned by `SimAdapter::get`)
 produces bit-for-bit the same trajectory as before the swap - confirming this
 was a pure representation change, not a behavior change.
 
+## Track: Simulator orchestration + control loop demo
+
+**Goal**: get a real composed simulation (not one component driven directly)
+running through `Simulator`, using it to prove out `PIDController` +
+`MassSpringDamper` as a classic step-response control loop before moving on
+to gRPC/FMU work.
+
+**New models.** `MassSpringDamper` (`m*x'' + c*x' + k*x = F`, continuous,
+states `[position, velocity]`, `force` input) and `PIDController` (discrete,
+periodically-sampled - no continuous state at all; `update()` runs the whole
+`error/integral/derivative/output` law on its Task's schedule, which must be
+`PeriodicDiscrete` for `update()` to ever fire). Both follow `BouncingBall`'s
+pattern: own their domain concepts as plain private members
+(gains/mass/etc.), not the generic `parameters_`/`discreteStates_` vectors.
+
+**`ModelFactory` decoupling.** Before adding these, `ModelFactory.cpp` had to
+`#include` every concrete model just to build an if/else dispatch chain -
+adding a model meant editing a file that had no business knowing about it.
+Switched to a self-registering factory: each model registers itself (name ->
+constructor closure) via a static initializer in its own `.cpp`
+(`FRELSIM_REGISTER_MODEL` macro in `ModelFactory.hpp`), so `ModelFactory`
+never references any concrete model at all. The real gotcha with this
+pattern in a static library: `ld` only pulls an archive member in to resolve
+an outstanding undefined symbol, so once nothing references a model's `.o`
+directly, a plain `ar`-built `.a` would silently drop it and its
+registration would just never run. Fixed by linking `libfrelsim.a` with
+`-Wl,--whole-archive ... -Wl,--no-whole-archive` (see `LINK_LIBFRELSIM` in
+the Makefile) wherever it's linked into an executable - this isn't optional
+once anything relies on self-registration, so any future executable (the
+sim runner, tests) must link through that variable, not `$(TARGET)` directly.
+
+**`Simulation` bugs fixed in passing** (found because `--whole-archive` for
+the first time actually force-linked code nothing had exercised before):
+constructor never actually built `simAdapter_` (a stepUntil/get/set on any
+`Simulation` was a null-pointer dereference waiting to happen), destructor
+was declared but never defined (link error the moment one was destroyed),
+and it never exposed `guaranteeUntil` at all despite `SimAdapter` having had
+it since the MVP track.
+
+**`Simulator` itself.** Removed the `scheduler_` member entirely - it was
+never constructed (the original null-deref bug from the MVP track) and turns
+out not to be needed: each `Model` already manages its own scheduling
+internally, `Simulator`'s job is purely to find the minimum safe horizon
+across every composed `Simulation`'s own `guaranteeUntil`, route values, and
+step everyone to that common time (the "parent dictates common step
+boundaries" conservative lock-step design agreed on earlier). Routing is
+Jacobi-style as agreed: every step, each wired edge
+(`RoutedSimulation.source -> .destinations`, both fully-qualified
+`domain.scope.name` identifiers) is read from its source and applied to its
+destination(s) *before* anyone steps, so every component sees the *previous*
+step's values - one step of lag, not solved to a fixed point.
+
+Also added `RoutedSimulation.initial_parameters` (`repeated SetOperation`) -
+without it there was no way to configure a component's initial values (PID
+gains, a setpoint, a plant's mass) through the `System` composition at all,
+which made `Simulator` unusable for anything beyond running components at
+their hardcoded defaults. Applied once in `initialize()`, right after
+construction.
+
+**Composition validation - a deliberate stopgap, not the real thing.**
+Whether a wired composition even makes sense (do the referenced
+simulations/ports exist, are the types compatible) is a separate concern
+from `Simulator`'s runtime loop, which should stay fast and trusting rather
+than re-verify things on every step - matches actual back-and-forth on
+whether this should be `Simulator`'s job at all (it shouldn't). Building a
+real composition validator (`Linker`? `Compiler`?) needs a real design pass
+of its own: right now there's no way for a `Model` to declare its port
+types without actually being instantiated and queried, so there's nothing
+static to check against yet. For now, `Simulator::initialize()` does a
+one-time dry-run over every wired edge (fetch from source, apply to
+destination) so an unknown simulation reference or a type mismatch surfaces
+as a clear error at startup instead of silently or deep in the run loop.
+
+**A real, subtle scheduling bug found running the demo.** The control loop
+initially ran but never terminated - `position`/`control` kept evolving
+(looked like real physics) while `Simulator`'s own clock stayed pinned at
+`t=0` for hundreds of thousands of calls, and the PID output blew up to over
+100 almost immediately. Root cause: `PIDController`'s task has `offset=0`,
+so right after `Model`'s `-1.0` bootstrap step, `internalTime_` sits at
+exactly `0.0` - which is *also* that task's own first scheduled boundary.
+`Model::guaranteeUntil` asked `Scheduler::getNextDiscreteTime(internalTime_)`
+unnudged, which correctly-by-its-own-rules reports "next firing: now"
+forever, since nothing marks that boundary as already consumed - simulated
+time never advanced past it, and `update()` (with its integral accumulation)
+re-fired on every single orchestrator call instead of once per 0.05s. Fixed
+with a one-line nudge (query `internalTime_ + TinyTolerance` instead of
+`internalTime_` bare) scoped specifically to `guaranteeUntil` - `stepUntil`'s
+own discrete-hit check deliberately keeps the inclusive, unnudged query
+(it's asking "did the time I just stepped *to* land exactly on a scheduled
+hit", a different question with different correct semantics). `BouncingBall`
+never hit this because it has no periodic/aperiodic task at all, and
+`EventEngine` was already immune via `firesBetween`'s strict inequalities -
+this was specifically a `PeriodicDiscrete`-task-with-`offset=0` gap, now
+covered by `PIDControllerTest.GuaranteeUntilAdvancesPastZeroOffsetTaskBoundary`.
+
+**Result, and a known remaining gap.** The demo (PID driving MassSpringDamper
+to a setpoint of 5, both wired through a real `System`/`Simulator`
+composition) now runs end-to-end and terminates correctly at `stop_time`,
+converging toward the setpoint with the expected damped-oscillation shape.
+*However*: once `Simulator` is actually taking irregular step sizes (the
+composition mixes `MassSpringDamper`'s 0.02s grid with `PID`'s 0.05s grid,
+so real gaps between calls are sometimes 0.02s and sometimes 0.01s), the
+long-flagged-but-not-yet-fixed issue from the MVP track is now visibly live:
+`Solver::step()` always integrates by its own fixed constructed `stepSize_`
+regardless of the actual gap between calls, so the 0.01s-gap calls still
+integrate a full 0.02s of dynamics. The convergence is qualitatively correct
+(stable, converges toward the setpoint) but not numerically precise while
+step sizes stay irregular. This needs a real fix (either passing the actual
+elapsed `dt` into `Solver::step` instead of relying on a fixed
+construction-time value, or having `Solver` internally sub-step in
+`stepSize_`-sized increments to cover whatever gap it's asked to cover) -
+tracked as the next thing to fix, before leaning on this for anything
+requiring numerical precision.
+
 ## Track: testing
 
 Previously: an ad-hoc, uncommitted driver program in the scratch directory,
@@ -189,13 +303,13 @@ repeatable via any single command.
 
 Now: a real `test/` package using GoogleTest (GMock not yet installed on the
 dev machine - see below), wired into the Makefile as `make test`. Mirrors
-`frelsim/`'s directory layout. 67 tests across Task, Scheduler, the type
+`frelsim/`'s directory layout. 68 tests across Task, Scheduler, the type
 system (`Layout`'s C-struct-packing math, `TypeRegistry`, `Value`'s
 byte encoding/decoding and struct/array field access including nested
-array-of-struct, `Marshaler`), `BouncingBall`'s typed
-getOutputs/getParameters/setParameters contract, Identifier, and all three
-solvers (Euler/RK4/BackwardEuler checked against the closed-form solution of
-`dy/dt = -y`) - all passing.
+array-of-struct, `Marshaler`), `BouncingBall`'s and `PIDController`'s typed
+I/O contracts (including the scheduling regression above), Identifier, and
+all three solvers (Euler/RK4/BackwardEuler checked against the closed-form
+solution of `dy/dt = -y`) - all passing.
 
 Several of these are deliberate regression tests for bugs found this session,
 not just coverage for coverage's sake:
@@ -208,6 +322,9 @@ not just coverage for coverage's sake:
 - `IdentifierTest.RejectsUriWithTooManyParts` - the old implementation wrote
   out of bounds on a malformed URI instead of rejecting it; fixed alongside
   writing this test (see `frelsim/util/Identifier.cpp`).
+- `PIDControllerTest.GuaranteeUntilAdvancesPastZeroOffsetTaskBoundary` - the
+  offset=0 scheduling deadlock described above; would time out / never
+  advance past t=0 against the pre-fix code.
 
 GMock: `libgtest-dev` (1.14.0) was already installed system-wide; the
 matching `libgmock-dev` (same 1.14.0-1 apt version, avoiding a repeat of the

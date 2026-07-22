@@ -54,8 +54,18 @@ void Model::initialize() {
 }
 
 double Model::guaranteeUntil(double maxTime) {
-    // Find next discrete time scheduled
-    const double horizon = scheduler_->getNextDiscreteTime(internalTime_);
+    // Nudge strictly past internalTime_ before asking for the next discrete
+    // time. getNextDiscreteTime treats an exact boundary match as "next",
+    // which is what stepUntil's own hit-detection below wants (it queries
+    // with its *target* stop time, to check "did this step land exactly on
+    // a scheduled hit"). But here internalTime_ is where we already are -
+    // if a periodic task's offset lands exactly on it (e.g. offset=0 means
+    // the task fires at t=0, and internalTime_ sits at exactly 0.0 right
+    // after the bootstrap step), querying with internalTime_ unnudged would
+    // report "now" as the next discrete time forever, since nothing else
+    // marks that boundary as already consumed - simulated time would never
+    // advance past it.
+    const double horizon = scheduler_->getNextDiscreteTime(internalTime_ + TinyTolerance);
     // Find earliest zero crossing
     const double zc = eventEngine_->nextEventTime(internalTime_
                                                 , maxTime
