@@ -3,7 +3,9 @@
 
 # Editor / local tooling
 .vscode/
-.claude/
+# Local Claude Code permission grants (machine-specific), but NOT
+# .claude/skills/ - those are project-scoped and meant to be committed.
+.claude/settings.local.json
 
 # Prerequisites
 *.d
