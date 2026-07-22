@@ -1,4 +1,5 @@
 #include "BackwardEuler.hpp"
+#include "../factory/SolverFactory.hpp"
 
 
 namespace frelsim::integrate::impl {
@@ -47,3 +48,9 @@ void BackwardEuler::singleStep(State& y0, double currentTime, double dt) {
 
 
 }
+
+FRELSIM_REGISTER_SOLVER(::frelsim::sim::proto::SolverType::BackwardEuler,
+    [](double stopTime, ::frelsim::integrate::factory::SolverConfig const& config,
+       ::frelsim::Derivative const& f, ::frelsim::JacobianFunction const& jf) {
+        return std::make_unique<frelsim::integrate::impl::BackwardEuler>(stopTime, config.stepSize, f, jf);
+    });

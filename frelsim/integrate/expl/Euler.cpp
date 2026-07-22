@@ -1,4 +1,5 @@
 #include "Euler.hpp"
+#include "../factory/SolverFactory.hpp"
 
 
 namespace frelsim::integrate::expl {
@@ -16,3 +17,9 @@ void Euler::singleStep(State& y0, double currentTime, double dt) {
 }
 
 } // namespace frelsim::integrate::expl
+
+FRELSIM_REGISTER_SOLVER(::frelsim::sim::proto::SolverType::Euler,
+    [](double stopTime, ::frelsim::integrate::factory::SolverConfig const& config,
+       ::frelsim::Derivative const& f, ::frelsim::JacobianFunction const&) {
+        return std::make_unique<frelsim::integrate::expl::Euler>(stopTime, config.stepSize, f);
+    });

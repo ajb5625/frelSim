@@ -1,39 +1,35 @@
 #include "SolverFactory.hpp"
-#include "../expl/Euler.hpp"
-#include "../expl/RungeKutta4.hpp"
-#include "../expl/DormandPrince45.hpp"
-#include "../impl/BackwardEuler.hpp"
+#include <map>
 
-namespace frelsim::integrate::factory{
+namespace frelsim::integrate::factory {
+
+namespace {
+
+// Function-local static: guarantees the registry exists before the first
+// registerSolver() call regardless of static-initialization order across
+// translation units (the "static initialization order fiasco").
+std::map<sim::proto::SolverType, SolverCreator>& registry() {
+    static std::map<sim::proto::SolverType, SolverCreator> instance;
+    return instance;
+}
+
+} // namespace
+
+bool registerSolver(sim::proto::SolverType solverType, SolverCreator creator) {
+    registry()[solverType] = std::move(creator);
+    return true;
+}
 
 std::unique_ptr<integrate::core::Solver> createSolver(frelsim::sim::proto::SolverType solverType
                                                                     , double stopTime
                                                                     , SolverConfig const& config
                                                                     , const Derivative f
                                                                     , const JacobianFunction jf) {
-
-    switch(solverType) {
-        case sim::proto::SolverType::Euler:
-            return std::make_unique<integrate::expl::Euler>(stopTime, config.stepSize, f);
-        break;
-        case sim::proto::SolverType::RungeKutta4:
-            return std::make_unique<integrate::expl::RungeKutta4>(stopTime, config.stepSize, f);
-        break;
-        case sim::proto::SolverType::DormandPrince:
-            return std::make_unique<integrate::expl::DormandPrince45>(stopTime
-                                                                     , config.relativeTolerance
-                                                                     , config.absoluteTolerance
-                                                                     , config.minStepSize
-                                                                     , config.maxStepSize
-                                                                     , f);
-        break;
-        case sim::proto::SolverType::BackwardEuler:
-            return std::make_unique<integrate::impl::BackwardEuler>(stopTime, config.stepSize, f, jf);
-        break;
-        default:
-            return nullptr;
-        break;
+    auto it = registry().find(solverType);
+    if (it == registry().end()) {
+        return nullptr;
     }
+    return it->second(stopTime, config, f, jf);
 }
-} // frelsim::integrate::factory
 
+} // frelsim::integrate::factory

@@ -436,6 +436,39 @@ Marshaler/Identifier/Solvers are all concrete, state-based). The natural place
 GMock earns its keep is testing `Simulator` orchestration against a mocked
 `SimAdapter`/`Model`, once that's built (see Simulator orchestration track).
 
+## Track: SolverFactory self-registration
+
+`SolverFactory.cpp` used to `#include` every concrete solver header and
+switch over `SolverType` to construct one - the same coupling
+`ModelFactory` had before it moved to self-registration (see the Simulator
+orchestration track). Fixed the same way: `SolverFactory` now exposes
+`registerSolver(SolverType, SolverCreator)` backed by a
+`map<SolverType, SolverCreator>`, and each solver (`Euler`, `RungeKutta4`,
+`DormandPrince45`, `BackwardEuler`) registers itself from its own `.cpp` via
+a new `FRELSIM_REGISTER_SOLVER` macro - `SolverFactory.hpp/.cpp` no longer
+`#include` any concrete solver at all.
+
+One real difference from `FRELSIM_REGISTER_MODEL`: `ModelCreator` has one
+uniform signature (`SimulationDescription const& -> unique_ptr<Model>`), but
+solver constructors genuinely differ by family - fixed-step
+(`stopTime, stepSize, f[, jf]`) vs. variable-step
+(`stopTime, relTol, absTol, minStep, maxStep, f`). Rather than force a
+one-size macro over that, `FRELSIM_REGISTER_SOLVER` takes the creator lambda
+itself as an argument (still built from the common `SolverConfig`), so each
+solver's `.cpp` writes the one-line lambda matching its own constructor
+shape; the macro only removes the registry-plumbing boilerplate. Same
+`--whole-archive` linking requirement as `FRELSIM_REGISTER_MODEL` applies
+(already covered by the Makefile's existing `LINK_LIBFRELSIM`, since it's
+the same static archive).
+
+Added `SolverFactoryTest` (2 tests) - there was previously zero coverage of
+`createSolver` itself (only direct solver construction was tested), which
+would have silently missed a registration/linking regression of exactly the
+kind this refactor could introduce. One test constructs every registered
+`SolverType` through the factory and checks it actually integrates
+correctly (not just non-null); the other checks an unregistered type
+returns `nullptr` rather than, say, asserting. Full suite: 76/76 passing.
+
 ## Track: sim executable runner
 
 *(not yet started)*

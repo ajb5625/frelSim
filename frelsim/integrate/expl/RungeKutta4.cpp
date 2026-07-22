@@ -1,4 +1,5 @@
 #include "RungeKutta4.hpp"
+#include "../factory/SolverFactory.hpp"
 
 namespace frelsim::integrate::expl {
 
@@ -21,3 +22,9 @@ void RungeKutta4::singleStep(State& yn, double currentTime, double dt) {
 
 
 } // frelsim::integrate::expl
+
+FRELSIM_REGISTER_SOLVER(::frelsim::sim::proto::SolverType::RungeKutta4,
+    [](double stopTime, ::frelsim::integrate::factory::SolverConfig const& config,
+       ::frelsim::Derivative const& f, ::frelsim::JacobianFunction const&) {
+        return std::make_unique<frelsim::integrate::expl::RungeKutta4>(stopTime, config.stepSize, f);
+    });

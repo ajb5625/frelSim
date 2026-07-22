@@ -1,4 +1,5 @@
 #include "DormandPrince45.hpp"
+#include "../factory/SolverFactory.hpp"
 
 namespace frelsim::integrate::expl {
 
@@ -44,3 +45,14 @@ State DormandPrince45::trialStep(State const& y0, double t0, double h, State& er
 }
 
 } // namespace frelsim::integrate::expl
+
+FRELSIM_REGISTER_SOLVER(::frelsim::sim::proto::SolverType::DormandPrince,
+    [](double stopTime, ::frelsim::integrate::factory::SolverConfig const& config,
+       ::frelsim::Derivative const& f, ::frelsim::JacobianFunction const&) {
+        return std::make_unique<frelsim::integrate::expl::DormandPrince45>(stopTime
+                                                                          , config.relativeTolerance
+                                                                          , config.absoluteTolerance
+                                                                          , config.minStepSize
+                                                                          , config.maxStepSize
+                                                                          , f);
+    });
