@@ -4,44 +4,57 @@ package frelsim.type.proto;
 
 message Type {
     oneof type {
-        // IntegerType integer_type = 1;
-        FloatType float_type = 1;
-        // StringType string_type = 3;
-        // BytesType bytes_type = 4;
-        // StructType struct_type = 5;
-        // ArrayType array_type = 6;
+        IntegerType integer_type = 1;
+        FloatType float_type = 2;
+        BoolType bool_type = 3;
+        StringType string_type = 4;
+        StructType struct_type = 5;
+        ArrayType array_type = 6;
+        // A URI (same domain.scope.name convention as Identifier) naming a
+        // type registered in a TypeRegistry, rather than describing the type
+        // inline. Lets many Values/struct fields share one schema - e.g. an
+        // array of structs registers the struct type once instead of
+        // repeating its full description per element.
+        string type_ref = 7;
     }
 }
 
-
-// message IntegerType {
-    // bool signed = 1;
-    // int32 width = 2;
-// }
+message IntegerType {
+    // NOTE: field is named is_signed rather than "signed" because "signed" is
+    // a C++ keyword and cannot be used as a generated accessor method name.
+    bool is_signed = 1;
+    int32 width = 2;
+}
 
 message FloatType {
+    // Bit width of the float, e.g. 32 for single precision, 64 for double.
     int32 precision = 1;
 }
 
-// message StringType {
-// 
-// }
-// 
-// message BytesType {
-// 
-// }
-// 
-// message StructFieldType {
-    // string name = 1;
-    // Type base_type = 2;
-// }
-// 
-// message StructType {
-    // repeated StructFieldType fields = 1;
-// 
-// }
-// 
-// message ArrayType {
-    // Type base_type = 1;
-    // repeated uint32 dimensions = 2;
-// }
+message BoolType {
+}
+
+message StringType {
+}
+
+// One named field within a StructType, e.g. {name: "height", base_type: FloatType}.
+message StructFieldType {
+    string name = 1;
+    Type base_type = 2;
+}
+
+// The schema (field names + types, in declaration order) for a struct. Field
+// offsets/alignment/total size are computed from this by TypeRegistry using
+// standard C struct layout rules, not stored here - the corresponding Value
+// carries only the packed field bytes.
+message StructType {
+    repeated StructFieldType fields = 1;
+}
+
+// A fixed-shape multi-dimensional array of a single element type, e.g.
+// base_type=FloatType, dimensions=[3] for a 3-vector, or dimensions=[3, 3]
+// for a 3x3 matrix.
+message ArrayType {
+    Type base_type = 1;
+    repeated uint32 dimensions = 2;
+}

@@ -1,28 +1,22 @@
 #include "Marshaler.hpp"
-
+#include <algorithm>
 
 namespace frelsim::type::marshal {
 
-core::Value Marshaler::protoToCpp(const proto::Value& protoValue) {
-    core::Value cppValue;
-    auto type = protoValue.type();
-    if (type.has_float_type()) {
-        core::Data payload = protoValue.double_value();
-        cppValue.setData(payload);
-        cppValue.setType(protoValue.type());
-    }
-    return cppValue;
+core::Value Marshaler::protoToCpp(const proto::Value& protoValue) const {
+    std::string const& wireBytes = protoValue.data();
+    std::vector<std::byte> bytes(wireBytes.size());
+    std::transform(wireBytes.begin(), wireBytes.end(), bytes.begin(),
+                    [](char c) { return static_cast<std::byte>(c); });
+    return core::Value(protoValue.type(), std::move(bytes));
 }
 
-proto::Value cppToProto(const core::Value& cppValue) {
+proto::Value Marshaler::cppToProto(const core::Value& cppValue) const {
     proto::Value protoValue;
-    auto type = cppValue.getType();
-    if (type.has_float_type()) {
-        core::Data payload = cppValue.getData();
-        protoValue.set_double_value(std::get<double>(payload));
-    }
+    *protoValue.mutable_type() = cppValue.getType();
+    auto const& bytes = cppValue.getBytes();
+    protoValue.mutable_data()->assign(reinterpret_cast<char const*>(bytes.data()), bytes.size());
     return protoValue;
 }
-
 
 } // frelsim::type::marshal

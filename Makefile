@@ -48,6 +48,24 @@ ifeq ($(GRPC_CPP_PLUGIN),)
   $(warning grpc_cpp_plugin not found in PATH; gRPC stubs may not be generated)
 endif
 
+# ===== Test framework detection (GTest / GMock) =====
+GTEST_CFLAGS := $(shell pkg-config --cflags gtest gtest_main 2>/dev/null)
+GTEST_LIBS   := $(shell pkg-config --libs gtest gtest_main 2>/dev/null)
+ifeq ($(strip $(GTEST_LIBS)),)
+  GTEST_LIBS := -lgtest -lgtest_main -lpthread
+endif
+
+GMOCK_CFLAGS := $(shell pkg-config --cflags gmock gmock_main 2>/dev/null)
+GMOCK_LIBS   := $(shell pkg-config --libs gmock gmock_main 2>/dev/null)
+# Tests that need GMock (filenames containing "Mock") are only built once it's
+# actually available, so `make test` still works with GTest alone.
+ifeq ($(strip $(GMOCK_LIBS)),)
+  HAVE_GMOCK := 0
+  $(warning gmock not found; tests using GMock will be skipped. Install libgmock-dev to enable them.)
+else
+  HAVE_GMOCK := 1
+endif
+
 # ===== Flags =====
 WARN     := -Wall -Wextra -Wconversion -Wshadow
 STD      := -std=c++20
@@ -100,6 +118,15 @@ PROTO_GRPC_OBJ     := $(patsubst %.cc,%.o,$(PROTO_GEN_GRPC_CC))
 # All objects (evaluated late so gRPC files are discovered)
 OBJ = $(OBJ_CPP) $(PROTO_OBJ) $(PROTO_GRPC_OBJ)
 
+# ===== Tests =====
+TEST_DIR := test
+TEST_SRC := $(shell find $(TEST_DIR) -type f -name '*.cpp' 2>/dev/null)
+ifeq ($(HAVE_GMOCK),0)
+  TEST_SRC := $(filter-out %Mock%.cpp,$(TEST_SRC))
+endif
+TEST_OBJ := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_SRC))
+TEST_BIN := $(BIN_DIR)/frelsim_tests
+
 # ===== Default =====
 .PHONY: all
 all: $(TARGET)
@@ -131,6 +158,21 @@ $(OBJ_DIR)/$(PROTO_DIR)/%.pb.o: $(OBJ_DIR)/$(PROTO_DIR)/%.pb.cc
 $(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.o: $(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.cc
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Test sources (more specific than the generic %.cpp rule above, since GNU
+# Make picks the pattern rule with the shortest stem match when more than one
+# applies - test/%.cpp's stem is shorter than %.cpp's for the same target).
+$(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.cpp | $(PROTO_GEN_HDR)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(GTEST_CFLAGS) $(GMOCK_CFLAGS) -I. -c $< -o $@
+
+$(TEST_BIN): $(TEST_OBJ) $(TARGET)
+	@mkdir -p $(dir $@)
+	$(CXX) $(LDFLAGS) -o $@ $(TEST_OBJ) $(TARGET) $(GTEST_LIBS) $(GMOCK_LIBS) $(LDLIBS)
+
+.PHONY: test
+test: $(TEST_BIN)
+	$(TEST_BIN)
 
 # ===== Proto codegen (messages always; gRPC optional) =====
 $(OBJ_DIR)/$(PROTO_DIR)/%.stamp: $(PROTO_DIR)/%.proto
@@ -166,6 +208,8 @@ print:
 	@echo "PROTO_GEN_GRPC_CC = $(PROTO_GEN_GRPC_CC)"
 	@echo "OBJ               = $(OBJ)"
 	@echo "TARGET            = $(TARGET)"
+	@echo "TEST_SRC          = $(TEST_SRC)"
+	@echo "HAVE_GMOCK        = $(HAVE_GMOCK)"
 
 docs:
 	doxygen Doxyfile
@@ -176,3 +220,4 @@ docs:
 -include $(OBJ_CPP:.o=.d)
 -include $(PROTO_OBJ:.o=.d)
 -include $(PROTO_GRPC_OBJ:.o=.d)
+-include $(TEST_OBJ:.o=.d)

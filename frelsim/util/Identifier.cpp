@@ -1,17 +1,24 @@
 #include "Identifier.hpp"
 #include <ranges>
+#include <stdexcept>
+#include <vector>
 
 namespace frelsim::util {
 
 Identifier::Identifier(const std::string& uri) : uri_(uri){
-    std::array<std::string, 3> idParts;
-    std::size_t idx = 0;
+    // Split on '.' into a vector first rather than a fixed-size array: a
+    // malformed URI (too few or too many dot-separated parts) must be
+    // rejected explicitly here, not silently overrun a fixed buffer.
+    std::vector<std::string> idParts;
     for (auto token : uri | std::views::split('.')) {
-        idParts[idx++] = std::string(token.begin(), token.end());
+        idParts.emplace_back(token.begin(), token.end());
     }
-    domain_ = idParts[0];
-    scope_ = idParts[1];
-    name_ = idParts[2];
+    if (idParts.size() != 3) {
+        throw std::invalid_argument("Identifier: expected \"domain.scope.name\", got \"" + uri + "\"");
+    }
+    domain_ = std::move(idParts[0]);
+    scope_ = std::move(idParts[1]);
+    name_ = std::move(idParts[2]);
 }
 
 const std::string& Identifier::getUri() const {
