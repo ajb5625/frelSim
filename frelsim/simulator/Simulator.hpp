@@ -3,6 +3,7 @@
 #include <map>
 #include <memory>
 #include "../simulation/Simulation.hpp"
+#include "../linker/Linker.hpp"
 #include "frelsim/proto/System.pb.h"
 
 /**
@@ -21,9 +22,14 @@ public:
 
     /**
      * \brief Simulator Constructor
-     * \param system The serialization of the system of simulations.
+     * \param linkedSystem Every composed Simulation, already constructed,
+     * initial-parameterized, and composition-validated by Linker, plus the
+     * System metadata (stop_time/max_step_size/composition) still needed
+     * for routing and time advancement. Simulator no longer constructs or
+     * validates anything itself - that's Linker's job, run before a
+     * Simulator ever exists (see Overseer, which owns invoking Linker).
      */
-    Simulator(const frelsim::sim::proto::System& system);
+    explicit Simulator(linker::LinkedSystem linkedSystem);
 
     /**
      * \brief Simulator Destructor
@@ -50,10 +56,9 @@ public:
     bool step(double stopTime);
 
     /**
-     * \brief Construct every composed Simulation from the System's
-     * composition, and validate the wiring between them (see
-     * docs/PROGRESS.md - this is a stopgap dry-run check, not a real
-     * composition validator/linker).
+     * \brief Bring the simulator to its ready state (reset global time).
+     * Construction and composition validation already happened at link
+     * time (see Linker), before this Simulator existed.
      */
     void initialize();
 
@@ -98,14 +103,6 @@ private:
      * destination.
      */
     void route();
-
-    /**
-     * \brief Dry-run every wired edge once (fetch from source, apply to each
-     * destination) so an unknown simulation reference or a type mismatch
-     * between a source's output and a destination's input surfaces as a
-     * clear error at startup, not silently or deep into the run loop.
-     */
-    void validateComposition();
 
     /// @brief The serialization of the system we are simulating.
     sim::proto::System system_;

@@ -1,5 +1,4 @@
 #include "Simulator.hpp"
-#include "../type/marshal/Marshaler.hpp"
 #include <algorithm> // for min()
 #include <stdexcept>
 #include <thread> // for sleep
@@ -16,21 +15,18 @@ util::Identifier toUtilIdentifier(sim::proto::Identifier const& protoId) {
     return id;
 }
 
-std::string describeIdentifier(sim::proto::Identifier const& protoId) {
-    return protoId.domain() + "." + protoId.scope() + "." + protoId.name();
-}
-
 bool isSet(sim::proto::Identifier const& protoId) {
     return !protoId.domain().empty() || !protoId.scope().empty() || !protoId.name().empty();
 }
 
 } // namespace
 
-Simulator::Simulator(const frelsim::sim::proto::System& system) : system_(system)
-                                                                , simulationTime_(0.0)
-                                                                , tFinal_(system_.stop_time())
-                                                                , maxStepSize_(system_.max_step_size())
-                                                                , isStopRequested_(false)  {}
+Simulator::Simulator(linker::LinkedSystem linkedSystem) : system_(std::move(linkedSystem.system))
+                                                          , idToSimulation_(std::move(linkedSystem.simulations))
+                                                          , simulationTime_(0.0)
+                                                          , tFinal_(system_.stop_time())
+                                                          , maxStepSize_(system_.max_step_size())
+                                                          , isStopRequested_(false)  {}
 
 Simulator::~Simulator() = default;
 
@@ -79,68 +75,7 @@ void Simulator::route() {
 }
 
 void Simulator::initialize() {
-    idToSimulation_.clear();
-    type::marshal::Marshaler const marshaler;
-    for (auto const& routed : system_.composition()) {
-        std::string const key = routed.simulation().domain();
-        auto simulation = std::make_unique<simulation::Simulation>(routed.sim_description());
-
-        if (routed.initial_parameters_size() > 0) {
-            SetOperations ops;
-            ops.reserve(static_cast<std::size_t>(routed.initial_parameters_size()));
-            for (auto const& op : routed.initial_parameters()) {
-                ops.emplace_back(toUtilIdentifier(op.id()), marshaler.protoToCpp(op.value()));
-            }
-            simulation->set(ops);
-        }
-
-        idToSimulation_[key] = std::move(simulation);
-    }
-    validateComposition();
     simulationTime_ = 0.0;
-}
-
-void Simulator::validateComposition() {
-    for (auto const& routed : system_.composition()) {
-        if (!isSet(routed.source())) {
-            continue;
-        }
-
-        util::Identifier const sourceId = toUtilIdentifier(routed.source());
-        auto sourceIt = idToSimulation_.find(sourceId.getDomain());
-        if (sourceIt == idToSimulation_.end()) {
-            throw std::invalid_argument(
-                "Simulator: composition wiring error - unknown source simulation '" + sourceId.getDomain() + "'");
-        }
-
-        Values probe;
-        try {
-            probe = sourceIt->second->get({sourceId});
-        } catch (std::exception const& e) {
-            throw std::invalid_argument(
-                "Simulator: composition wiring error reading source '" + describeIdentifier(routed.source()) + "': " + e.what());
-        }
-        if (probe.empty()) {
-            throw std::invalid_argument(
-                "Simulator: composition wiring error - source '" + describeIdentifier(routed.source()) + "' produced no value");
-        }
-
-        for (auto const& destProto : routed.destinations()) {
-            util::Identifier const destId = toUtilIdentifier(destProto);
-            auto destIt = idToSimulation_.find(destId.getDomain());
-            if (destIt == idToSimulation_.end()) {
-                throw std::invalid_argument(
-                    "Simulator: composition wiring error - unknown destination simulation '" + destId.getDomain() + "'");
-            }
-            SetOperations op{{destId, probe[0]}};
-            try {
-                destIt->second->set(op);
-            } catch (std::exception const& e) {
-                throw std::invalid_argument(
-                    "Simulator: composition wiring error setting destination '" + describeIdentifier(destProto) + "': " + e.what());
-            }
-        }
-    }
 }
 
 Values Simulator::get(std::string const& simulationKey, Identifiers const& ids) const {
