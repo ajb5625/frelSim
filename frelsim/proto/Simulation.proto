@@ -47,6 +47,15 @@ enum SolverType {
     RungeKutta4 = 1;
     DormandPrince = 2;
     BackwardEuler = 3;
+
+    // Diagnoses stiffness from the model's Jacobian (evaluated once, at its
+    // initial state, in Model::initialize()) and picks between an implicit
+    // solver (BackwardEuler) and an adaptive explicit one (DormandPrince)
+    // accordingly - not a dynamic mid-simulation switch. Requires the model
+    // to supply a Jacobian; falls back to DormandPrince if it doesn't, since
+    // stiffness can't be assessed (or handled implicitly) without one. See
+    // frelsim::integrate::factory::createSolver.
+    Automatic = 4;
 }
 
 message ModelSpec {

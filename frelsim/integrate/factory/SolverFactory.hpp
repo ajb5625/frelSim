@@ -44,12 +44,23 @@ bool registerSolver(sim::proto::SolverType solverType, SolverCreator creator);
 /**
  * \brief Constructs the Solver registered under solverType, or nullptr if no
  * solver was registered under it.
+ *
+ * SolverType::Automatic is handled specially: rather than a direct registry
+ * lookup, it evaluates jf at initialState (time 0) and runs a one-time
+ * stiffness diagnostic (see analysis/StiffnessDetector.hpp) to pick between
+ * BackwardEuler (stiff) and DormandPrince (not stiff) - a single choice made
+ * once here, not a dynamic mid-simulation switch. Falls back to
+ * DormandPrince if jf is null or initialState is empty, since stiffness
+ * can't be assessed (or handled implicitly) without a Jacobian.
+ * initialState only matters for Automatic; every other SolverType ignores
+ * it.
  */
 std::unique_ptr<core::Solver> createSolver(frelsim::sim::proto::SolverType solverType
                                                     , double stopTime
                                                     , SolverConfig const& config
                                                     , const Derivative df
-                                                    , const JacobianFunction jf = nullptr);
+                                                    , const JacobianFunction jf = nullptr
+                                                    , State const& initialState = State());
 
 } // frelsim::integrate::factory
 
