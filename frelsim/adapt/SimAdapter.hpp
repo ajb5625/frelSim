@@ -14,7 +14,9 @@ class SimAdapter {
     public:
         SimAdapter() = default;
 
-        virtual ~SimAdapter() = 0; 
+        virtual ~SimAdapter() = 0;
+
+        virtual double guaranteeUntil(double maxTime) = 0;
 
         virtual bool stepUntil(double stopTime) = 0;
 

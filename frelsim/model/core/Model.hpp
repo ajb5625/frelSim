@@ -44,6 +44,21 @@ class Model {
          */
         bool stepUntil(double stopTime);
 
+        /**
+         * \brief Given a list of identifiers, get the outputs associated with them.
+         */
+        virtual Values getOutputs(Identifiers ids) const = 0;
+
+        /**
+         * \brief Given a list of SetOperation (identifier and value), set the
+         * values on the model.
+         */
+        virtual void setInputs(SetOperations ops) = 0;
+
+        virtual Values getParameters(Identifiers ids) const;
+
+        virtual void setParameters(SetOperations ops);
+
     protected:
         /**
          * \brief Update discrete states.
@@ -57,7 +72,7 @@ class Model {
 
         /**
          * \brief Provide jacobian matrix-valued function of continuous states.
-         * The jacobian can help the model determine which solver to use and 
+         * The jacobian can help the model determine which solver to use and
          * allows for more types of solvers to be used.
          */
         virtual JacobianFunction const& jacobian() const;
@@ -66,28 +81,6 @@ class Model {
          * \brief Define the zero crossing events in your model.
          */
         virtual std::vector<event::Event> const& events() const;
-
-        /**
-         * \brief Given a list of identifiers, get the outputs associated with them.
-         */
-        virtual Values getOutputs(Identifiers ids) const = 0;
-
-        /**
-         * \brief Given a list of SetOperation (identifier and value), set the 
-         * values on the model.
-         */
-        virtual void setInputs(SetOperations ops) = 0;
-
-        virtual Values getParameters(Identifiers ids) const;
-
-        virtual void setParameters(SetOperations ops);
-
-    private:
-        /// \brief The solver for integrating continuous states.
-        std::unique_ptr<integrate::core::Solver> solver_;
-
-        /// \brief Metadata and setup info for the simulation.
-        sim::proto::SimulationDescription simDescription_;
 
         /// \brief Continuous states vector to be integrated each step.
         State continuousStates_;
@@ -101,6 +94,13 @@ class Model {
 
         Parameters parameters_;
         // std::map<std::string, SimValue> parameters_;
+
+    private:
+        /// \brief The solver for integrating continuous states.
+        std::unique_ptr<integrate::core::Solver> solver_;
+
+        /// \brief Metadata and setup info for the simulation.
+        sim::proto::SimulationDescription simDescription_;
 
         std::unique_ptr<schedule::Scheduler> scheduler_;
 

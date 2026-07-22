@@ -1,5 +1,6 @@
 #include "Task.hpp"
 #include "../util/almost_equal.hpp"
+#include <stdexcept>
 
 namespace frelsim::task {
 
@@ -16,6 +17,7 @@ frelsim::sim::proto::TaskType serializeTaskTypeEnum(const TaskType cppType) {
             return fsptt::AperiodicDiscrete;
         break;
     }
+    throw std::invalid_argument("serializeTaskTypeEnum: unrecognized TaskType");
 }
 
 frelsim::sim::proto::Task serialize(Task cppTask) {

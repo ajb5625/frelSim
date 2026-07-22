@@ -3,6 +3,27 @@
 
 namespace frelsim::model::core {
 
+Model::~Model() = default;
+
+JacobianFunction const& Model::jacobian() const {
+    static const JacobianFunction none = nullptr;
+    return none;
+}
+
+std::vector<event::Event> const& Model::events() const {
+    static const std::vector<event::Event> none;
+    return none;
+}
+
+Values Model::getParameters(Identifiers ids) const {
+    (void)ids;
+    return {};
+}
+
+void Model::setParameters(SetOperations ops) {
+    (void)ops;
+}
+
 Model::Model(const sim::proto::SimulationDescription& simDescription) : simDescription_(simDescription)
                                                                         , stepSize_(simDescription_.task().period())
                                                                         , stopTime_(simDescription_.stop_time()) {

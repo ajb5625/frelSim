@@ -13,6 +13,8 @@ class ModelAdapter : public frelsim::adapt::SimAdapter {
 
         ~ModelAdapter() override;
 
+        double guaranteeUntil(double maxTime) override;
+
         bool stepUntil(double stopTime) override;
 
         Values get(Identifiers ids) const override;
@@ -27,8 +29,8 @@ class ModelAdapter : public frelsim::adapt::SimAdapter {
         std::unique_ptr<core::Model> instance_;
 
 };
-} // frelsim::simulation
+} // frelsim::model::adapt
 
 
 
-    
+

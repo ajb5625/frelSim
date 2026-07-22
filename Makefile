@@ -25,9 +25,19 @@ ifeq ($(PROTOBUF_LIBS),)
 endif
 
 # ===== gRPC detection =====
-GRPC_CPP_PLUGIN := $(shell which grpc_cpp_plugin 2>/dev/null)
-GRPC_CFLAGS := $(shell pkg-config --cflags grpc++ 2>/dev/null)
-GRPC_LIBS   := $(shell pkg-config --libs grpc++ 2>/dev/null)
+# There may be more than one grpc install on a machine (e.g. a system package
+# alongside a locally-built one). protoc's generated code must match whichever
+# grpc++ headers/libs it's compiled against, so prefer the system plugin
+# (matching the system libgrpc++-dev/protobuf this project links against)
+# over whatever else might be earlier on PATH, and derive the pkg-config
+# search path from wherever it actually resolves.
+GRPC_CPP_PLUGIN := $(if $(wildcard /usr/bin/grpc_cpp_plugin),/usr/bin/grpc_cpp_plugin,$(shell which grpc_cpp_plugin 2>/dev/null))
+GRPC_PREFIX     := $(patsubst %/bin/grpc_cpp_plugin,%,$(GRPC_CPP_PLUGIN))
+ifneq ($(strip $(GRPC_PREFIX)),)
+  GRPC_PKG_CONFIG_PATH := $(GRPC_PREFIX)/lib/pkgconfig:$(GRPC_PREFIX)/lib64/pkgconfig
+endif
+GRPC_CFLAGS := $(shell PKG_CONFIG_PATH="$(GRPC_PKG_CONFIG_PATH):$$PKG_CONFIG_PATH" pkg-config --cflags grpc++ 2>/dev/null)
+GRPC_LIBS   := $(shell PKG_CONFIG_PATH="$(GRPC_PKG_CONFIG_PATH):$$PKG_CONFIG_PATH" pkg-config --libs grpc++ 2>/dev/null)
 ifeq ($(GRPC_CFLAGS),)
   GRPC_CFLAGS := -I/usr/include
 endif
@@ -47,7 +57,7 @@ else
   OPT   := -O3 -g0
 endif
 
-CXXFLAGS := $(STD) $(WARN) $(OPT) -Iinclude -I$(OBJ_DIR) -I$(EIGEN_INC) $(PROTOBUF_CFLAGS) $(GRPC_CFLAGS)
+CXXFLAGS := $(STD) $(WARN) $(OPT) -MMD -MP -Iinclude -I$(OBJ_DIR) -I$(EIGEN_INC) $(PROTOBUF_CFLAGS) $(GRPC_CFLAGS)
 LDFLAGS  :=
 LDLIBS   := $(PROTOBUF_LIBS) $(GRPC_LIBS)
 
@@ -75,10 +85,17 @@ PROTO_OBJ     := $(patsubst %.cc,%.o,$(PROTO_GEN_CC))
 # Stamp per proto
 PROTO_STAMP := $(patsubst $(PROTO_DIR)/%.proto,$(OBJ_DIR)/$(PROTO_DIR)/%.stamp,$(PROTO_SRC))
 
-# After generation, pick up whatever *_grpc.pb.cc actually exists
-PROTO_GEN_GRPC_CC  = $(wildcard $(OBJ_DIR)/$(PROTO_DIR)/*_grpc.pb.cc)
-PROTO_GEN_GRPC_HDR = $(patsubst %.cc,%.h,$(PROTO_GEN_GRPC_CC))
-PROTO_GRPC_OBJ     = $(patsubst %.cc,%.o,$(PROTO_GEN_GRPC_CC))
+# Only protos that declare a service produce gRPC stubs. Computed from the
+# .proto sources themselves (not a wildcard over generated output) so the
+# list is known before codegen runs and the objects actually get linked.
+ifneq ($(strip $(GRPC_CPP_PLUGIN)),)
+PROTO_SERVICE_SRC  := $(shell grep -l '^service ' $(PROTO_DIR)/*.proto 2>/dev/null)
+PROTO_GEN_GRPC_CC  := $(patsubst $(PROTO_DIR)/%.proto,$(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.cc,$(PROTO_SERVICE_SRC))
+else
+PROTO_GEN_GRPC_CC  :=
+endif
+PROTO_GEN_GRPC_HDR := $(patsubst %.cc,%.h,$(PROTO_GEN_GRPC_CC))
+PROTO_GRPC_OBJ     := $(patsubst %.cc,%.o,$(PROTO_GEN_GRPC_CC))
 
 # All objects (evaluated late so gRPC files are discovered)
 OBJ = $(OBJ_CPP) $(PROTO_OBJ) $(PROTO_GRPC_OBJ)
@@ -111,7 +128,7 @@ $(OBJ_DIR)/$(PROTO_DIR)/%.pb.o: $(OBJ_DIR)/$(PROTO_DIR)/%.pb.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # gRPC stubs (if exist)
-$(OBJ_DIR)/$(PROTO_DIR)/%_grpc.pb.o: $(OBJ_DIR)/$(PROTO_DIR)/%_grpc.pb.cc
+$(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.o: $(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.cc
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -129,9 +146,9 @@ endif
 
 # Ensure generated files are tied to the stamp
 $(OBJ_DIR)/$(PROTO_DIR)/%.pb.cc:      $(OBJ_DIR)/$(PROTO_DIR)/%.stamp ;
-$(OBJ_DIR)/$(PROTO_DIR)/%_grpc.pb.cc: $(OBJ_DIR)/$(PROTO_DIR)/%.stamp ;
+$(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.cc: $(OBJ_DIR)/$(PROTO_DIR)/%.stamp ;
 $(OBJ_DIR)/$(PROTO_DIR)/%.pb.h:       $(OBJ_DIR)/$(PROTO_DIR)/%.pb.cc ;
-$(OBJ_DIR)/$(PROTO_DIR)/%_grpc.pb.h:  $(OBJ_DIR)/$(PROTO_DIR)/%_grpc.pb.cc ;
+$(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.h:  $(OBJ_DIR)/$(PROTO_DIR)/%.grpc.pb.cc ;
 
 # Keep generated files
 GEN_FILES := $(PROTO_GEN_CC) $(PROTO_GEN_HDR) $(PROTO_GEN_GRPC_CC) $(PROTO_GEN_GRPC_HDR) $(PROTO_STAMP)
@@ -152,3 +169,10 @@ print:
 
 docs:
 	doxygen Doxyfile
+
+# ===== Header dependency tracking =====
+# So that editing a .hpp invalidates every .o that (transitively) includes it,
+# instead of relying only on the .cpp's own mtime.
+-include $(OBJ_CPP:.o=.d)
+-include $(PROTO_OBJ:.o=.d)
+-include $(PROTO_GRPC_OBJ:.o=.d)

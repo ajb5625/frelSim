@@ -6,6 +6,8 @@ RungeKutta4::RungeKutta4(double stopTime
                         , double stepSize
                         , const Derivative f) : Solver(stopTime, stepSize, f), halfStep_(stepSize / 2) {}
 
+RungeKutta4::~RungeKutta4() = default;
+
 bool RungeKutta4::step(State& yn, double simulationTime) {
     State k1 = (*f_)(yn, simulationTime); 
     State k2 = (*f_)(yn + (halfStep_) * k1, simulationTime + halfStep_);

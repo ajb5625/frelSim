@@ -10,6 +10,17 @@ namespace frelsim::event {
  * \brief The Event engine is responsible for telling a Model when an event has or will occur.
  * It can also operate on the model's states, outputs, and parameters if an event has fired.
  * It keeps track of pending events to be resolved during the model stepUntil call.
+ *
+ * \note On the meaning of "time" passed to EventIndicator functions:
+ * nextEventTime() looks ahead from a single anchor state snapshot (the state at t0) without
+ * re-integrating the model at every candidate instant it probes - re-running the solver at
+ * every search point would be far too expensive. That means an EventIndicator can only be
+ * evaluated correctly if it treats its own time argument as *elapsed time since the anchor
+ * state* (t - t0), and predicts forward analytically from (continuousStates, discreteStates)
+ * using that elapsed time - e.g. free-fall height as h0 + v0*elapsed - 0.5*g*elapsed^2. It is
+ * NOT the absolute simulation time. EventEngine enforces this by always converting absolute
+ * times to elapsed-since-anchor before calling into an indicator; see nextEventTime()/
+ * bisectRoot()/zerosAt() in EventEngine.cpp for exactly where that conversion happens.
  */
 
 class EventEngine final {
@@ -53,24 +64,27 @@ class EventEngine final {
         void clearPending();
 
         /**
-         * \brief At time, evaluate all event indicators.
+         * \brief Evaluate all event indicators at `elapsed` time since the anchor
+         * state (continuousStates/discreteStates), i.e. indicator(elapsed, ...).
          */
-        std::vector<double> evaluateIndicators(double time
+        std::vector<double> evaluateIndicators(double elapsed
                                             , State const& continuousStates
                                             , State const& discreteStates
                                             , Values const& inputs) const;
 
         /**
-         * \brief At time, evaluate the indicator corresponding to idx.
+         * \brief Evaluate the indicator corresponding to idx at `elapsed` time
+         * since the anchor state, same convention as evaluateIndicators().
          */
-        double evaluateOneIndicator(std::size_t idx, double time,
+        double evaluateOneIndicator(std::size_t idx, double elapsed,
                 State const& continuousStates,
                 State const& discreteStates,
                 Values const& inputs) const;
 
         /**
-         * \brief For event at idx, find the exact zero crossing root
-         * between a and b.
+         * \brief For event at idx, find the exact zero crossing root between
+         * elapsed times a and b (both measured since the same anchor state
+         * used by the caller's search window).
          */
         double bisectRoot(std::size_t idx, double a, double b,
             State const& continuousStates,
@@ -78,11 +92,12 @@ class EventEngine final {
             const Values& inputs) const;
 
         /**
-         * \brief Find events equal to zero at time.
-         * This is needed to handle cascading events.
+         * \brief Find events equal to zero for the state as it stands right now
+         * (i.e. elapsed = 0, since continuousStates/discreteStates here are the
+         * model's actual current, already-integrated state - not a lookahead
+         * anchor). This is needed to handle cascading events after a step.
          */
-        std::vector<std::size_t> zerosAt(double time,
-                            State const& continuousStates,
+        std::vector<std::size_t> zerosAt(State const& continuousStates,
                             State const& discreteStates,
                             Values const& inputs) const;
 

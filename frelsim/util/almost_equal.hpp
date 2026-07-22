@@ -5,7 +5,7 @@ namespace frelsim::util {
 
 constexpr double equalTolerance = 1e-12;
 
-bool almostEqual(double a, double b) {
+inline bool almostEqual(double a, double b) {
     return std::abs(a - b) < equalTolerance;
 }
 

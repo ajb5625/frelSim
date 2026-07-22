@@ -3,11 +3,16 @@
 namespace frelsim::model::adapt {
 
 ModelAdapter::ModelAdapter(sim::proto::SimulationDescription const& simDescription) : simDescription_(simDescription) {
-    instance_ = std::make_unique<core::Model>(simDescription_);
+    instance_ = factory::createModel(simDescription_);
+    instance_->initialize();
 }
 
 ModelAdapter::~ModelAdapter() {
     instance_.reset();
+}
+
+double ModelAdapter::guaranteeUntil(double maxTime) {
+    return instance_->guaranteeUntil(maxTime);
 }
 
 bool ModelAdapter::stepUntil(double stopTime) {
@@ -48,4 +53,4 @@ void ModelAdapter::set(SetOperations ops) {
 }
 
 
-} // frelsim::simulation
+} // frelsim::model::adapt
