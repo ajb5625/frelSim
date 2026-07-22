@@ -516,6 +516,113 @@ the right concrete solver via `dynamic_cast` - stiff picks `BackwardEuler`,
 not-stiff picks `DormandPrince`, and both no-Jacobian and no-initial-state
 fall back to `DormandPrince`. Full suite: 86/86 passing.
 
+## Track: Compiler + Linker + Overseer (three simulation stages + top-level entry point)
+
+Task #12 (extract composition validation out of `Simulator`) turned into a
+broader cut once the three-stage architecture (config read -> link ->
+execute) got designed alongside it: each stage is now its own component, and
+a new top-level `Overseer` owns invoking all three and exposes both a
+run-to-completion and a single-step control mode.
+
+**`Compiler`** (`frelsim/compiler/Compiler.hpp/.cpp`) - stage 1. Reads a
+JSON config file and parses it into a structural `System` proto via
+`google::protobuf::util::JsonStringToMessage` (full `libprotobuf` was
+already linked, not `-lite`, so `json_util.h` was available with no build
+changes needed). Purely structural - no knowledge of composition semantics -
+throwing `std::invalid_argument` on a missing file or a JSON payload that
+doesn't conform to `System`'s shape.
+
+**`Linker`** (`frelsim/linker/Linker.hpp/.cpp`) - stage 2. This is what task
+#12 actually was: `Simulator::initialize()`'s construction logic and
+`Simulator::validateComposition()`'s dry-run wiring check moved out
+near-verbatim into `Linker::link()`, which constructs every composed
+`Simulation` from the `System`'s composition, applies `initial_parameters`,
+and validates the wiring (unknown source/destination references, a source
+producing no value, a type mismatch surfacing from a destination's `set()`)
+- all before a `Simulator` ever exists, not inside its runtime loop. Returns
+a `LinkedSystem` (the constructed `simulations` map + `system` metadata).
+`Simulator`'s constructor now takes a `LinkedSystem` directly;
+`Simulator::initialize()` shrank to just resetting `simulationTime_`, and
+`validateComposition()` was deleted entirely.
+
+**`Overseer`** (`frelsim/overseer/Overseer.hpp/.cpp`) - the actual top-level
+entry point (name chosen together, after a long naming back-and-forth
+landing on this Fallout-flavored pick). Owns all three stages and mirrors
+`frelsim/proto/Simulator.proto`'s (currently unimplemented, task #5) gRPC
+service one-to-one - `CreateSimulator`/`Initialize`/`Sim`/`StepUntil`/
+`Terminate` map directly onto `Overseer`'s two constructors and
+`initialize()`/`sim()`/`step()`/`terminate()` - so it's positioned to become
+that service's backing implementation later, and is usable standalone (no
+gRPC) by the sim executable runner (#10) in the meantime. Two constructors:
+one from a config path (runs `Compiler` itself - the sim executable runner
+never parses anything itself, exactly per the constraint driving this
+design) and one from an already-built `System` (for a future gRPC handler,
+where protobuf already deserialized the request off the wire - nothing left
+for `Compiler` to do). Every lifecycle method after `initialize()` throws
+`std::logic_error` if called too early, rather than null-dereferencing.
+
+One flagged-but-deliberately-unsolved gap: `Simulator.proto`'s RPCs carry no
+session/id parameter, meaning the proto as written assumes one `Overseer`
+per service instance rather than several concurrent simulations sharing one
+server process. If that's ever needed, it's a `map<sessionId,
+unique_ptr<Overseer>>` living in the service layer above `Overseer` (or a
+session id added to the proto) - `Overseer` itself doesn't need to change
+either way.
+
+**Testing.** `Simulator` had zero test coverage before this (no
+`SimulatorTest.cpp` existed at all); added one now that it takes a
+`LinkedSystem` directly, alongside new `CompilerTest`, `LinkerTest`, and
+`OverseerTest` - the last of these exercises both constructors and both run
+modes end-to-end (the same PID-driving-`MassSpringDamper` composition from
+the control-loop-demo track, run once via `sim()` and once via repeated
+`step()` calls, checking they reach the same final state). One thing that
+tripped up writing these: `ModelAdapter::get`/`set` dispatch to
+`getOutputs`/`setInputs`/`getParameters`/`setParameters` purely by an
+identifier's `scope` (`"Output"`/`"Input"`/`"Parameter"`) - an identifier
+with no scope set is silently dropped by both rather than erroring, which
+looked like a wiring bug in the new composition fixtures before the actual
+cause (missing `scope`) was found. Full suite: 101/101 passing.
+
+**Post-review: real type checking, and a clearer Overseer accessor.**
+Review feedback on this PR: the dry-run above didn't actually type-check
+anything - it just hoped a mismatch would happen to throw partway through a
+destination's `set()` (e.g. `Value::asDouble()` rejecting a non-FloatType),
+which only ever caught some mismatches by accident, never by an explicit
+comparison. Fixed properly:
+
+- New `frelsim::type::core::typesEqual(Type const&, Type const&)`
+  (`frelsim/type/core/TypeUtil.hpp/.cpp`) - structural equality across
+  `Type`'s oneof cases (`IntegerType` compares `is_signed`+`width`,
+  `FloatType` compares `precision`, `StructType`/`ArrayType` recurse, a
+  `type_ref` compares by URI string only - deliberately not resolved
+  against an inline description of the same type, since that would need a
+  `TypeRegistry` this utility doesn't take; see its doc comment).
+- The real gap this exposed: there was no way to even ask a destination
+  "what type do you expect for this input" - `Model` only exposed
+  `getOutputs`/`getParameters`, never inputs, and `ModelAdapter::get`
+  silently dropped `"Input"`-scoped queries entirely. Added
+  `Model::getInputs(Identifiers) const` (default empty, same convention as
+  `getParameters`), wired `ModelAdapter::get` to dispatch `"Input"` scope to
+  it, and implemented it in `PIDController` (`measurement`) and
+  `MassSpringDamper` (`force`) - their one real input each.
+- `Linker::link()` now fetches the destination's current input value before
+  wiring anything, and requires `typesEqual` against the source's actual
+  output type - a destination that doesn't override `getInputs` (e.g.
+  `BouncingBall`, which takes none) fails loudly rather than silently
+  skipping the check, since an unobserved type can't be verified.
+- New tests: `TypeUtilTest` (9 cases covering every `Type` case, including
+  the deliberate type_ref-vs-inline non-resolution and an unset-type
+  guard), and two new `LinkerTest` cases - a genuine cross-type mismatch
+  (needed a tiny test-only self-registering `BoolOutputStub` model, since
+  every real registered model in this codebase happens to use only
+  `FloatType` fields today) and the new "destination can't be type-checked"
+  failure path via `BouncingBall`.
+- Separately, `Overseer`'s private `requireInitialized()` helper was renamed
+  to `requireSimulator()` - the old name didn't say what it actually
+  returns (the `Simulator`), just that it guards something.
+
+Full suite: 112/112 passing.
+
 ## Track: sim executable runner
 
 *(not yet started)*
