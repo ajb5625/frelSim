@@ -11,7 +11,8 @@ class Euler : public core::Solver {
 
         ~Euler() override;
 
-        bool step(State& y0, double simulationTime) override;
+    protected:
+        void singleStep(State& y0, double currentTime, double dt) override;
 
 
 };

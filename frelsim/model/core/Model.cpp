@@ -76,8 +76,15 @@ double Model::guaranteeUntil(double maxTime) {
 }
 
 bool Model::stepUntil(double stopTime) {
-    // Continuous states are modified in place
-    solver_->step(continuousStates_, stopTime);
+    // internalTime_ starts at -1.0 (see the header) as a bootstrap sentinel
+    // before the very first step, meaning "nothing has actually happened
+    // yet" - treat that as a zero-length interval (start == target) rather
+    // than a real ~1-second gap back to -1.0. Solver::step sub-steps
+    // internally as needed to cover whatever the real gap is, so unlike
+    // before there's no need to compute an exact dt here.
+    double const startTime = (internalTime_ < 0.0) ? stopTime : internalTime_;
+    // Continuous states are modified in place.
+    solver_->step(continuousStates_, startTime, stopTime);
     // resolve zero crossing events
     eventEngine_->processEventsAt(stopTime
                                 , continuousStates_

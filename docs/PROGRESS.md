@@ -293,7 +293,48 @@ elapsed `dt` into `Solver::step` instead of relying on a fixed
 construction-time value, or having `Solver` internally sub-step in
 `stepSize_`-sized increments to cover whatever gap it's asked to cover) -
 tracked as the next thing to fix, before leaning on this for anything
-requiring numerical precision.
+requiring numerical precision. **Fixed - see the Solver correctness track
+below.**
+
+## Track: Solver correctness (fixed step-size bug)
+
+Fixes the gap flagged at the end of the orchestration track above.
+
+First attempt: change `Solver::step` to take the actual elapsed `dt` per
+call (computed by `Model::stepUntil` as `stopTime - internalTime_`) instead
+of blindly using a step size fixed at construction. This fixed the
+correctness bug, but on review missed the point of a *fixed-step* solver -
+it shifted all responsibility for choosing a sensible, accuracy-appropriate
+step size onto the caller, with nothing left enforcing it. Euler/RK4/
+BackwardEuler are supposed to own their own step size for accuracy and
+stability, not just integrate whatever gap a caller happens to ask for.
+
+Settled on the standard fixed-step contract instead: `Solver` keeps its own
+`stepSize_` (from the component's task period/`max_step_size`, as before),
+and `step()` now takes a *target* time rather than a `dt` - it internally
+sub-steps in increments of at most `stepSize_` until it reaches that target,
+however many sub-steps that takes. This still fixes the original bug (a
+0.01s gap and a 0.02s gap are each covered by the right amount of
+integration, not the same fixed amount regardless), while restoring the
+solver's own accuracy guarantee regardless of what a caller asks for.
+
+Implementation: the sub-stepping loop is identical across all three solvers,
+so it's factored once into `Solver::step()` (now non-virtual) in the base
+class, calling a new protected pure-virtual `singleStep(state, currentTime,
+dt)` that each concrete solver implements - the same non-virtual-public-
+calls-protected-virtual-customization-point shape `Model::stepUntil`/
+`update()` already uses. Also fixed a second, previously-invisible bug found
+while touching this code: the derivative function `f_` was being evaluated
+at the *target* time instead of the *start* time of each step (invisible for
+every model built so far, since none of their dynamics explicitly depend on
+`t` - but wrong in general, and `BackwardEuler`'s implicit residual/Jacobian
+specifically need the *end*-of-step time, `currentTime + dt`, which is a
+different value again from either).
+
+Verified against the PID + MassSpringDamper demo from the orchestration
+track: still terminates correctly at `stop_time`, and the trajectory is
+measurably different from (more accurate than) the pre-fix run, confirming
+the fix changes real numerical behavior rather than just internal plumbing.
 
 ## Track: testing
 
@@ -303,13 +344,16 @@ repeatable via any single command.
 
 Now: a real `test/` package using GoogleTest (GMock not yet installed on the
 dev machine - see below), wired into the Makefile as `make test`. Mirrors
-`frelsim/`'s directory layout. 68 tests across Task, Scheduler, the type
+`frelsim/`'s directory layout. 70 tests across Task, Scheduler, the type
 system (`Layout`'s C-struct-packing math, `TypeRegistry`, `Value`'s
 byte encoding/decoding and struct/array field access including nested
 array-of-struct, `Marshaler`), `BouncingBall`'s and `PIDController`'s typed
 I/O contracts (including the scheduling regression above), Identifier, and
 all three solvers (Euler/RK4/BackwardEuler checked against the closed-form
-solution of `dy/dt = -y`) - all passing.
+solution of `dy/dt = -y`, including two regression tests for the fixed
+step-size bug: covering an interval that doesn't evenly divide the solver's
+own step size, and reaching the same target across several smaller calls
+instead of one big one) - all passing.
 
 Several of these are deliberate regression tests for bugs found this session,
 not just coverage for coverage's sake:

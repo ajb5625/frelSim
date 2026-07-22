@@ -11,9 +11,7 @@ class RungeKutta4 final : public core::Solver {
 
         ~RungeKutta4() override;
 
-        bool step(State& state, double simulationTime) override;
-    private: 
-        double halfStep_;
-
+    protected:
+        void singleStep(State& state, double currentTime, double dt) override;
 };
 }
