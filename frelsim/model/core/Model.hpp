@@ -55,6 +55,18 @@ class Model {
          */
         virtual void setInputs(SetOperations ops) = 0;
 
+        /**
+         * \brief Given a list of identifiers, get the model's current value
+         * for each named input - e.g. so Linker can compare an input's type
+         * against a candidate source's output type before wiring them
+         * together (see Linker::link()). Default is empty (matching
+         * getParameters' default for models with none), since not every
+         * model takes inputs (e.g. BouncingBall). A model that does take
+         * inputs and wants its wiring to be type-checked should override
+         * this the same way it overrides getOutputs.
+         */
+        virtual Values getInputs(Identifiers ids) const;
+
         virtual Values getParameters(Identifiers ids) const;
 
         virtual void setParameters(SetOperations ops);

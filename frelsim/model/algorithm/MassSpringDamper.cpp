@@ -52,6 +52,20 @@ void MassSpringDamper::setInputs(SetOperations ops) {
     }
 }
 
+Values MassSpringDamper::getInputs(Identifiers ids) const {
+    Values values;
+    values.reserve(ids.size());
+    for (auto const& id : ids) {
+        if (id.getName() == "force") {
+            values.push_back(type::core::Value::makeDouble(force_));
+        }
+        else {
+            values.push_back(type::core::Value::makeDouble(0.0));
+        }
+    }
+    return values;
+}
+
 Values MassSpringDamper::getParameters(Identifiers ids) const {
     Values values;
     values.reserve(ids.size());

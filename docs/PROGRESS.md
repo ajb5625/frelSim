@@ -583,6 +583,46 @@ with no scope set is silently dropped by both rather than erroring, which
 looked like a wiring bug in the new composition fixtures before the actual
 cause (missing `scope`) was found. Full suite: 101/101 passing.
 
+**Post-review: real type checking, and a clearer Overseer accessor.**
+Review feedback on this PR: the dry-run above didn't actually type-check
+anything - it just hoped a mismatch would happen to throw partway through a
+destination's `set()` (e.g. `Value::asDouble()` rejecting a non-FloatType),
+which only ever caught some mismatches by accident, never by an explicit
+comparison. Fixed properly:
+
+- New `frelsim::type::core::typesEqual(Type const&, Type const&)`
+  (`frelsim/type/core/TypeUtil.hpp/.cpp`) - structural equality across
+  `Type`'s oneof cases (`IntegerType` compares `is_signed`+`width`,
+  `FloatType` compares `precision`, `StructType`/`ArrayType` recurse, a
+  `type_ref` compares by URI string only - deliberately not resolved
+  against an inline description of the same type, since that would need a
+  `TypeRegistry` this utility doesn't take; see its doc comment).
+- The real gap this exposed: there was no way to even ask a destination
+  "what type do you expect for this input" - `Model` only exposed
+  `getOutputs`/`getParameters`, never inputs, and `ModelAdapter::get`
+  silently dropped `"Input"`-scoped queries entirely. Added
+  `Model::getInputs(Identifiers) const` (default empty, same convention as
+  `getParameters`), wired `ModelAdapter::get` to dispatch `"Input"` scope to
+  it, and implemented it in `PIDController` (`measurement`) and
+  `MassSpringDamper` (`force`) - their one real input each.
+- `Linker::link()` now fetches the destination's current input value before
+  wiring anything, and requires `typesEqual` against the source's actual
+  output type - a destination that doesn't override `getInputs` (e.g.
+  `BouncingBall`, which takes none) fails loudly rather than silently
+  skipping the check, since an unobserved type can't be verified.
+- New tests: `TypeUtilTest` (9 cases covering every `Type` case, including
+  the deliberate type_ref-vs-inline non-resolution and an unset-type
+  guard), and two new `LinkerTest` cases - a genuine cross-type mismatch
+  (needed a tiny test-only self-registering `BoolOutputStub` model, since
+  every real registered model in this codebase happens to use only
+  `FloatType` fields today) and the new "destination can't be type-checked"
+  failure path via `BouncingBall`.
+- Separately, `Overseer`'s private `requireInitialized()` helper was renamed
+  to `requireSimulator()` - the old name didn't say what it actually
+  returns (the `Simulator`), just that it guards something.
+
+Full suite: 112/112 passing.
+
 ## Track: sim executable runner
 
 *(not yet started)*

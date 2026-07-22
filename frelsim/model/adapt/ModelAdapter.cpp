@@ -22,6 +22,7 @@ bool ModelAdapter::stepUntil(double stopTime) {
 Values ModelAdapter::get(Identifiers ids) const {
     Identifiers outputs;
     Identifiers parameters;
+    Identifiers inputs;
     Values values;
     for (const auto& id : ids) {
         if (id.getScope() == "Parameter") {
@@ -30,10 +31,15 @@ Values ModelAdapter::get(Identifiers ids) const {
         else if (id.getScope() == "Output") {
             outputs.push_back(id);
         }
+        else if (id.getScope() == "Input") {
+            inputs.push_back(id);
+        }
     }
     values = instance_->getParameters(parameters);
     auto outputsValues = instance_->getOutputs(outputs);
     values.insert(values.end(), outputsValues.begin(), outputsValues.end());
+    auto inputsValues = instance_->getInputs(inputs);
+    values.insert(values.end(), inputsValues.begin(), inputsValues.end());
     return values;
 }
 

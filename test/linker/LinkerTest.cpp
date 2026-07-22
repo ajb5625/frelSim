@@ -1,8 +1,42 @@
 #include <gtest/gtest.h>
 #include "frelsim/linker/Linker.hpp"
+#include "frelsim/model/core/Model.hpp"
+#include "frelsim/model/factory/ModelFactory.hpp"
 
 namespace frelsim::linker {
 namespace {
+
+// Every real registered model in this codebase (BouncingBall, PIDController,
+// MassSpringDamper) happens to use only FloatType fields, so there's no way
+// to exercise a genuine cross-type wiring mismatch through Linker's real
+// code path without at least one differently-typed model to wire in. This
+// stub exists solely for that - a bool output, registered only within this
+// test binary.
+class BoolOutputStub final : public model::core::Model {
+    public:
+        explicit BoolOutputStub(sim::proto::SimulationDescription const& simDescription)
+            : Model(simDescription) {
+            continuousStates_ = State(0);
+            derivative_ = std::make_shared<std::function<State(State const&, double)>>(
+                [](State const& y, double) -> State { return State(y.size()); });
+        }
+
+        Values getOutputs(Identifiers ids) const override {
+            return Values(ids.size(), type::core::Value::makeBool(true));
+        }
+
+        void setInputs(SetOperations) override {}
+
+    protected:
+        void update() override {}
+
+        Derivative const& derivative() const override { return derivative_; }
+
+    private:
+        Derivative derivative_;
+};
+
+FRELSIM_REGISTER_MODEL("BoolOutputStub_LinkerTest", BoolOutputStub)
 
 sim::proto::SimulationDescription makePidDescription() {
     sim::proto::SimulationDescription desc;
@@ -102,6 +136,49 @@ TEST(LinkerTest, ThrowsOnAnUnknownSourceSimulation) {
 TEST(LinkerTest, ThrowsOnAnUnknownDestinationSimulation) {
     sim::proto::System system = makeValidSystem();
     system.mutable_composition(0)->mutable_destinations(0)->set_domain("doesNotExist");
+
+    EXPECT_THROW(Linker().link(system), std::invalid_argument);
+}
+
+TEST(LinkerTest, ThrowsOnATypeMismatchBetweenSourceAndDestination) {
+    // Wire BoolOutputStub's (bool) output into PID's "measurement" (a
+    // FloatType input) instead of the plant - a genuine cross-type
+    // mismatch, not just an unknown reference.
+    sim::proto::System system;
+    system.set_stop_time(1.0);
+
+    auto* stub = system.add_composition();
+    stub->mutable_simulation()->set_domain("stub");
+    stub->mutable_sim_description()->mutable_model_spec()->set_component_name("BoolOutputStub_LinkerTest");
+    auto* stubTask = stub->mutable_sim_description()->mutable_task();
+    stubTask->set_task_type(sim::proto::TaskType::Continuous);
+    stubTask->set_max_step_size(0.1);
+    stub->mutable_sim_description()->set_stop_time(1.0);
+
+    auto* pid = system.add_composition();
+    pid->mutable_simulation()->set_domain("pid");
+    *pid->mutable_sim_description() = makePidDescription();
+    *pid->mutable_source() = makeId("stub", "Output", "anything");
+    *pid->add_destinations() = makeId("pid", "Input", "measurement");
+
+    EXPECT_THROW(Linker().link(system), std::invalid_argument);
+}
+
+TEST(LinkerTest, ThrowsWhenADestinationDoesNotReportItsOwnInputType) {
+    // BouncingBall doesn't override Model::getInputs (it takes no inputs at
+    // all - setInputs is a no-op), so wiring anything into it can't be
+    // type-checked and must fail rather than silently skipping the check.
+    sim::proto::System system = makeValidSystem();
+
+    auto* bouncingBall = system.add_composition();
+    bouncingBall->mutable_simulation()->set_domain("ball");
+    bouncingBall->mutable_sim_description()->mutable_model_spec()->set_component_name("BouncingBall");
+    auto* ballTask = bouncingBall->mutable_sim_description()->mutable_task();
+    ballTask->set_task_type(sim::proto::TaskType::Continuous);
+    ballTask->set_max_step_size(0.1);
+    bouncingBall->mutable_sim_description()->set_stop_time(1.0);
+    *bouncingBall->mutable_source() = makeId("pid", "Output", "output");
+    *bouncingBall->add_destinations() = makeId("ball", "Input", "notARealInput");
 
     EXPECT_THROW(Linker().link(system), std::invalid_argument);
 }

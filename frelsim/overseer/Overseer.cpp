@@ -15,41 +15,41 @@ void Overseer::initialize() {
 }
 
 void Overseer::sim() {
-    requireInitialized().sim();
+    requireSimulator().sim();
 }
 
 bool Overseer::step(double stopTime) {
-    return requireInitialized().step(stopTime);
+    return requireSimulator().step(stopTime);
 }
 
 void Overseer::pause() {
-    requireInitialized().pause();
+    requireSimulator().pause();
 }
 
 void Overseer::resume() {
-    requireInitialized().resume();
+    requireSimulator().resume();
 }
 
 void Overseer::terminate() {
-    requireInitialized().terminate();
+    requireSimulator().terminate();
 }
 
 Values Overseer::get(std::string const& simulationKey, Identifiers const& ids) const {
-    return requireInitialized().get(simulationKey, ids);
+    return requireSimulator().get(simulationKey, ids);
 }
 
 double Overseer::simulationTime() const {
-    return requireInitialized().simulationTime();
+    return requireSimulator().simulationTime();
 }
 
-simulator::Simulator& Overseer::requireInitialized() {
+simulator::Simulator& Overseer::requireSimulator() {
     if (!simulator_) {
         throw std::logic_error("Overseer: not initialized - call initialize() first");
     }
     return *simulator_;
 }
 
-simulator::Simulator const& Overseer::requireInitialized() const {
+simulator::Simulator const& Overseer::requireSimulator() const {
     if (!simulator_) {
         throw std::logic_error("Overseer: not initialized - call initialize() first");
     }

@@ -15,6 +15,11 @@ std::vector<event::Event> const& Model::events() const {
     return none;
 }
 
+Values Model::getInputs(Identifiers ids) const {
+    (void)ids;
+    return {};
+}
+
 Values Model::getParameters(Identifiers ids) const {
     (void)ids;
     return {};

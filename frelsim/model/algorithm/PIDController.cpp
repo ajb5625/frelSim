@@ -47,6 +47,20 @@ void PIDController::setInputs(SetOperations ops) {
     }
 }
 
+Values PIDController::getInputs(Identifiers ids) const {
+    Values values;
+    values.reserve(ids.size());
+    for (auto const& id : ids) {
+        if (id.getName() == "measurement") {
+            values.push_back(type::core::Value::makeDouble(measurement_));
+        }
+        else {
+            values.push_back(type::core::Value::makeDouble(0.0));
+        }
+    }
+    return values;
+}
+
 Values PIDController::getParameters(Identifiers ids) const {
     Values values;
     values.reserve(ids.size());

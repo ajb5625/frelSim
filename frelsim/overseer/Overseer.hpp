@@ -73,9 +73,13 @@ class Overseer final {
         double simulationTime() const;
 
     private:
-        /// \brief Throws std::logic_error if initialize() hasn't run yet.
-        simulator::Simulator& requireInitialized();
-        simulator::Simulator const& requireInitialized() const;
+        /**
+         * \brief The Simulator initialize() constructed, or throws
+         * std::logic_error if initialize() hasn't run yet (simulator_ is
+         * still null).
+         */
+        simulator::Simulator& requireSimulator();
+        simulator::Simulator const& requireSimulator() const;
 
         sim::proto::System system_;
         linker::Linker linker_;

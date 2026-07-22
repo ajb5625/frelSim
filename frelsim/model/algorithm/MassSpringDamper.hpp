@@ -22,6 +22,8 @@ class MassSpringDamper final : public core::Model {
 
         void setInputs(SetOperations ops) override;
 
+        Values getInputs(Identifiers ids) const override;
+
         Values getParameters(Identifiers ids) const override;
 
         void setParameters(SetOperations ops) override;
