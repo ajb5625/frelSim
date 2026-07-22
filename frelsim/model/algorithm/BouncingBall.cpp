@@ -1,4 +1,5 @@
 #include "BouncingBall.hpp"
+#include "../factory/ModelFactory.hpp"
 
 namespace frelsim::model::algorithm {
 
@@ -106,5 +107,7 @@ void BouncingBall::setParameters(SetOperations ops) {
         }
     }
 }
+
+FRELSIM_REGISTER_MODEL("BouncingBall", BouncingBall)
 
 } // frelsim::model::algorithm

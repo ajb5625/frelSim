@@ -27,6 +27,13 @@ class Simulation final {
         ~Simulation();
 
         /**
+         * \brief The latest time this Simulation can safely be stepped to
+         * without missing a discrete task or zero-crossing event, capped at
+         * maxTime. Forwards to the underlying SimAdapter.
+         */
+        double guaranteeUntil(double maxTime);
+
+        /**
          * \brief Advance this simulation's internal time.
          * Update any states this simulation holds.
          * \param stopTime The time the simulation should advance to.
@@ -47,4 +54,4 @@ class Simulation final {
 };
 
 
-} // frelsim::simulation 
+} // frelsim::simulation

@@ -20,6 +20,13 @@ message RoutedSimulation {
     SimulationDescription sim_description = 2;
     Identifier source = 3;
     repeated Identifier destinations = 4;
+
+    // Applied once, right after this simulation is constructed and before
+    // the run loop starts - e.g. PID gains/setpoint, or a plant's mass. Per
+    // RoutedSimulation rather than SimulationDescription since the same
+    // component could in principle be instantiated more than once in one
+    // composition with different initial values.
+    repeated SetOperation initial_parameters = 5;
 }
 
 /*

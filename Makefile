@@ -118,6 +118,16 @@ PROTO_GRPC_OBJ     := $(patsubst %.cc,%.o,$(PROTO_GEN_GRPC_CC))
 # All objects (evaluated late so gRPC files are discovered)
 OBJ = $(OBJ_CPP) $(PROTO_OBJ) $(PROTO_GRPC_OBJ)
 
+# Models (and anything else using FRELSIM_REGISTER_MODEL) register themselves
+# via a static initializer in their own .o, with no other code referencing
+# them directly - ModelFactory.cpp deliberately doesn't #include any concrete
+# Model. That means an ordinary static-archive link would silently drop
+# those .o files (ld only pulls an archive member in to resolve an
+# outstanding undefined symbol, and nothing asks for one), so any executable
+# that needs the model registry to actually be populated must link
+# libfrelsim.a via this instead of the plain $(TARGET) path.
+LINK_LIBFRELSIM := -Wl,--whole-archive $(TARGET) -Wl,--no-whole-archive
+
 # ===== Tests =====
 TEST_DIR := test
 TEST_SRC := $(shell find $(TEST_DIR) -type f -name '*.cpp' 2>/dev/null)
@@ -168,7 +178,7 @@ $(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.cpp | $(PROTO_GEN_HDR)
 
 $(TEST_BIN): $(TEST_OBJ) $(TARGET)
 	@mkdir -p $(dir $@)
-	$(CXX) $(LDFLAGS) -o $@ $(TEST_OBJ) $(TARGET) $(GTEST_LIBS) $(GMOCK_LIBS) $(LDLIBS)
+	$(CXX) $(LDFLAGS) -o $@ $(TEST_OBJ) $(LINK_LIBFRELSIM) $(GTEST_LIBS) $(GMOCK_LIBS) $(LDLIBS)
 
 .PHONY: test
 test: $(TEST_BIN)
