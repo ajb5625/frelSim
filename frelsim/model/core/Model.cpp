@@ -58,12 +58,17 @@ void Model::initialize() {
         solverConfig.absoluteTolerance = simDescription_.model_spec().absolute_tolerance();
     }
 
-    // Create the solver and event engine.
+    // Create the solver and event engine. continuousStates_ is passed
+    // through only for SolverType::Automatic's one-time stiffness
+    // diagnostic (see SolverFactory::createSolver); it's already set to the
+    // model's real initial condition by the subclass's constructor, which
+    // runs before initialize() is ever called.
     solver_ = integrate::factory::createSolver(simDescription_.model_spec().solver_type()
                                               , simDescription_.stop_time()
                                               , solverConfig
                                               , derivative()
-                                              , jacobian());
+                                              , jacobian()
+                                              , continuousStates_);
     eventEngine_ = std::make_unique<event::EventEngine>(events()
                                                         , SolverTolerance
                                                         , solverStepSize);

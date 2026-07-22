@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include "frelsim/integrate/factory/SolverFactory.hpp"
+#include "frelsim/integrate/expl/DormandPrince45.hpp"
+#include "frelsim/integrate/impl/BackwardEuler.hpp"
 
 namespace frelsim::integrate::factory {
 namespace {
@@ -60,6 +62,91 @@ TEST(SolverFactoryTest, ReturnsNullptrForAnUnregisteredSolverType) {
                               , exponentialDecayDerivative());
 
     EXPECT_EQ(solver, nullptr);
+}
+
+// dy/dt = -1000*y is stiff on its own (a single mode has nothing slower to
+// be compared against, per StiffnessDetectorTest), so pair it with a second,
+// much slower state to actually produce the widely-separated decay rates
+// stiffness is about.
+JacobianFunction stiffJacobian() {
+    return std::make_shared<std::function<Matrix(State const&, double)>>(
+        [](State const&, double) -> Matrix {
+            Matrix jacobian(2, 2);
+            jacobian << -1000.0, 0.0,
+                            0.0, -1.0;
+            return jacobian;
+        });
+}
+
+JacobianFunction nonStiffJacobian() {
+    return std::make_shared<std::function<Matrix(State const&, double)>>(
+        [](State const&, double) -> Matrix {
+            Matrix jacobian(2, 2);
+            jacobian << -1.0, 0.0,
+                         0.0, -2.0;
+            return jacobian;
+        });
+}
+
+Derivative twoStateDecayDerivative() {
+    return std::make_shared<std::function<State(State const&, double)>>(
+        [](State const& y, double) -> State {
+            State dydt(2);
+            dydt[0] = -1000.0 * y[0];
+            dydt[1] = -1.0 * y[1];
+            return dydt;
+        });
+}
+
+TEST(SolverFactoryTest, AutomaticPicksBackwardEulerWhenTheJacobianIsStiff) {
+    SolverConfig config;
+    config.stepSize = 0.001;
+    config.maxStepSize = 0.1;
+    State initialState(2);
+    initialState << 1.0, 1.0;
+
+    auto solver = createSolver(sim::proto::SolverType::Automatic, /*stopTime=*/1.0, config
+                              , twoStateDecayDerivative(), stiffJacobian(), initialState);
+
+    ASSERT_NE(solver, nullptr);
+    EXPECT_NE(dynamic_cast<impl::BackwardEuler*>(solver.get()), nullptr);
+}
+
+TEST(SolverFactoryTest, AutomaticPicksDormandPrinceWhenTheJacobianIsNotStiff) {
+    SolverConfig config;
+    config.maxStepSize = 0.1;
+    State initialState(2);
+    initialState << 1.0, 1.0;
+
+    auto solver = createSolver(sim::proto::SolverType::Automatic, /*stopTime=*/1.0, config
+                              , twoStateDecayDerivative(), nonStiffJacobian(), initialState);
+
+    ASSERT_NE(solver, nullptr);
+    EXPECT_NE(dynamic_cast<expl::DormandPrince45*>(solver.get()), nullptr);
+}
+
+TEST(SolverFactoryTest, AutomaticFallsBackToDormandPrinceWithoutAJacobian) {
+    SolverConfig config;
+    config.maxStepSize = 0.1;
+    State initialState(1);
+    initialState << 1.0;
+
+    auto solver = createSolver(sim::proto::SolverType::Automatic, /*stopTime=*/1.0, config
+                              , exponentialDecayDerivative(), /*jf=*/nullptr, initialState);
+
+    ASSERT_NE(solver, nullptr);
+    EXPECT_NE(dynamic_cast<expl::DormandPrince45*>(solver.get()), nullptr);
+}
+
+TEST(SolverFactoryTest, AutomaticFallsBackToDormandPrinceWithoutAnInitialState) {
+    SolverConfig config;
+    config.maxStepSize = 0.1;
+
+    auto solver = createSolver(sim::proto::SolverType::Automatic, /*stopTime=*/1.0, config
+                              , exponentialDecayDerivative(), exponentialDecayJacobian());
+
+    ASSERT_NE(solver, nullptr);
+    EXPECT_NE(dynamic_cast<expl::DormandPrince45*>(solver.get()), nullptr);
 }
 
 } // namespace

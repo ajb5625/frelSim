@@ -1,5 +1,6 @@
 #include "SolverFactory.hpp"
 #include <map>
+#include "../analysis/StiffnessDetector.hpp"
 
 namespace frelsim::integrate::factory {
 
@@ -13,6 +14,23 @@ std::map<sim::proto::SolverType, SolverCreator>& registry() {
     return instance;
 }
 
+// Resolves Automatic to a concrete SolverType via a one-time stiffness
+// diagnostic; passes every other SolverType through unchanged.
+sim::proto::SolverType resolveSolverType(sim::proto::SolverType solverType
+                                        , const JacobianFunction jf
+                                        , State const& initialState) {
+    if (solverType != sim::proto::SolverType::Automatic) {
+        return solverType;
+    }
+    if (jf == nullptr || initialState.size() == 0) {
+        return sim::proto::SolverType::DormandPrince;
+    }
+    Matrix const jacobian = (*jf)(initialState, /*t=*/0.0);
+    return analysis::assessStiffness(jacobian).isStiff
+        ? sim::proto::SolverType::BackwardEuler
+        : sim::proto::SolverType::DormandPrince;
+}
+
 } // namespace
 
 bool registerSolver(sim::proto::SolverType solverType, SolverCreator creator) {
@@ -24,8 +42,10 @@ std::unique_ptr<integrate::core::Solver> createSolver(frelsim::sim::proto::Solve
                                                                     , double stopTime
                                                                     , SolverConfig const& config
                                                                     , const Derivative f
-                                                                    , const JacobianFunction jf) {
-    auto it = registry().find(solverType);
+                                                                    , const JacobianFunction jf
+                                                                    , State const& initialState) {
+    sim::proto::SolverType const resolvedType = resolveSolverType(solverType, jf, initialState);
+    auto it = registry().find(resolvedType);
     if (it == registry().end()) {
         return nullptr;
     }

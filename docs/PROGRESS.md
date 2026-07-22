@@ -469,6 +469,53 @@ kind this refactor could introduce. One test constructs every registered
 correctly (not just non-null); the other checks an unregistered type
 returns `nullptr` rather than, say, asserting. Full suite: 76/76 passing.
 
+## Track: Jacobian-driven stiffness detection + automatic solver selection
+
+Added `SolverType::Automatic` (a new additive enum value, 4 - existing values
+and the proto3 default of 0/Euler are unchanged, so this is opt-in). When
+requested, `SolverFactory::createSolver` runs a one-time diagnostic rather
+than a direct registry lookup: it evaluates the model's Jacobian at its
+initial state (time 0) and classifies stiffness, then resolves to a concrete
+`SolverType` and proceeds exactly as it would if that type had been
+requested directly. This is a single choice made once (mirroring the earlier
+confirmed scope: diagnostic + choose-once-at-`Model::initialize()`), not a
+dynamic mid-simulation switch - there's no machinery here watching for the
+system to become stiff mid-run.
+
+New `frelsim/integrate/analysis/StiffnessDetector.{hpp,cpp}` holds the
+diagnostic itself, kept separate from `SolverFactory` since "is this system
+stiff" is a reusable question independent of solver construction:
+`assessStiffness(Matrix const& jacobian, double threshold = 1000.0)` uses
+the classic ratio-of-eigenvalue-real-parts heuristic (`Eigen::EigenSolver`,
+since a Jacobian from an arbitrary nonlinear system has no reason to be
+symmetric) - the ratio between a system's fastest- and slowest-decaying
+*stable* modes (negative real part; marginal/unstable modes are excluded
+since they don't impose the explicit step-size restriction stiffness is
+actually about). A ratio at or above the threshold (1000 is the textbook
+rule-of-thumb default) is reported stiff. This is inherently a single-sample
+approximation, not a stiffness proof - good enough to pick a solver family
+once at startup, not a substitute for a model author's own judgment.
+
+`SolverFactory::createSolver` gained a trailing `initialState` parameter
+(defaulted, so every existing call site is unaffected) that only matters for
+`Automatic`: stiff resolves to `BackwardEuler` (the only implicit solver
+this framework has), not stiff resolves to `DormandPrince` (the best
+general-purpose adaptive explicit default). Without a Jacobian or an initial
+state to evaluate it at, it falls back to `DormandPrince` unconditionally,
+since stiffness can't be assessed - and can't be handled implicitly - without
+one. `Model::initialize()` now threads `continuousStates_` through to
+`createSolver`; it's already set to the model's real initial condition by
+the subclass's constructor, which always runs before `initialize()` is
+called, so no ordering change was needed.
+
+Added `StiffnessDetectorTest` (6 tests, including the "one fast mode alone
+isn't stiff without something slower to compare against" and "unstable/
+marginal modes must not be folded into the ratio" edge cases) and extended
+`SolverFactoryTest` (4 new tests) to check `Automatic` actually resolves to
+the right concrete solver via `dynamic_cast` - stiff picks `BackwardEuler`,
+not-stiff picks `DormandPrince`, and both no-Jacobian and no-initial-state
+fall back to `DormandPrince`. Full suite: 86/86 passing.
+
 ## Track: sim executable runner
 
 *(not yet started)*
