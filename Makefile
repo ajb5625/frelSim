@@ -137,6 +137,12 @@ endif
 TEST_OBJ := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_SRC))
 TEST_BIN := $(BIN_DIR)/frelsim_tests
 
+# ===== Sim executable runner =====
+SIM_DIR := sim
+SIM_SRC := $(shell find $(SIM_DIR) -type f -name '*.cpp' 2>/dev/null)
+SIM_OBJ := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SIM_SRC))
+SIM_BIN := $(BIN_DIR)/frelsim_sim
+
 # ===== Default =====
 .PHONY: all
 all: $(TARGET)
@@ -184,6 +190,22 @@ $(TEST_BIN): $(TEST_OBJ) $(TARGET)
 test: $(TEST_BIN)
 	$(TEST_BIN)
 
+# Sim sources (same shortest-stem reasoning as test/%.cpp above).
+$(OBJ_DIR)/$(SIM_DIR)/%.o: $(SIM_DIR)/%.cpp | $(PROTO_GEN_HDR)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -I. -c $< -o $@
+
+# Needs LINK_LIBFRELSIM (not $(TARGET) directly): Overseer pulls in Models
+# and Solvers purely through their self-registering factories, so the same
+# --whole-archive requirement as frelsim_tests applies here too - see
+# LINK_LIBFRELSIM's comment above.
+$(SIM_BIN): $(SIM_OBJ) $(TARGET)
+	@mkdir -p $(dir $@)
+	$(CXX) $(LDFLAGS) -o $@ $(SIM_OBJ) $(LINK_LIBFRELSIM) $(LDLIBS)
+
+.PHONY: sim
+sim: $(SIM_BIN)
+
 # ===== Proto codegen (messages always; gRPC optional) =====
 $(OBJ_DIR)/$(PROTO_DIR)/%.stamp: $(PROTO_DIR)/%.proto
 	@mkdir -p $(dir $@)
@@ -220,6 +242,7 @@ print:
 	@echo "TARGET            = $(TARGET)"
 	@echo "TEST_SRC          = $(TEST_SRC)"
 	@echo "HAVE_GMOCK        = $(HAVE_GMOCK)"
+	@echo "SIM_SRC           = $(SIM_SRC)"
 
 docs:
 	doxygen Doxyfile
@@ -231,3 +254,4 @@ docs:
 -include $(PROTO_OBJ:.o=.d)
 -include $(PROTO_GRPC_OBJ:.o=.d)
 -include $(TEST_OBJ:.o=.d)
+-include $(SIM_OBJ:.o=.d)
