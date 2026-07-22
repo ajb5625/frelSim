@@ -1,10 +1,10 @@
 #pragma once
-#include "../core/Solver.hpp"
+#include "../core/FixedStepSolver.hpp"
 
 namespace frelsim::integrate::expl {
 
 
-class Euler : public core::Solver {
+class Euler : public core::FixedStepSolver {
 
     public:
         Euler(double stopTime, double stepSize, const Derivative& f);

@@ -1,9 +1,9 @@
 #pragma once
-#include "../core/Solver.hpp"
+#include "../core/FixedStepSolver.hpp"
 
 namespace frelsim::integrate::impl {
 
-class BackwardEuler : public core::Solver {
+class BackwardEuler : public core::FixedStepSolver {
 
     public:
         BackwardEuler(double stopTime,

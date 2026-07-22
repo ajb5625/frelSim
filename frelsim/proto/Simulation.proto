@@ -52,6 +52,12 @@ enum SolverType {
 message ModelSpec {
     string component_name = 1;
     SolverType solver_type = 2;
+
+    // Only meaningful for variable-step solvers (e.g. DormandPrince). Unset
+    // means "use the solver's built-in default" - see
+    // frelsim::integrate::factory::createSolver.
+    optional double relative_tolerance = 3;
+    optional double absolute_tolerance = 4;
 }
 
 message FMUSpec {

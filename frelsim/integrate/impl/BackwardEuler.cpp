@@ -6,7 +6,7 @@ namespace frelsim::integrate::impl {
 BackwardEuler::BackwardEuler(double stopTime
                         , double stepSize
                         , const Derivative f
-                        , const JacobianFunction jf) : Solver(stopTime, stepSize, f, jf)  {}
+                        , const JacobianFunction jf) : FixedStepSolver(stopTime, stepSize, f, jf)  {}
 
 void BackwardEuler::singleStep(State& y0, double currentTime, double dt) {
     double const targetTime = currentTime + dt;

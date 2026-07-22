@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <cmath>
+#include "frelsim/integrate/expl/DormandPrince45.hpp"
 #include "frelsim/integrate/expl/Euler.hpp"
 #include "frelsim/integrate/expl/RungeKutta4.hpp"
 #include "frelsim/integrate/impl/BackwardEuler.hpp"
@@ -99,6 +100,98 @@ TEST(BackwardEulerTest, ApproximatesExponentialDecay) {
     solver.step(y, 0.0, 1.0);
 
     EXPECT_NEAR(y[0], std::exp(-1.0), 1e-2);
+}
+
+TEST(DormandPrince45Test, ApproximatesExponentialDecayVeryTightly) {
+    expl::DormandPrince45 solver(/*stopTime=*/1.0
+                                , /*relativeTolerance=*/1e-8
+                                , /*absoluteTolerance=*/1e-10
+                                , /*minStepSize=*/1e-8
+                                , /*maxStepSize=*/0.1
+                                , exponentialDecayDerivative());
+    State y(1);
+    y[0] = 1.0;
+
+    solver.step(y, 0.0, 1.0);
+
+    // A 5th-order adaptive method at tight tolerance should comfortably beat
+    // the fixed-step solvers above despite far fewer, larger steps.
+    EXPECT_NEAR(y[0], std::exp(-1.0), 1e-9);
+}
+
+TEST(DormandPrince45Test, IntegratesATimeVaryingDerivativeCorrectly) {
+    // dy/dt = t has the closed-form solution y(t) = y0 + t^2/2. Exponential
+    // decay above never exercises the Butcher tableau's time-node
+    // coefficients (c2..c6), since its derivative ignores t entirely - this
+    // specifically catches a transcription error in those.
+    Derivative rampDerivative = std::make_shared<std::function<State(State const&, double)>>(
+        [](State const&, double t) -> State {
+            State dydt(1);
+            dydt[0] = t;
+            return dydt;
+        });
+
+    expl::DormandPrince45 solver(/*stopTime=*/2.0
+                                , /*relativeTolerance=*/1e-8
+                                , /*absoluteTolerance=*/1e-10
+                                , /*minStepSize=*/1e-8
+                                , /*maxStepSize=*/0.5
+                                , rampDerivative);
+    State y(1);
+    y[0] = 0.0;
+
+    solver.step(y, 0.0, 2.0);
+
+    EXPECT_NEAR(y[0], 2.0, 1e-8); // 0 + 2^2/2 = 2.0
+}
+
+TEST(DormandPrince45Test, ReachesExactlyTheSameTargetAcrossSeveralSmallerCalls) {
+    expl::DormandPrince45 solver(/*stopTime=*/1.0
+                                , /*relativeTolerance=*/1e-8
+                                , /*absoluteTolerance=*/1e-10
+                                , /*minStepSize=*/1e-8
+                                , /*maxStepSize=*/0.2
+                                , exponentialDecayDerivative());
+    State y(1);
+    y[0] = 1.0;
+
+    double t = 0.0;
+    for (double target : {0.3, 0.55, 0.7, 1.0}) {
+        solver.step(y, t, target);
+        t = target;
+    }
+
+    EXPECT_NEAR(y[0], std::exp(-1.0), 1e-8);
+}
+
+TEST(DormandPrince45Test, LooserToleranceTakesFewerDerivativeEvaluations) {
+    // Demonstrates the adaptation actually engages, not just accepting
+    // every step at some fixed size: a looser tolerance should let the
+    // solver take bigger steps and therefore call the derivative function
+    // fewer times to cover the same interval.
+    auto makeCountingDerivative = [](int& count) {
+        return std::make_shared<std::function<State(State const&, double)>>(
+            [&count](State const& y, double) -> State {
+                ++count;
+                State dydt(1);
+                dydt[0] = -y[0];
+                return dydt;
+            });
+    };
+
+    int tightCount = 0;
+    expl::DormandPrince45 tightSolver(1.0, /*relativeTolerance=*/1e-10, /*absoluteTolerance=*/1e-12, 1e-8, 0.5, makeCountingDerivative(tightCount));
+    State yTight(1);
+    yTight[0] = 1.0;
+    tightSolver.step(yTight, 0.0, 1.0);
+
+    int looseCount = 0;
+    expl::DormandPrince45 looseSolver(1.0, /*relativeTolerance=*/1e-3, /*absoluteTolerance=*/1e-5, 1e-8, 0.5, makeCountingDerivative(looseCount));
+    State yLoose(1);
+    yLoose[0] = 1.0;
+    looseSolver.step(yLoose, 0.0, 1.0);
+
+    EXPECT_LT(looseCount, tightCount);
 }
 
 TEST(SolverTest, StepReturnsTrueOnceSimulationTimeReachesStopTime) {

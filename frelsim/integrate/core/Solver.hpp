@@ -1,47 +1,40 @@
 #pragma once
-#include <algorithm>
 #include <functional>
 #include "../../util/almost_equal.hpp"
 #include "../../util/Aliases.hpp"
 
 namespace frelsim::integrate::core {
 
+/**
+ * \brief The truly common contract across every numerical ODE solver:
+ * something to integrate (f_, and optionally its Jacobian for implicit
+ * methods), an overall stopTime to know when the whole simulation is done,
+ * and a way to advance state from one time to another. HOW that advance
+ * happens differs fundamentally between fixed-step solvers (own a step
+ * size, sub-step internally - see FixedStepSolver.hpp) and variable-step
+ * solvers (adapt their own step size call to call based on local error
+ * control - see VariableStepSolver.hpp), so this base deliberately doesn't
+ * assume either shape.
+ */
 class Solver {
 
     public:
         Solver(double stopTime
-             , double stepSize
              , const Derivative f
              , const JacobianFunction jf = nullptr);
 
         virtual ~Solver();
 
         /**
-         * \brief Advance state from currentTime to targetTime, taking as
-         * many sub-steps of at most stepSize_ as needed to get there - the
-         * usual fixed-step-solver contract: this solver owns its own step
-         * size for accuracy/stability and sub-steps internally to cover
-         * whatever interval it's asked to cover, rather than trusting the
-         * caller to always ask in exact multiples of that step size (the
-         * caller - Model::stepUntil, ultimately driven by Simulator - can
-         * be forced to request a smaller-than-usual interval to land
-         * exactly on a discrete task or event boundary, and a larger one is
-         * simply covered by more sub-steps).
+         * \brief Advance state from currentTime to targetTime.
          * \returns true once targetTime reaches this solver's overall stopTime.
          */
-        bool step(State& state, double currentTime, double targetTime);
+        virtual bool step(State& state, double currentTime, double targetTime) = 0;
 
     protected:
-        /**
-         * \brief One actual integration step of size dt, starting at
-         * currentTime. Implemented by each concrete solver; step() above
-         * calls this as many times as needed to cover the requested
-         * interval.
-         */
-        virtual void singleStep(State& state, double currentTime, double dt) = 0;
+        bool reachedStopTime(double targetTime) const;
 
         double stopTime_;
-        double stepSize_;
         Derivative f_;
         JacobianFunction jacobianFunction_;
 

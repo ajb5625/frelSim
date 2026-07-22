@@ -4,7 +4,7 @@ namespace frelsim::integrate::expl {
 
 RungeKutta4::RungeKutta4(double stopTime
                         , double stepSize
-                        , const Derivative f) : Solver(stopTime, stepSize, f) {}
+                        , const Derivative f) : FixedStepSolver(stopTime, stepSize, f) {}
 
 RungeKutta4::~RungeKutta4() = default;
 
