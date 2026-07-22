@@ -8,12 +8,11 @@ Euler::Euler(double stopTime, double stepSize, const Derivative& f) : Solver(sto
 
 Euler::~Euler() {}
 
-bool Euler::step(State& y0, double simulationTime) {
-    State dydt = (*f_)(y0, simulationTime);
+void Euler::singleStep(State& y0, double currentTime, double dt) {
+    State dydt = (*f_)(y0, currentTime);
     for (Eigen::Index idx = 0; idx < y0.size(); idx++) {
-        y0[idx] = y0[idx] + stepSize_ * dydt[idx];
+        y0[idx] = y0[idx] + dt * dydt[idx];
     }
-    return util::almostEqual(simulationTime, stopTime_);
 }
 
 } // namespace frelsim::integrate::expl

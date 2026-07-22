@@ -29,19 +29,11 @@ JacobianFunction exponentialDecayJacobian() {
 }
 
 TEST(EulerTest, ApproximatesExponentialDecay) {
-    double const stepSize = 0.001;
-    double const totalTime = 1.0;
-    int const numSteps = static_cast<int>(totalTime / stepSize);
-
-    expl::Euler solver(totalTime, stepSize, exponentialDecayDerivative());
+    expl::Euler solver(/*stopTime=*/1.0, /*stepSize=*/0.001, exponentialDecayDerivative());
     State y(1);
     y[0] = 1.0;
 
-    double t = 0.0;
-    for (int i = 0; i < numSteps; ++i) {
-        solver.step(y, t);
-        t += stepSize;
-    }
+    solver.step(y, 0.0, 1.0);
 
     // Euler is first-order accurate; a 0.001 step over 1 second should still
     // land within a loose but meaningful tolerance of the true e^-1.
@@ -49,39 +41,62 @@ TEST(EulerTest, ApproximatesExponentialDecay) {
 }
 
 TEST(RungeKutta4Test, ApproximatesExponentialDecayTightly) {
-    double const stepSize = 0.01;
-    double const totalTime = 1.0;
-    int const numSteps = static_cast<int>(totalTime / stepSize);
-
-    expl::RungeKutta4 solver(totalTime, stepSize, exponentialDecayDerivative());
+    expl::RungeKutta4 solver(/*stopTime=*/1.0, /*stepSize=*/0.01, exponentialDecayDerivative());
     State y(1);
     y[0] = 1.0;
 
-    double t = 0.0;
-    for (int i = 0; i < numSteps; ++i) {
-        solver.step(y, t);
-        t += stepSize;
-    }
+    solver.step(y, 0.0, 1.0);
 
     // RK4 is fourth-order accurate, so even a coarser 0.01 step should be
     // far more accurate than Euler's finer 0.001 step above.
     EXPECT_NEAR(y[0], std::exp(-1.0), 1e-6);
 }
 
-TEST(BackwardEulerTest, ApproximatesExponentialDecay) {
-    double const stepSize = 0.001;
-    double const totalTime = 1.0;
-    int const numSteps = static_cast<int>(totalTime / stepSize);
+TEST(RungeKutta4Test, IntegratesTheActualRequestedIntervalNotJustOneFixedStep) {
+    // Regression test: Solver::step used to take exactly one step of its
+    // fixed construction-time size regardless of how far apart currentTime
+    // and targetTime actually were - correct only when a caller happened to
+    // always ask in exact multiples of that size, silently wrong (badly
+    // under- or over-integrating) the moment it didn't. This is exactly
+    // what happened composing PIDController with MassSpringDamper through
+    // Simulator, where the common step size varies (see docs/PROGRESS.md).
+    // Ask for the whole interval in one call with a step size that doesn't
+    // evenly divide it, forcing internal sub-stepping with a smaller final
+    // step - if step() only took one stepSize_-sized step, this would land
+    // nowhere near targetTime and miss badly.
+    expl::RungeKutta4 solver(/*stopTime=*/1.0, /*stepSize=*/0.03, exponentialDecayDerivative());
+    State y(1);
+    y[0] = 1.0;
 
-    impl::BackwardEuler solver(totalTime, stepSize, exponentialDecayDerivative(), exponentialDecayJacobian());
+    solver.step(y, 0.0, 1.0);
+
+    EXPECT_NEAR(y[0], std::exp(-1.0), 1e-5);
+}
+
+TEST(RungeKutta4Test, ReachesExactlyTheSameTargetAcrossSeveralSmallerCalls) {
+    // A caller (Model::stepUntil) may reach the same overall target through
+    // several smaller step() calls instead of one big one (e.g. landing on
+    // intermediate discrete/event boundaries) - this should integrate to
+    // essentially the same result as covering the interval in one call.
+    expl::RungeKutta4 solver(/*stopTime=*/1.0, /*stepSize=*/0.01, exponentialDecayDerivative());
     State y(1);
     y[0] = 1.0;
 
     double t = 0.0;
-    for (int i = 0; i < numSteps; ++i) {
-        solver.step(y, t);
-        t += stepSize;
+    for (double target : {0.3, 0.55, 0.7, 1.0}) {
+        solver.step(y, t, target);
+        t = target;
     }
+
+    EXPECT_NEAR(y[0], std::exp(-1.0), 1e-6);
+}
+
+TEST(BackwardEulerTest, ApproximatesExponentialDecay) {
+    impl::BackwardEuler solver(/*stopTime=*/1.0, /*stepSize=*/0.001, exponentialDecayDerivative(), exponentialDecayJacobian());
+    State y(1);
+    y[0] = 1.0;
+
+    solver.step(y, 0.0, 1.0);
 
     EXPECT_NEAR(y[0], std::exp(-1.0), 1e-2);
 }
@@ -91,8 +106,8 @@ TEST(SolverTest, StepReturnsTrueOnceSimulationTimeReachesStopTime) {
     State y(1);
     y[0] = 1.0;
 
-    EXPECT_FALSE(solver.step(y, 0.0));
-    EXPECT_TRUE(solver.step(y, 1.0));
+    EXPECT_FALSE(solver.step(y, 0.0, 0.5));
+    EXPECT_TRUE(solver.step(y, 0.5, 1.0));
 }
 
 } // namespace

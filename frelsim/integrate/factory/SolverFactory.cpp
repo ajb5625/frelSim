@@ -27,7 +27,7 @@ std::unique_ptr<integrate::core::Solver> createSolver(frelsim::sim::proto::Solve
         default:
             return nullptr;
         break;
-    }   
+    }
 }
 } // frelsim::integrate::factory
 
