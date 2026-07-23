@@ -13,11 +13,16 @@ components (FMU, handwritten-code-over-gRPC, or native `frelsim` `Model`s)
 into one co-simulation via gRPC/protobuf.
 
 **Read `docs/PROGRESS.md` before making any non-trivial architecture
-decision.** It's the full chronological narrative - design decisions, why
-they were made, bugs found and their root causes, things tried and reverted.
-This skill only captures the load-bearing summary; PROGRESS.md has the
-reasoning. Don't duplicate its content here or let this file's summary
-override it if they ever disagree - PROGRESS.md is the source of truth.
+decision.** It's now an index into `docs/progress/*.md`, one file per area
+of the codebase (organized by directory - `type-system.md`, `models.md`,
+`solvers.md`, `pipeline.md`, etc. - see the table in `docs/PROGRESS.md`
+itself) - design decisions, why they were made, bugs found and their root
+causes, things tried and reverted. This skill only captures the
+load-bearing summary; the progress files have the reasoning. Don't
+duplicate their content here or let this file's summary override them if
+they ever disagree - the progress files are the source of truth. For how to
+*use* the framework (not why it's built this way), see `docs/guide/`
+instead.
 
 ## Git workflow - the one rule that matters most
 
@@ -112,13 +117,21 @@ exactly) rather than linking `$(TARGET)`/`build/libfrelsim.a` directly.
   *previous* step's values (one step of lag, not solved to a fixed point).
   Time advancement is conservative lock-step: the minimum of every composed
   `Simulation`'s own `guaranteeUntil` horizon, computed each step.
-- **Composition validation is a deliberate stopgap, not solved**:
-  `Simulator::initialize()` does a one-time dry-run over wired edges to
-  catch unknown references/type mismatches at startup. A real validator (a
-  `Linker`/`Compiler`-shaped component, discussed but not yet built) needs
-  `Model` to be able to declare its port types without being instantiated
-  and queried - nothing does that today. Check the live task list (next
-  section) before assuming this has been built.
+- **Config → link → execute is three separate components, not `Simulator`'s
+  job**: `Compiler` (JSON config -> structural `System` proto) -> `Linker`
+  (constructs every composed `Simulation`, applies `initial_parameters`,
+  and type-checks every wired edge via `typesEqual` - see
+  `docs/progress/pipeline.md` and `type-system.md`) -> `Simulator` (routing
+  + lock-step time advancement only, no construction/validation of its
+  own). `Overseer` owns invoking all three and is the actual top-level
+  entry point (mirrors `Simulator.proto`'s gRPC service one-to-one, and is
+  what the `frelsim_sim` executable and any future gRPC/REST layer sit on
+  top of). Don't re-add construction or validation logic to `Simulator`
+  itself without reading `docs/progress/simulator.md`/`pipeline.md` first.
+- **Wiring an edge requires both sides to support type introspection**:
+  `Model::getInputs` must be overridden by any model that's legally wireable
+  as a `Linker` destination (a model with no inputs, like `BouncingBall`,
+  correctly can't be wired into) - see `docs/progress/models.md`.
 
 ## Environment quirks (this dev machine specifically)
 
@@ -146,16 +159,18 @@ exactly) rather than linking `$(TARGET)`/`build/libfrelsim.a` directly.
 Check the live task list first (`TaskList` tool) - this is a point-in-time
 note, not authoritative. As of the last update:
 
-**Done**: MVP bring-up (build recovery, `BouncingBall`), type system stages
-1 & 2 (byte-oriented `Value`/`Layout`/`TypeRegistry`, wired into
-`Model`/`SimAdapter`), GTest package, `PIDController` + `MassSpringDamper`
-models, `Simulator` orchestration (routing, lock-step stepping, composition
-validation stopgap), the `Solver` fixed-step-size fix.
+**Done**: MVP bring-up, type system stages 1 & 2, GTest package + CI,
+`Solver` fixed-step-size fix + hierarchy split (`FixedStepSolver`/
+`VariableStepSolver`) + `DormandPrince45`, `SolverFactory`/`ModelFactory`
+self-registration, Jacobian-driven stiffness detection + automatic solver
+selection, the `Compiler`/`Linker`/`Overseer` pipeline (with real
+`typesEqual`-based wiring type-checks), the `frelsim_sim` executable
+runner, six models (`BouncingBall`, `PIDController`, `MassSpringDamper`,
+`FirstOrderLag`, `BangBangController`, `LongitudinalVehicle`), this
+`docs/progress/` split, and the `docs/guide/` user's guide.
 
 **Pending**: gRPC `Simulation` service (component-level RPC) + client
 adapter, FMU adapter (dlopen-based), `Simulator`'s gRPC service
-(orchestrator-to-orchestrator stepping), sim executable runner (JSON config
--> loads a `System` -> runs it), extracting the composition-validation
-stopgap out of `Simulator` into its own component (name TBD - candidates
-discussed: `SimulationLinker`), more simple control-system models building
-incrementally toward a vehicle model, GitHub Actions CI running build+test.
+(orchestrator-to-orchestrator stepping, but `Overseer` is already shaped to
+back it - see `docs/progress/pipeline.md`), a REST layer, lateral/steering
+vehicle dynamics beyond `LongitudinalVehicle`.
