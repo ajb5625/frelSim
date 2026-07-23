@@ -36,3 +36,6 @@ jobs:
 
       - name: Run sim executable against example config
         run: ./build/frelsim_sim examples/pid_mass_spring_damper.json
+
+      - name: Verify the example config's logged output was written
+        run: test -s output/pid_mass_spring_damper_log.csv

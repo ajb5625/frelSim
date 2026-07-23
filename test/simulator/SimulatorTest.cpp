@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <algorithm>
+#include <vector>
 #include "frelsim/simulator/Simulator.hpp"
 #include "frelsim/linker/Linker.hpp"
 
@@ -143,6 +145,43 @@ TEST(SimulatorTest, PauseStopsSimBeforeReachingStopTime) {
     simulator.step(0.2);
     EXPECT_FALSE(simulator.step(0.2));
     EXPECT_NEAR(simulator.simulationTime(), 0.02, 1e-9);
+}
+
+TEST(SimulatorTest, StepObserverFiresOnceAtTheEndOfEveryStepCallWithCurrentTime) {
+    Simulator simulator(linker::Linker().link(makeSystem(0.2)));
+    simulator.initialize();
+
+    std::vector<double> observedTimes;
+    simulator.setStepObserver([&observedTimes](Simulator const& sim) {
+        observedTimes.push_back(sim.simulationTime());
+    });
+
+    bool finished = false;
+    int stepCalls = 0;
+    while (!finished) {
+        finished = simulator.step(0.2);
+        ++stepCalls;
+    }
+
+    // One observer call per step() call, each reporting simulationTime() as
+    // it stood immediately after that step - not just a final callback.
+    EXPECT_EQ(static_cast<int>(observedTimes.size()), stepCalls);
+    EXPECT_TRUE(std::is_sorted(observedTimes.begin(), observedTimes.end()));
+    EXPECT_NEAR(observedTimes.back(), simulator.simulationTime(), 1e-9);
+    EXPECT_NEAR(observedTimes.back(), 0.2, 1e-9);
+}
+
+TEST(SimulatorTest, StepObserverAlsoFiresDuringSim) {
+    Simulator simulator(linker::Linker().link(makeSystem(0.2)));
+
+    int observerCallCount = 0;
+    simulator.setStepObserver([&observerCallCount](Simulator const&) {
+        ++observerCallCount;
+    });
+
+    simulator.sim();
+
+    EXPECT_GT(observerCallCount, 0);
 }
 
 } // namespace

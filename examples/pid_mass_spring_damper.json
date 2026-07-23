@@ -1,6 +1,12 @@
 {
     "stop_time": 0.5,
     "max_step_size": 0.02,
+    "logged_outputs": [
+        {"domain": "plant", "scope": "Output", "name": "position"},
+        {"domain": "plant", "scope": "Output", "name": "velocity"},
+        {"domain": "pid", "scope": "Output", "name": "output"}
+    ],
+    "log_path": "output/pid_mass_spring_damper_log.csv",
     "composition": [
         {
             "simulation": {"domain": "pid"},

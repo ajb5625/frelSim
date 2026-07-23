@@ -4,6 +4,7 @@
 #include <string>
 #include "../compiler/Compiler.hpp"
 #include "../linker/Linker.hpp"
+#include "../recorder/Recorder.hpp"
 #include "../simulator/Simulator.hpp"
 #include "frelsim/proto/System.pb.h"
 
@@ -72,7 +73,25 @@ class Overseer final {
         /// \brief Current global simulation time (debug/diagnostic use).
         double simulationTime() const;
 
+        /**
+         * \brief Writes the time series recorded so far (see
+         * System.logged_outputs) to path as CSV - see
+         * frelsim/recorder/Recorder.hpp for the format. sim() already calls
+         * this automatically at the end of a run if System.log_path is set;
+         * a step()-driven caller should call this explicitly once it's
+         * done, since step() itself doesn't rewrite the file on every call.
+         * \throws std::logic_error if System.logged_outputs was empty (
+         * nothing was ever recorded).
+         */
+        void writeLog(std::string const& path) const;
+
     private:
+        /// \brief Constructs recorder_ and wires it as the Simulator's step
+        /// observer, if system_.logged_outputs() is non-empty. No-op
+        /// otherwise, so a System with nothing to log pays nothing for it.
+        void setUpRecordingIfConfigured();
+
+
         /**
          * \brief The Simulator initialize() constructed, or throws
          * std::logic_error if initialize() hasn't run yet (simulator_ is
@@ -84,6 +103,7 @@ class Overseer final {
         sim::proto::System system_;
         linker::Linker linker_;
         std::unique_ptr<simulator::Simulator> simulator_;
+        std::unique_ptr<recorder::Recorder> recorder_;
 };
 
 } // namespace frelsim::overseer

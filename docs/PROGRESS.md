@@ -20,6 +20,7 @@ drive them.
 | [`progress/simulator.md`](progress/simulator.md) | `frelsim/simulator/` - routing, lock-step time advancement |
 | [`progress/pipeline.md`](progress/pipeline.md) | `frelsim/compiler/`, `frelsim/linker/`, `frelsim/overseer/` - the config-read → link → execute pipeline |
 | [`progress/sim-executable.md`](progress/sim-executable.md) | `sim/` - the `frelsim_sim` executable runner |
+| [`progress/recorder.md`](progress/recorder.md) | `frelsim/recorder/` - time-series logging for verifying simulation results |
 
 Not yet built (check the live task list for current status, not this file):
 gRPC `Simulation`/`Simulator` services, FMU adapter, REST layer.

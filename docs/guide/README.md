@@ -32,8 +32,8 @@ That config drives a `MassSpringDamper` plant to a setpoint via a
    components together, initial parameters, and the validation `Linker`
    performs (including two real gotchas worth knowing up front).
 4. [**Running simulations**](running-simulations.md) - `Overseer`, the
-   `frelsim_sim` executable, and the run-to-completion vs. single-step
-   control modes.
+   `frelsim_sim` executable, the run-to-completion vs. single-step control
+   modes, and logging a time series to verify results.
 5. [**Solvers**](solvers.md) - the fixed-step/variable-step hierarchy,
    available solver types, and automatic (Jacobian-driven) solver
    selection.

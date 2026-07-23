@@ -39,6 +39,12 @@ stages and exposes the two ways to run a simulation (see
 [`running-simulations.md`](running-simulations.md)). It's what the
 `frelsim_sim` executable, and eventually a gRPC/REST layer, sit on top of.
 
+`Overseer` also optionally wires a **`Recorder`** (`frelsim/recorder/`)
+into `Simulator`'s step loop, if a config's `logged_outputs` is non-empty -
+this is how you verify a simulation's actual trajectory rather than only
+inspecting a final snapshot; see
+[`running-simulations.md`](running-simulations.md#verifying-results-logging-a-time-series).
+
 ## The component model: `Model`, `Task`/`Scheduler`, `EventEngine`
 
 A **`Model`** is one hybrid dynamical system: it can hold continuous state

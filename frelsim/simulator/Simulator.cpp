@@ -56,7 +56,15 @@ bool Simulator::step(double stopTime) {
     }
     simulationTime_ = horizon;
 
+    if (stepObserver_) {
+        stepObserver_(*this);
+    }
+
     return simulationTime_ >= tFinal_;
+}
+
+void Simulator::setStepObserver(StepObserver observer) {
+    stepObserver_ = std::move(observer);
 }
 
 void Simulator::route() {

@@ -75,6 +75,53 @@ overseer.resume();
 
 All of these throw `std::logic_error` if called before `initialize()`.
 
+## Verifying results: logging a time series
+
+`overseer.get()` only gives a point-in-time snapshot - to check a
+simulation's *trajectory* is actually correct (a step response converging
+the way it should, a vehicle reaching the right terminal velocity), record
+a time series instead. Add to your `System` config:
+
+```json
+{
+    "logged_outputs": [
+        {"domain": "plant", "scope": "Output", "name": "position"},
+        {"domain": "plant", "scope": "Output", "name": "velocity"}
+    ],
+    "log_path": "output/my_run_log.csv"
+}
+```
+
+`Overseer::sim()` writes the recorded time series to `log_path`
+automatically once the run completes - `frelsim_sim` needs no extra flags
+or code, since this is entirely config-driven (see
+`examples/pid_mass_spring_damper.json`, which already does this). Only
+numeric identifiers (`Output`/`Parameter`, `Float`/`Integer`/`Bool` typed)
+can be logged.
+
+If you're driving a simulation via `step()` instead of `sim()`, `log_path`
+isn't auto-written (each `step()` call shouldn't rewrite the whole file) -
+call `overseer.writeLog(path)` explicitly once you're done:
+
+```cpp
+Overseer overseer(system); // logged_outputs set, log_path left unset
+overseer.initialize();
+while (!overseer.step(targetTime)) { /* ... */ }
+overseer.writeLog("output/my_run_log.csv");
+```
+
+Then plot it:
+
+```bash
+python3 scripts/plot_results.py output/my_run_log.csv
+python3 scripts/plot_results.py output/my_run_log.csv --save plot.png
+```
+
+See [`../progress/recorder.md`](../progress/recorder.md) for the design
+(and why this is CSV/file-based rather than a live streaming connection -
+that's a natural future extension once a gRPC service actually exists to
+stream over, not a dead end).
+
 ## Building your own config
 
 See [`composition.md`](composition.md) for the full `System` format, and

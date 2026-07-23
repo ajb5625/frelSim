@@ -1,6 +1,10 @@
 # Build output
 /build/
 
+# Generated simulation output logs (see examples/*.json's log_path)
+/output/*
+!/output/.gitkeep
+
 # Editor / local tooling
 .vscode/
 # Local Claude Code permission grants (machine-specific), but NOT
@@ -48,3 +52,7 @@
 
 # debug information files
 *.dwo
+
+# Python
+__pycache__/
+*.pyc

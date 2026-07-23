@@ -10,6 +10,8 @@ message System {
     double stop_time = 2;
     double max_step_size = 3;
     repeated RoutedSimulation composition = 4;
+    repeated Identifier logged_outputs = 5; // see running-simulations.md
+    optional string log_path = 6;
 }
 
 message RoutedSimulation {
@@ -20,6 +22,10 @@ message RoutedSimulation {
     repeated SetOperation initial_parameters = 5;
 }
 ```
+
+(`logged_outputs`/`log_path` configure time-series recording for
+verification - see
+[`running-simulations.md`](running-simulations.md#verifying-results-logging-a-time-series).)
 
 ## Constructing a component
 

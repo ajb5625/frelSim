@@ -2,6 +2,7 @@
 #include <atomic>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <google/protobuf/util/json_util.h>
 #include "frelsim/overseer/Overseer.hpp"
 
@@ -26,6 +27,35 @@ class TempFile {
             static std::atomic<int> counter{0};
             return (std::filesystem::temp_directory_path()
                 / ("frelsim_overseer_test_" + std::to_string(counter++) + ".json")).string();
+        }
+
+        std::string path_;
+};
+
+// Reserves a unique path without creating the file - for output the test
+// itself doesn't write (e.g. a CSV log Overseer is expected to produce).
+class TempOutputPath {
+    public:
+        TempOutputPath() : path_(nextPath()) {}
+
+        ~TempOutputPath() {
+            std::remove(path_.c_str());
+        }
+
+        std::string const& path() const { return path_; }
+
+        std::string readContents() const {
+            std::ifstream file(path_);
+            std::ostringstream contents;
+            contents << file.rdbuf();
+            return contents.str();
+        }
+
+    private:
+        static std::string nextPath() {
+            static std::atomic<int> counter{0};
+            return (std::filesystem::temp_directory_path()
+                / ("frelsim_overseer_test_log_" + std::to_string(counter++) + ".csv")).string();
         }
 
         std::string path_;
@@ -153,6 +183,64 @@ TEST(OverseerTest, MethodsThrowBeforeInitializeIsCalled) {
     EXPECT_THROW(overseer.sim(), std::logic_error);
     EXPECT_THROW(overseer.step(0.1), std::logic_error);
     EXPECT_THROW(overseer.simulationTime(), std::logic_error);
+}
+
+TEST(OverseerTest, SimAutoWritesTheLogWhenLoggedOutputsAndLogPathAreConfigured) {
+    sim::proto::System system = makeSystem(0.3);
+    *system.add_logged_outputs() = makeId("plant", "Output", "position");
+    *system.add_logged_outputs() = makeId("pid", "Output", "output");
+
+    TempOutputPath const logFile;
+    system.set_log_path(logFile.path());
+
+    Overseer overseer(system);
+    overseer.initialize();
+    overseer.sim();
+
+    std::istringstream contents(logFile.readContents());
+    std::string header;
+    std::getline(contents, header);
+    EXPECT_EQ(header, "time,plant.Output.position,pid.Output.output");
+
+    int rowCount = 0;
+    std::string line;
+    while (std::getline(contents, line)) {
+        ++rowCount;
+    }
+    EXPECT_GT(rowCount, 0);
+}
+
+TEST(OverseerTest, WriteLogWorksExplicitlyAfterAStepDrivenRun) {
+    sim::proto::System system = makeSystem(0.2);
+    *system.add_logged_outputs() = makeId("plant", "Output", "position");
+
+    Overseer overseer(system);
+    overseer.initialize();
+
+    bool finished = false;
+    int steps = 0;
+    while (!finished) {
+        finished = overseer.step(0.2);
+        ASSERT_LT(++steps, 1000) << "step() never reached stop_time";
+    }
+
+    // step()-driven runs don't auto-write (no log_path set here either) -
+    // the caller writes explicitly once it's done.
+    TempOutputPath const logFile;
+    overseer.writeLog(logFile.path());
+
+    std::istringstream contents(logFile.readContents());
+    std::string header;
+    std::getline(contents, header);
+    EXPECT_EQ(header, "time,plant.Output.position");
+}
+
+TEST(OverseerTest, WriteLogThrowsWithoutLoggedOutputsConfigured) {
+    Overseer overseer(makeSystem(0.2));
+    overseer.initialize();
+
+    TempOutputPath const logFile;
+    EXPECT_THROW(overseer.writeLog(logFile.path()), std::logic_error);
 }
 
 } // namespace

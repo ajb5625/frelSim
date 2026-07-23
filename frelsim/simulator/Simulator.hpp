@@ -1,5 +1,6 @@
 #pragma once
 #include <atomic>
+#include <functional>
 #include <map>
 #include <memory>
 #include "../simulation/Simulation.hpp"
@@ -89,6 +90,19 @@ public:
     /// \brief Current global simulation time (debug/diagnostic use).
     double simulationTime() const { return simulationTime_; }
 
+    using StepObserver = std::function<void(Simulator const&)>;
+
+    /**
+     * \brief Registers a callback invoked at the end of every step() call
+     * (including the bootstrap step and every call made from within sim()'s
+     * own loop) - the uniform hook for observing per-step state regardless
+     * of which run mode (sim() vs. externally-driven step()) is in use. The
+     * observer receives *this, so it can call get()/simulationTime() to
+     * sample whatever it needs without Simulator knowing anything about
+     * what it's being observed for (e.g. Overseer wires a Recorder here -
+     * see frelsim/recorder/Recorder.hpp).
+     */
+    void setStepObserver(StepObserver observer);
 
 private:
 
@@ -123,5 +137,8 @@ private:
 
     /// @brief set to true when the client requested a pause.
     std::atomic<bool> isStopRequested_;
+
+    /// @brief Optional per-step observer - see setStepObserver().
+    StepObserver stepObserver_;
 };
 }
