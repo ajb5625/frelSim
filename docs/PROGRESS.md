@@ -623,6 +623,60 @@ comparison. Fixed properly:
 
 Full suite: 112/112 passing.
 
+## Track: more control-system models (task #13)
+
+Three new models, all following BouncingBall/PIDController/MassSpringDamper's
+established pattern (own their domain concepts as plain private members,
+typed `getOutputs`/`setInputs`/`getParameters`/`setParameters`, self-register
+via `FRELSIM_REGISTER_MODEL`) - and, since the previous PR made
+`Model::getInputs` a hard requirement for anything wired as a `Linker`
+destination, every model here that takes an input implements it.
+
+**`FirstOrderLag`** - `tau*y' + y = K*u`, the simplest possible plant with
+genuinely different dynamics than `MassSpringDamper` (first-order, no
+oscillation) - a common building block (e.g. approximating actuator/sensor
+lag) and a second, qualitatively different plant for test breadth. Supplies
+a Jacobian (`dy'/dy = -1/tau`) since it's essentially free to compute
+exactly. Tested against the closed-form step response
+`y(t) = K*u*(1 - e^(-t/tau))`.
+
+**`BangBangController`** - a relay (on/off) controller: `output = +amplitude`
+if `error >= 0` else `-amplitude`. The simplest nontrivial alternative to
+`PIDController` - discrete, no continuous state, but a genuinely
+discontinuous control law rather than PID's smooth one, which is exactly
+the point (test breadth across qualitatively different control laws, not
+just more PID variants).
+
+**`LongitudinalVehicle`** - the actual step toward a vehicle, deliberately
+scoped to longitudinal-only dynamics (no steering/lateral motion yet):
+```
+mass * v' = throttle - dragCoefficient*v*|v| - rollingResistance*v
+x' = v
+```
+The quadratic drag term is written as `v*|v|` rather than `sign(v)*v^2` so
+it (and its derivative) stay smooth through `v=0` - no branch, no event
+needed the way `BouncingBall`'s bounce needs one for its own sign flip. This
+is also the first model in this codebase with a genuinely nonlinear
+derivative (`MassSpringDamper`'s is linear), making it a real exercise for
+`SolverType::Automatic`'s Jacobian-based stiffness detection rather than
+only the synthetic cases in `StiffnessDetectorTest`.
+
+Testing note: `derivative()`/`jacobian()` are protected on `Model` by
+design (subclass customization points, not part of the public co-sim I/O
+boundary), so the Jacobian couldn't be unit-tested directly via a
+finite-difference comparison without breaking that encapsulation - the
+first attempt at this test referenced accessors that don't (and shouldn't)
+exist. Verified indirectly but genuinely instead: an equilibrium test drives
+the vehicle with constant throttle to its analytic terminal velocity
+(`dragCoefficient*v^2 + rollingResistance*v - throttle = 0`, solved via the
+quadratic formula) through the default adaptive solver, and the same check
+repeated while forcing `SolverType::BackwardEuler` - which uses the
+Jacobian for its Newton-Raphson iteration every step, so a wrong Jacobian
+(wrong sign, wrong factor on the `|v|` term) would show up as convergence
+to the wrong state rather than passing by coincidence.
+
+Full suite: 129/129 passing.
+
 ## Track: sim executable runner
 
 *(not yet started)*
